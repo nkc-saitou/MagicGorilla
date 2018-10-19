@@ -9,9 +9,9 @@ public class WalkEnemy : BaseEnemy
     private int myHp = 1;                                   //HP
     private const float speed=2.0f;                         //移動速度
     private const float rotSpeed = 5.0f;                    //回転速度
+    private const float jumpPower = 5f;                   //飛ぶ力
     private bool step=false;                                //目の前が段差か
     private bool moveFinish;                                //移動終了
-    private bool onGround;                                  //接地判定
 
     Rigidbody rb;
     WalkEnemyRay enemyRay;
@@ -20,30 +20,38 @@ public class WalkEnemy : BaseEnemy
     protected override void OnStart()
     {
         //体力を設定
-        EnemyHp = myHp;
+        EnemyHP = myHp;
 
         Lr = GetComponent<LineRenderer>();
         enemyRay = GetComponent<WalkEnemyRay>();
         rb = GetComponent<Rigidbody>();
-        StartMove();
+        StartRotate();
+        ReMove();
         LineRender();
     }
 
     void Update()
     {
-        
+
     }
 
     void FixedUpdate()
     {
-        enemyRay.OnGround(out onGround);
-        if (!moveFinish)
+        if (moveFinish)
         {
+            if (Vector3.Distance(PlayerPos.position, transform.position) > 2)
+            {
+                ReMove();
+                moveFinish = false;
+            }
+        }
+        else
+        {
+            enemyRay.StepDetection(out step);
             Move();
-            if (onGround)
+            if (enemyRay.OnGround())
             {
                 Rotate();
-                enemyRay.StepDetection(out step);
                 if (step)
                 {
                     Jump();
@@ -52,8 +60,14 @@ public class WalkEnemy : BaseEnemy
         }
     }
 
-    protected void StartMove()
+    /// <summary>
+    /// パスの設定
+    /// </summary>
+    protected void ReMove()
     {
+        agent.enabled = true;
+        path = null;
+        currentPositionIndex = 0;
         path = agent.path;
         agent.CalculatePath(PlayerPos.position, path);
         agent.enabled = false;
@@ -92,8 +106,18 @@ public class WalkEnemy : BaseEnemy
     /// </summary>
     protected void Jump()
     {
-        onGround = false;
-        rb.AddForce(Vector3.up * 270);
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity=(Vector3.up * jumpPower);
+    }
+
+
+    void StartRotate()
+    {
+        Vector3 direction = (PlayerPos.position - transform.position).normalized;
+        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
+        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
+        transform.rotation = Quaternion.LookRotation(zAxis,Vector3.up);
     }
 
     protected void Rotate()
@@ -119,4 +143,6 @@ public class WalkEnemy : BaseEnemy
         }
 
     }
+
+
 }

@@ -12,7 +12,7 @@ public class AllowEnemy : BaseEnemy {
     protected override void OnStart()
     {
         //体力設定
-        EnemyHp = hp;
+        EnemyHP = hp;
         StartCoroutine(AttackTime());
         allowAttack = GetComponent<AllowEnemyAttack>();
 	}

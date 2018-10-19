@@ -7,28 +7,31 @@ public class WalkEnemyRay : MonoBehaviour {
     private const float groundDis = 0.5f; //接地検知
 
     /// <summary>
-    //目の前に物体があるか検知
+    /// 目の前に段差があるか検知
     /// </summary>
-    public bool StepDetection(out bool step)
+    /// <param name="step">段差があるか</param>
+    /// <returns></returns>
+    public void StepDetection(out bool step)
     {
-        bool flg=false;
+        bool flg1=false;
         Ray ray=new Ray(transform.position,transform.TransformDirection(Vector3.forward));
         RaycastHit hit;
         if(Physics.Raycast(ray,out hit, stepDis))
         {
             if (hit.collider.tag == "Untagged")//段差のタグ
             {
-                flg = true;
+                flg1 = true;
             }
         }
-        return step=flg;
+        step = flg1;
+        return;
     }
 
     /// <summary>
     /// 接地判定
     /// </summary>
     /// <returns></returns>
-    public bool OnGround(out bool ground)
+    public bool OnGround()
     {
         bool flg = false;
         Ray ray = new Ray(transform.position, transform.TransformDirection(Vector3.down));
@@ -40,6 +43,6 @@ public class WalkEnemyRay : MonoBehaviour {
                 flg = true;
             }
         }
-        return ground=flg;
+        return flg;
     }
 }
