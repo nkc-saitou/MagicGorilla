@@ -9,7 +9,7 @@ public class WalkEnemy : BaseEnemy
     private int myHp = 1;                                   //HP
     private const float speed=2.0f;                         //移動速度
     private const float rotSpeed = 5.0f;                    //回転速度
-    private const float jumpPower = 5f;                   //飛ぶ力
+    private const float jumpPower = 5f;                     //飛ぶ力
     private bool step=false;                                //目の前が段差か
     private bool moveFinish;                                //移動終了
 
@@ -17,6 +17,9 @@ public class WalkEnemy : BaseEnemy
     WalkEnemyRay enemyRay;
     LineRenderer Lr;
 
+    /// <summary>
+    /// Startと同義
+    /// </summary>
     protected override void OnStart()
     {
         //体力を設定
@@ -26,7 +29,7 @@ public class WalkEnemy : BaseEnemy
         enemyRay = GetComponent<WalkEnemyRay>();
         rb = GetComponent<Rigidbody>();
         StartRotate();
-        ReMove();
+        PathSet();
         LineRender();
     }
 
@@ -41,7 +44,7 @@ public class WalkEnemy : BaseEnemy
         {
             if (Vector3.Distance(PlayerPos.position, transform.position) > 2)
             {
-                ReMove();
+                PathSet();
                 moveFinish = false;
             }
         }
@@ -49,7 +52,7 @@ public class WalkEnemy : BaseEnemy
         {
             enemyRay.StepDetection(out step);
             Move();
-            if (enemyRay.OnGround())
+            if (enemyRay.OnGround)
             {
                 Rotate();
                 if (step)
@@ -63,7 +66,7 @@ public class WalkEnemy : BaseEnemy
     /// <summary>
     /// パスの設定
     /// </summary>
-    protected void ReMove()
+    protected void PathSet()
     {
         agent.enabled = true;
         path = null;
@@ -92,7 +95,6 @@ public class WalkEnemy : BaseEnemy
             currentPositionIndex = currentPositionIndex + 1 < path.corners.Length ? currentPositionIndex + 1 : currentPositionIndex;
         }
         transform.localPosition += transform.forward * speed * Time.deltaTime;
-
     }
 
 
@@ -132,6 +134,7 @@ public class WalkEnemy : BaseEnemy
         transform.rotation = Quaternion.LookRotation(newdir);
     }
 
+
     void LineRender()
     {
         //移動ルート描画
@@ -141,8 +144,5 @@ public class WalkEnemy : BaseEnemy
             Vector3 corner = path.corners[i];
             Lr.SetPosition(i, corner + Vector3.up);
         }
-
     }
-
-
 }

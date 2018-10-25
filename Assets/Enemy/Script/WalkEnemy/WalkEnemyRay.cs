@@ -31,18 +31,21 @@ public class WalkEnemyRay : MonoBehaviour {
     /// 接地判定
     /// </summary>
     /// <returns></returns>
-    public bool OnGround()
+    public bool OnGround
     {
-        bool flg = false;
-        Ray ray = new Ray(transform.position, transform.TransformDirection(Vector3.down));
-        RaycastHit hit;
-        if(Physics.Raycast(ray,out hit, groundDis))
+        get
         {
-            if (hit.collider!=null)
+            bool flg = false;
+            Ray ray = new Ray(transform.position, transform.TransformDirection(Vector3.down));
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, groundDis))
             {
-                flg = true;
+                if (hit.collider != null)
+                {
+                    flg = true;
+                }
             }
+            return flg;
         }
-        return flg;
     }
 }
