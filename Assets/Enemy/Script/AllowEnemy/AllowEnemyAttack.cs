@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class AllowEnemyAttack : MonoBehaviour {
 
+    void Start()
+    {
+
+    }
     public void Attack(GameObject allow,Vector3 playerPos)
     {
         Vector3 rot = playerPos - transform.position;

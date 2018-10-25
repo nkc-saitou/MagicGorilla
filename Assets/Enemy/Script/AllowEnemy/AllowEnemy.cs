@@ -15,6 +15,7 @@ public class AllowEnemy : BaseEnemy {
         EnemyHP = hp;
         StartCoroutine(AttackTime());
         allowAttack = GetComponent<AllowEnemyAttack>();
+        agent.enabled = false;
 	}
 	
 

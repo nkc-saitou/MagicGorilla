@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public abstract class BaseEnemy : MonoBehaviour {
     //プレイヤーの座標
     protected Transform PlayerPos;//{ get; set; }
@@ -27,9 +28,6 @@ public abstract class BaseEnemy : MonoBehaviour {
         }
     }
 
-    //沸きシステム
-    public SpawnManeger SpawnManegerCompornent { get; set; }
-
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -46,12 +44,6 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected virtual void Dead()
     {
         Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        if (SpawnManegerCompornent)
-        SpawnManegerCompornent.NowSpawn--;
     }
 
     /// <summary>
