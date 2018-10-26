@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WalkEnemyRay : MonoBehaviour {
     private const float stepDis = 1.5f;     //段差検知距離
-    private const float groundDis = 0.5f; //接地検知
+    private const float groundDis = 0.6f; //接地検知
 
     /// <summary>
     /// 目の前に段差があるか検知
