@@ -11,9 +11,6 @@ abstract public class BaseMagic : MonoBehaviour, IAction
     // public
     //---------------------------------------------
 
-    [Header("チャージエフェクトなどを表示させたい場所")]
-    public Transform effectPos;
-
     public GameObject magicEffect;
 
     public float Pow { get; protected set; }
@@ -42,6 +39,7 @@ abstract public class BaseMagic : MonoBehaviour, IAction
     //---------------------------------------------
 
     Transform targetPos;
+    Transform effectPos;
 
     //---------------------------------------------
     // 抽象メソッド
@@ -65,12 +63,21 @@ abstract public class BaseMagic : MonoBehaviour, IAction
         DoUpdate();
     }
 
-    //モーション
-    public virtual void Charge()
+    /// <summary>
+    /// 魔法を生成
+    /// </summary>
+    /// <param name="pos">魔法を生成する位置</param>
+    public virtual void Charge(Transform pos)
     {
         Pow = Mathf.Min(Pow += Time.deltaTime, MaxPow);
+
+        effectPos = pos;
     }
 
+    /// <summary>
+    /// 魔法を発射
+    /// </summary>
+    /// <param name="target"></param>
     public virtual void Shot(GameObject target)
     {
         if (target == null) return;
@@ -79,7 +86,7 @@ abstract public class BaseMagic : MonoBehaviour, IAction
 
     public virtual void PlayEffect()
     {
-        effect = Instantiate(magicEffect, effectPos.position, magicEffect.transform.rotation,transform);
+        effect = Instantiate(magicEffect, effectPos.position, magicEffect.transform.rotation);
         BaseMagicBullet magic = effect.GetComponent<BaseMagicBullet>();
         magic._BaseMagic = baseMagic;
     }

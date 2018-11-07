@@ -23,9 +23,9 @@ public class MagicIce : BaseMagic {
         Debug.Log("Ice");
     }
 
-    public override void Charge()
+    public override void Charge(Transform pos)
     {
-        base.Charge();
+        base.Charge(pos);
 
         PlayEffect();
     }

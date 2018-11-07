@@ -4,26 +4,9 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using System.Linq;
+using System;
 
-public enum MagicType
-{
-    _fire,
-    _ice,
-    _lightning,
-    _rock,
-    _sword,
-    _none
-}
-
-[RequireComponent(typeof(MagicFire))]
-[RequireComponent(typeof(MagicIce))]
-[RequireComponent(typeof(MagicLightning))]
-[RequireComponent(typeof(MagicRock))]
-[RequireComponent(typeof(MagicSword))]
 public class Shot : MonoBehaviour {
-
-    [Header("火、氷、雷、石、剣")]
-    [SerializeField] GameObject[] magicEffect;
 
     //-----------------------------------------------------
     // private
@@ -43,9 +26,13 @@ public class Shot : MonoBehaviour {
 
     public GameObject Enemy { get; private set; }
 
+    public Transform pos;
+
     void Start ()
     {
-        actionLis.AddRange(FindObjectInterface<IAction>());
+        actionLis.AddRange(MagicProvider.ActionLis);
+
+        Debug.Log(actionLis.Count);
 
         memoryState = MagicType._none;
 
@@ -54,8 +41,16 @@ public class Shot : MonoBehaviour {
             .Subscribe(_ => state = GetComponent<PlayerInput>()._InputState);
 
         //InputStateに変化があった場合、MagicShotを実行
-        gameObject.ObserveEveryValueChanged(_ => state)
+        this.UpdateAsObservable()
+            .ThrottleFirst(TimeSpan.FromSeconds(1.5f))
             .Subscribe(_ => MagicShot());
+
+        this.UpdateAsObservable()
+            .Where(_ => state != InputState._none)
+            .Subscribe(_ =>
+            {
+                if(state == InputState._accel) MagicShot(memoryState);
+            });
 
         this.UpdateAsObservable()
             .Where(_ => Enemy == null)
@@ -75,7 +70,6 @@ public class Shot : MonoBehaviour {
             case InputState._armUp:    tempType = MagicType._lightning; break;
             case InputState._armDown:  tempType = MagicType._rock;      break;
             case InputState._armFront: tempType = MagicType._sword;     break;
-            case InputState._accel:    MagicShot(memoryState);          break;
         }
 
         if (tempType == MagicType._none) return;
@@ -89,9 +83,8 @@ public class Shot : MonoBehaviour {
     void MagicSet(MagicType type)
     {
         if (memoryState != MagicType._none) return;
-        actionLis[(int)type].Charge();
+        actionLis[(int)type].Charge(pos);
         memoryState = type;
-
     }
 
     /// <summary>
@@ -129,24 +122,5 @@ public class Shot : MonoBehaviour {
         enemyPosLis = tempList.OrderBy(pos => Vector3.Distance(pos.gameObject.transform.position, transform.position)).ToList();
 
         return enemyPosLis[0];
-    }
-
-    /// <summary>
-    /// 投げることが出来る(IActionインターフェイスが実装されている)ものを取得する
-    /// </summary>
-    /// <typeparam name="T">InterFaceの型</typeparam>
-    /// <returns>InterFaceが実装されているコンポーネントのList</returns>
-    List<T> FindObjectInterface<T>() where T : class
-    {
-        List<T> tempLis = new List<T>();
-        foreach (var n in FindObjectsOfType<Component>())
-        {
-            var component = n as T;
-            if (component != null)
-            {
-                tempLis.Add(component);
-            }
-        }
-        return tempLis;
     }
 }

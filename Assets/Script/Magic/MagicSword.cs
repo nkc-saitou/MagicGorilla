@@ -23,9 +23,9 @@ public class MagicSword : BaseMagic {
         Debug.Log("Sword");
     }
 
-    public override void Charge()
+    public override void Charge(Transform pos)
     {
-        base.Charge();
+        base.Charge(pos);
         PlayEffect();
     }
     

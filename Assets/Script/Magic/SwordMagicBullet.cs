@@ -7,7 +7,6 @@ using UniRx.Triggers;
 
 public class SwordMagicBullet : BaseMagicBullet
 {
-    // Use this for initialization
     protected override void Start()
     {
         base.Start();

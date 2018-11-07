@@ -9,9 +9,16 @@ using UniRx.Triggers;
 public class BaseMagicBullet : MonoBehaviour
 {
 
-    protected ObjectCollision collision;
-
+    //---------------------------------------------
+    // public
+    //---------------------------------------------
     public BaseMagic _BaseMagic { get; set; }
+
+    //---------------------------------------------
+    // protected
+    //---------------------------------------------
+
+    protected ObjectCollision collision;
 
     protected float speed = 0.1f;
 
@@ -19,7 +26,6 @@ public class BaseMagicBullet : MonoBehaviour
 
     protected Transform pos = null;
 
-    // Use this for initialization
     protected virtual void Start()
     {
 
@@ -52,6 +58,9 @@ public class BaseMagicBullet : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 弾が動く
+    /// </summary>
     protected virtual void BulletMove()
     {
         this.UpdateAsObservable()
@@ -64,6 +73,9 @@ public class BaseMagicBullet : MonoBehaviour
             });
     }
 
+    /// <summary>
+    /// 自分の当たり判定を取得
+    /// </summary>
     protected virtual void MagicCollision()
     {
         collision = GetComponent<ObjectCollision>();

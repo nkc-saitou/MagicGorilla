@@ -23,9 +23,9 @@ public class MagicRock : BaseMagic {
         Debug.Log("Rock");
     }
 
-    public override void Charge()
+    public override void Charge(Transform pos)
     {
-        base.Charge();
+        base.Charge(pos);
 
         PlayEffect();
     }

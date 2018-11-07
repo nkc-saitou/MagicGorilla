@@ -23,6 +23,8 @@ GameObject:
   - component: {fileID: 135814044915623402}
   - component: {fileID: 23834158469091886}
   - component: {fileID: 114766698019974868}
+  - component: {fileID: 114277967778688468}
+  - component: {fileID: 114793283841103726}
   m_Layer: 0
   m_Name: LightningMagicEffect
   m_TagString: Untagged
@@ -84,6 +86,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1890554822379630}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114277967778688468
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1890554822379630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d2c25a88fb53f4e83a789406f2ac6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114766698019974868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -93,6 +106,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ed67bece4ffc264fbd2ec8fcf527d91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114793283841103726
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1890554822379630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f715d9c65dc6946acbfea1c207abb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &135814044915623402

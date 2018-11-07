@@ -22,9 +22,9 @@ public class MagicLightning : BaseMagic
         base.Shot(target);
     }
 
-    public override void Charge()
+    public override void Charge(Transform pos)
     {
-        base.Charge();
+        base.Charge(pos);
 
         PlayEffect();
     }

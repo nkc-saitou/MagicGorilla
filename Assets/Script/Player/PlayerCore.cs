@@ -6,10 +6,12 @@ using UniRx.Triggers;
 
 public class PlayerCore : MonoBehaviour {
 
-    [SerializeField] ObjectCollision objectCollision;
+    ObjectCollision objectCollision;
 
 	// Use this for initialization
 	void Start () {
+
+        objectCollision = GetComponent<ObjectCollision>();
 
         //当たった時の処理
         objectCollision.OnCollision
