@@ -13,7 +13,12 @@ public abstract class BaseEnemy : MonoBehaviour {
     //移動用パス
     protected NavMeshPath path;
     //体力
+    [SerializeField]
     protected float enemyHp=1;
+
+    //スコア
+    [SerializeField]
+    protected int score=10;
 
 
     public float EnemyHP
@@ -43,7 +48,8 @@ public abstract class BaseEnemy : MonoBehaviour {
     /// </summary>
     protected virtual void Dead()
     {
-        Destroy(gameObject);
+        GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
+        Destroy(gameObject,0.001f);
     }
 
     /// <summary>

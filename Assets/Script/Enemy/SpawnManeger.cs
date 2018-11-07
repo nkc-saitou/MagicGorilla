@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class SpawnManeger : MonoBehaviour {
     [SerializeField, Header("沸き数"),Tooltip("同時に存在可能な数")]
@@ -8,7 +9,6 @@ public class SpawnManeger : MonoBehaviour {
     [SerializeField, Tooltip("同時に沸く最大数")]
     private int maxSameTimeSpawn;
     public int NowSpawn { get; set; }                               //今沸いている数
-    [SerializeField]
     private int spawnedMonster;                                     //沸いた合計数
     public int DestroyedMonster { get; set; }                       //倒した数
     [SerializeField, Tooltip("ボスが沸くまでの敵の数")]
@@ -43,7 +43,6 @@ public class SpawnManeger : MonoBehaviour {
         startSpawn = true;
 	}
 	
-	// Update is called once per frame
 	void Update () {
         //開始処理
         if (startSpawn)
@@ -86,6 +85,8 @@ public class SpawnManeger : MonoBehaviour {
         }
     }
 
+
+
     /// <summary>
     /// ボスを沸かせるやつ(β)
     /// </summary>
@@ -95,14 +96,16 @@ public class SpawnManeger : MonoBehaviour {
         Instantiate(bossMonster,spawnPos,Quaternion.identity);
     }
 
+
+
     /// <summary>
     /// Enemyの死亡監視
     /// </summary>
     void EnemyMonitoring()
     {
-        foreach(var list in enemies)
+        foreach(var enemy in enemies)
         {
-            if (!list)
+            if (!enemy)
             {
                 NowSpawn--;
                 DestroyedMonster++;
@@ -111,6 +114,8 @@ public class SpawnManeger : MonoBehaviour {
         }
         enemies.RemoveAll(enemies => enemies == null);
     }
+
+
 
     /// <summary>
     /// 範囲内でランダムの座標にランダムのモンスターをランダムな数沸かせる(α)
@@ -146,6 +151,8 @@ public class SpawnManeger : MonoBehaviour {
         }
     }
 
+
+
     /// <summary>
     /// 規定値を超えないようにランダムな値をとる
     /// </summary>
@@ -159,6 +166,8 @@ public class SpawnManeger : MonoBehaviour {
         num =NowSpawn + num > maxSpawn ? maxSpawn - NowSpawn : num;
         return num;
     }
+
+
 
     /// <summary>
     /// ランダムにRayを落として座標を取る
