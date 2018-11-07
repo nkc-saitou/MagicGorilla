@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class WalkEnemy : BaseEnemy
 {
     private int currentPositionIndex=0;                     //目標値用
-    private int myHp = 1;                                   //HP
     private const float speed=2.0f;                         //移動速度
     private const float rotSpeed = 5.0f;                    //回転速度
     private const float jumpPower = 5f;                     //飛ぶ力
@@ -17,14 +16,13 @@ public class WalkEnemy : BaseEnemy
     WalkEnemyRay enemyRay;
     LineRenderer Lr;
 
+
+
     /// <summary>
     /// Startと同義
     /// </summary>
     protected override void OnStart()
     {
-        //体力を設定
-        EnemyHP = myHp;
-
         Lr = GetComponent<LineRenderer>();
         enemyRay = GetComponent<WalkEnemyRay>();
         rb = GetComponent<Rigidbody>();
@@ -33,10 +31,7 @@ public class WalkEnemy : BaseEnemy
         LineRender();
     }
 
-    void Update()
-    {
 
-    }
 
     void FixedUpdate()
     {
@@ -63,6 +58,8 @@ public class WalkEnemy : BaseEnemy
         }
     }
 
+
+
     /// <summary>
     /// パスの設定
     /// </summary>
@@ -75,6 +72,8 @@ public class WalkEnemy : BaseEnemy
         agent.CalculatePath(PlayerPos.position, path);
         agent.enabled = false;
     }
+
+
 
     /// <summary>
     /// パスの地点までの移動を繰り返す
@@ -103,6 +102,8 @@ public class WalkEnemy : BaseEnemy
 
     }
 
+
+
     /// <summary>
     /// ジャンプ
     /// </summary>
@@ -114,6 +115,7 @@ public class WalkEnemy : BaseEnemy
     }
 
 
+
     void StartRotate()
     {
         Vector3 direction = (PlayerPos.position - transform.position).normalized;
@@ -121,6 +123,8 @@ public class WalkEnemy : BaseEnemy
         Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
         transform.rotation = Quaternion.LookRotation(zAxis,Vector3.up);
     }
+
+
 
     protected void Rotate()
     {
@@ -133,6 +137,7 @@ public class WalkEnemy : BaseEnemy
         Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
         transform.rotation = Quaternion.LookRotation(newdir);
     }
+
 
 
     void LineRender()

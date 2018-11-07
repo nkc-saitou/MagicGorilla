@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     BaseEnemy bossBase;
+
+    public bool IsStart;
+    public bool IsGameClear;
+    public bool IsGameOver;
     
 
 	void Start () {
@@ -24,7 +28,8 @@ public class GameManager : MonoBehaviour {
         {
             if (bossBase.EnemyHP == 0)
             {
-                IsGameClear();
+                IsGameClear = true;
+                GameClear();
             }
         }
         else
@@ -36,12 +41,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void IsGameClear()
+    void GameClear()
     {
         Debug.Log("Clear");
     }
 
-    public void IsGameOver()
+    void GameOver()
     {
 
     }
