@@ -37,10 +37,13 @@ public class ScoreManager : MonoBehaviour {
 
     void Start () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        score.Subscribe(_ =>ScoreText.text="Score : "+_.ToString()).AddTo(this);
-        timer.Subscribe(_ => timerText.text ="Time : "+ _.ToString("f2")).AddTo(this);
+        score.TakeUntilDestroy(this).
+            Subscribe(_ =>ScoreText.text="Score : "+_.ToString()).AddTo(this);
+        timer.TakeUntilDestroy(this).
+            Subscribe(_ => timerText.text ="Time : "+ _.ToString("f2"));
 
         this.UpdateAsObservable().
+            TakeUntilDestroy(this).
             //Where(_=>gameManager.IsStart).
             Where(_ => !gameManager.IsGameClear).
             Subscribe(_ => timer.Value += Time.deltaTime);
