@@ -1,21 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine.AI;
+using System;
 
 public class WalkEnemy : BaseEnemy
 {
     private int currentPositionIndex=0;                     //目標値用
     private const float speed=2.0f;                         //移動速度
-    private const float rotSpeed = 5.0f;                    //回転速度
     private const float jumpPower = 5f;                     //飛ぶ力
-    private bool step=false;                                //目の前が段差か
-    private bool moveFinish;                                //移動終了
+    private Vector3 quaternion;
+    float speedrot = 120f;
 
-    Rigidbody rb;
-    WalkEnemyRay enemyRay;
-    LineRenderer Lr;
 
+    [SerializeField,Tooltip("攻撃間隔")]
+    private float attackWait;
 
 
     /// <summary>
@@ -23,43 +24,71 @@ public class WalkEnemy : BaseEnemy
     /// </summary>
     protected override void OnStart()
     {
-        Lr = GetComponent<LineRenderer>();
-        enemyRay = GetComponent<WalkEnemyRay>();
-        rb = GetComponent<Rigidbody>();
         StartRotate();
         PathSet();
-        LineRender();
-    }
 
 
+        this.FixedUpdateAsObservable().
+            TakeUntilDestroy(this).
+            Where(_ => Vector3.Distance(PlayerPos.position, transform.position) > 2.0f).
+            Subscribe(_ => Move());
 
-    void FixedUpdate()
-    {
-        if (moveFinish)
-        {
-            if (Vector3.Distance(PlayerPos.position, transform.position) > 2)
-            {
-                PathSet();
-                moveFinish = false;
-            }
-        }
-        else
-        {
-            enemyRay.StepDetection(out step);
-            Move();
-            if (enemyRay.OnGround)
-            {
-                Rotate();
-                if (step)
+
+        var interval = Observable.Interval(System.TimeSpan.FromSeconds(attackWait));
+        interval.
+            TakeUntilDestroy(this).
+            Where(_ => Vector3.Distance(PlayerPos.position, transform.position) <= 2.0f).
+            Subscribe(_ => Attack());
+
+
+        stateMachineObservables.
+            OnStateEnterObservable.
+            Where(_ => _.IsName("Base Layer.Attack")).
+            Subscribe(_ =>
                 {
-                    Jump();
-                }
-            }
-        }
+                    quaternion = transform.eulerAngles;
+                    quaternion.y -= 40;
+                });
+
+        stateMachineObservables.
+            OnStateEnterObservable.
+            Where(_ => _.IsName("Base Layer.Run")&& Vector3.Distance(PlayerPos.position, transform.position) >= 1.8f).
+            Subscribe(_ => {
+                PathSet();
+                });
+
+        stateMachineObservables.
+            OnStateUpdateObservable.
+            Where(_ => _.IsName("Base Layer.Set")&&enemyRay.OnGround).
+            Subscribe(_ =>Rotate());
+
+        stateMachineObservables.
+            OnStateUpdateObservable.
+            Where(_ => _.IsName("Base Layer.Attack")).
+            Subscribe(_ => AttackRotate());
+
     }
 
 
 
+
+
+
+
+    protected void Attack()
+    {
+
+    }
+
+    protected void AttackRotate()
+    {
+        float step = speedrot * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(quaternion), step);
+    }
+
+
+
+    #region 移動
     /// <summary>
     /// パスの設定
     /// </summary>
@@ -73,8 +102,6 @@ public class WalkEnemy : BaseEnemy
         agent.enabled = false;
     }
 
-
-
     /// <summary>
     /// パスの地点までの移動を繰り返す
     /// </summary>
@@ -82,9 +109,8 @@ public class WalkEnemy : BaseEnemy
     {
         var targetPosition = path.corners[currentPositionIndex];//現在の目的地
         //終点に近いなら止まる
-        if (currentPositionIndex + 1 == path.corners.Length&& Vector3.Distance(targetPosition, transform.position) < 2f)
+        if (currentPositionIndex + 1 == path.corners.Length&& Vector3.Distance(targetPosition, transform.position) < 1.5f)
         {
-            moveFinish = true;
             return;
         }
         //目標値についたら次へ
@@ -94,13 +120,17 @@ public class WalkEnemy : BaseEnemy
             currentPositionIndex = currentPositionIndex + 1 < path.corners.Length ? currentPositionIndex + 1 : currentPositionIndex;
         }
         transform.localPosition += transform.forward * speed * Time.deltaTime;
+
+        if (enemyRay.OnGround)
+        {
+            Rotate();
+            if (enemyRay.StepDetection)
+            {
+                Jump();
+            }
+        }
     }
 
-
-    protected void Attack()
-    {
-
-    }
 
 
 
@@ -111,7 +141,7 @@ public class WalkEnemy : BaseEnemy
     {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.velocity=(Vector3.up * jumpPower);
+        rb.velocity = (Vector3.up * jumpPower);
     }
 
 
@@ -137,17 +167,7 @@ public class WalkEnemy : BaseEnemy
         Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
         transform.rotation = Quaternion.LookRotation(newdir);
     }
+    #endregion
 
 
-
-    void LineRender()
-    {
-        //移動ルート描画
-        Lr.positionCount=path.corners.Length;
-        for(int i = 0; i < path.corners.Length; i++)
-        {
-            Vector3 corner = path.corners[i];
-            Lr.SetPosition(i, corner + Vector3.up);
-        }
-    }
 }

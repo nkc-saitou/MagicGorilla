@@ -4,21 +4,27 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(EnemyRay))]
 public abstract class BaseEnemy : MonoBehaviour {
-    //プレイヤーの座標
-    protected Transform PlayerPos;//{ get; set; }
-    //ナビメッシュ
+
+
     protected NavMeshAgent agent;
+    protected EnemyRay enemyRay;
+    protected Rigidbody rb;
+    protected Animator anim;
+    protected StateMachineObservalbes stateMachineObservables;
+
+
 
     //移動用パス
     protected NavMeshPath path;
-    //体力
-    [SerializeField]
-    protected float enemyHp=1;
 
-    //スコア
-    [SerializeField]
+
+    protected float enemyHp=1;
     protected int score=10;
+
+    //プレイヤーの座標
+    protected Transform PlayerPos;
 
 
     public float EnemyHP
@@ -35,7 +41,13 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        stateMachineObservables = GetComponent<Animator>().GetBehaviour<StateMachineObservalbes>();
+        enemyRay = GetComponent<EnemyRay>();
         agent = GetComponent<NavMeshAgent>();
+
+
         if (!PlayerPos)//プレイヤーを探す
         {
             PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
