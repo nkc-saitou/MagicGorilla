@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyRay : MonoBehaviour {
     private const float stepDis = 1.6f;     //段差検知距離
-    private const float groundDis = 1f;     //接地検知
+    private const float groundDis = 0.5f;     //接地検知
     private const int layerMask = ~(1 << 9);//レイヤーマスク
     public Vector3 offset;
 

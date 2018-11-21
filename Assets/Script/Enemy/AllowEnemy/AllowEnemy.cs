@@ -30,6 +30,7 @@ public class AllowEnemy : BaseEnemy {
     protected override void OnStart()
     {
         allowAttack = GetComponent<AllowEnemyAttack>();
+        StartRotate();
         PathSet();
 
         stateMachineObservables.
@@ -52,7 +53,7 @@ public class AllowEnemy : BaseEnemy {
 
         this.FixedUpdateAsObservable().
             TakeUntilDestroy(this).
-            Where(_=> enemyRay.InSightTarget(eye, PlayerPos)).
+            Where(_=> enemyRay.InSightTarget(eye, PlayerPos)&&enemyRay.OnGround).
             Subscribe(_ => {
                 Rotate();
                 anim.SetBool("InSight", true);
@@ -68,7 +69,7 @@ public class AllowEnemy : BaseEnemy {
     }
 
 
-
+    #region 移動
     /// <summary>
     /// パスの設定
     /// </summary>
@@ -83,7 +84,13 @@ public class AllowEnemy : BaseEnemy {
 
     }
 
-
+    void StartRotate()
+    {
+        Vector3 direction = (PlayerPos.position - transform.position).normalized;
+        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
+        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
+        transform.rotation = Quaternion.LookRotation(zAxis, Vector3.up);
+    }
 
     /// <summary>
     /// パスの地点までの移動を繰り返す
@@ -113,8 +120,6 @@ public class AllowEnemy : BaseEnemy {
                 Jump();
             }
         }
-
-        
     }
 
     /// <summary>
@@ -139,6 +144,7 @@ public class AllowEnemy : BaseEnemy {
         Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
         transform.rotation = Quaternion.LookRotation(newdir);
     }
+    #endregion
 
     /// <summary>
     /// 回転
@@ -152,6 +158,8 @@ public class AllowEnemy : BaseEnemy {
         Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
         transform.rotation = Quaternion.LookRotation(newdir);
     }
+
+
 
     protected void Attack()
     {
