@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx.Triggers;
+using UniRx;
 
 public class Allow : MonoBehaviour {
 
@@ -9,9 +11,9 @@ public class Allow : MonoBehaviour {
 	void Start () {
         //自壊
         Destroy(gameObject, 7f);
-    }
 
-	void Update () {
-        transform.position += speed * transform.forward * Time.deltaTime;
-	}
+        this.FixedUpdateAsObservable().
+            TakeUntilDestroy(this).
+            Subscribe(_ => transform.position += speed * transform.forward * Time.deltaTime);
+    }
 }

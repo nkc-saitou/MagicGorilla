@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WalkEnemyRay : MonoBehaviour {
-    private const float stepDis = 1.5f;     //段差検知距離
-    private const float groundDis = 0.6f; //接地検知
+    private const float stepDis = 1.6f;     //段差検知距離
+    private const float groundDis = 1f; //接地検知
+    public Vector3 offset;
 
     /// <summary>
     /// 目の前に段差があるか検知
     /// </summary>
     /// <param name="step">段差があるか</param>
     /// <returns></returns>
-    public void StepDetection(out bool step)
+    public bool StepDetection
     {
-        bool flg1=false;
-        Ray ray=new Ray(transform.position,transform.TransformDirection(Vector3.forward));
-        RaycastHit hit;
-        if(Physics.Raycast(ray,out hit, stepDis))
+        get
         {
-            if (hit.collider.tag == "Untagged")//段差のタグ
+            bool flg1 = false;
+            Ray ray = new Ray(transform.position+offset, transform.TransformDirection(Vector3.forward));
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, stepDis))
             {
-                flg1 = true;
+                if (hit.collider.tag == "Untagged")//段差のタグ
+                {
+                    flg1 = true;
+                }
             }
+            return flg1;
         }
-        step = flg1;
-        return;
     }
 
     /// <summary>
@@ -36,7 +39,7 @@ public class WalkEnemyRay : MonoBehaviour {
         get
         {
             bool flg = false;
-            Ray ray = new Ray(transform.position, transform.TransformDirection(Vector3.down));
+            Ray ray = new Ray(transform.position+offset, transform.TransformDirection(Vector3.down));
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, groundDis))
             {
@@ -47,5 +50,27 @@ public class WalkEnemyRay : MonoBehaviour {
             }
             return flg;
         }
+    }
+
+    /// <summary>
+    /// 対象までに障害がないか
+    /// </summary>
+    /// <param name="eye"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public bool InSightTarget(Transform eye, Transform target)
+    {
+        bool flg = false;
+        Vector3 vector3 = (eye.transform.position - target.position);
+        Ray ray = new Ray(eye.position, vector3);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.tag == "Player")//段差のタグ
+            {
+                flg = true;
+            }
+        }
+        return flg;
     }
 }
