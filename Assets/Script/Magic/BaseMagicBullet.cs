@@ -55,7 +55,6 @@ public class BaseMagicBullet : MonoBehaviour
             .TakeUntilDestroy(gameObject)
             .Where(_ => isShot == true)
             .Subscribe(_ => Destroy(gameObject));
-
     }
 
     /// <summary>
@@ -68,8 +67,8 @@ public class BaseMagicBullet : MonoBehaviour
             .Where(_ => isShot == true)
             .Subscribe(_ =>
             {
-                transform.LookAt(pos);
-                transform.position += transform.forward * speed;
+                //transform.LookAt(pos);
+                transform.position += pos.transform.forward * speed;
             });
     }
 

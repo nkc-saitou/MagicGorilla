@@ -20,6 +20,9 @@ public class ArmMove : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+#if UNITY_EDITOR
+
+#else
         Quaternion fvrRotation = fvr.centeredRotation;
 
         transform.rotation = fvrRotation;
@@ -33,6 +36,6 @@ public class ArmMove : MonoBehaviour {
         {
             touched = false;
         }
-
+#endif
     }
 }

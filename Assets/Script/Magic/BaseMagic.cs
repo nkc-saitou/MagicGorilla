@@ -49,7 +49,6 @@ abstract public class BaseMagic : MonoBehaviour, IAction
 
     public abstract void DoUpdate();
 
-
     //---------------------------------------------
     // 関数
     //---------------------------------------------
