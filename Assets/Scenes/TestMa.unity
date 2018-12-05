@@ -788,7 +788,7 @@ MonoBehaviour:
   spawnPosA: {x: 30, y: 0, z: -3}
   spawnPosB: {x: 43, y: 0, z: -3}
   monster:
-  - {fileID: 1342194395623272, guid: 687c87da19a31c344967400ad6090aad, type: 2}
+  - {fileID: 1503571866058162, guid: d03f5939ce80d0d4f8f96e5c199314d1, type: 2}
   bossMonster: {fileID: 1999468570618324, guid: a214f8aefae10c947a4226dd08141344,
     type: 2}
 --- !u!4 &1103178536
