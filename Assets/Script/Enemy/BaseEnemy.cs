@@ -47,7 +47,6 @@ public abstract class BaseEnemy : MonoBehaviour {
         enemyRay = GetComponent<EnemyRay>();
         agent = GetComponent<NavMeshAgent>();
 
-
         if (!PlayerPos)//プレイヤーを探す
         {
             PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;

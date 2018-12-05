@@ -6,6 +6,9 @@ using UniRx.Triggers;
 
 public class MagicIce : BaseMagic {
 
+    public GameObject magicCirclePre;
+    GameObject circle = null;
+
     public override void DoStart()
     {
         baseMagic = GetComponent<MagicIce>();
@@ -16,33 +19,34 @@ public class MagicIce : BaseMagic {
 
     }
 
-    public override void Shot(GameObject target)
+    public override void Shot(Transform target)
     {
         base.Shot(target);
 
         Debug.Log("Ice");
     }
 
-    public override void Charge(Transform pos)
+    public override void Charge(Transform pos, Transform movePos = null, bool isEffectDisplay = true)
     {
         base.Charge(pos);
 
-        PlayEffect();
+        if (circle != null)
+        {
+            this.UpdateAsObservable()
+                .Subscribe(_ => PlayEffect(pos, movePos,isEffectDisplay));
+
+            return;
+        }
+
+        Transform circleCashTransform = magicCirclePre.transform;
+
+        circle = Instantiate(magicCirclePre, pos.position, circleCashTransform.rotation);
+
     }
 
-    public override void PlayEffect()
+    public override void PlayEffect(Transform pos, Transform movePos = null, bool isEffectDisplay = true)
     {
-        base.PlayEffect();
-
-        float tempScale = effect.transform.localScale.x;
-
-        this.UpdateAsObservable()
-            .TakeUntilDestroy(this)
-            .Where(_ => effect != null)
-            .Subscribe(_ =>
-            {
-                Vector3 tempVec = new Vector3(Mathf.Sin(Time.time * 20.0f), Mathf.Sin(Time.time * 20.0f), Mathf.Sin(Time.time * 20.0f));
-                effect.transform.localScale = tempVec;
-            });
+        circle.SetActive(isEffectDisplay);
+        circle.transform.position = movePos.position;
     }
 }

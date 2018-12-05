@@ -36,6 +36,9 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
     public GameObject HitGameObject { get; private set; }
 
+    public bool IsHitRay { get; private set; }
+
+
     //------------------------------------
     // 関数
     //------------------------------------
@@ -68,7 +71,13 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
         rayOrigin = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.5f));
 
-        if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out hit, Mathf.Infinity) == false) return;
+        if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out hit, Mathf.Infinity) == false)
+        {
+            IsHitRay = false;
+            return;
+        }
+
+        IsHitRay = true;
 
         RayHitPos = hit.point;
         HitGameObject = hit.transform.gameObject;

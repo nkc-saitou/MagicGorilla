@@ -149,6 +149,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &88768041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 88768043}
+  - component: {fileID: 88768042}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &88768042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 88768041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5396ee45f6a2678458f65502391e0a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &88768043
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 88768041}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 30.313272, y: -5.967902, z: -20.47451}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &149211732
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +200,7 @@ GameObject:
   - component: {fileID: 149211735}
   - component: {fileID: 149211734}
   - component: {fileID: 149211733}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,8 +267,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 149211732}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.4, y: 11.9, z: -26.4}
-  m_LocalScale: {x: 28.27765, y: 1, z: 44.022945}
+  m_LocalPosition: {x: 37.4, y: 11.9, z: -34.47}
+  m_LocalScale: {x: 28.27765, y: 1, z: 32.216846}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -433,6 +473,7 @@ Prefab:
     - {fileID: 114747001720340024, guid: 9bbe54e93063e4647bc7c43685f45a77, type: 2}
     - {fileID: 114876350423333308, guid: 9bbe54e93063e4647bc7c43685f45a77, type: 2}
     - {fileID: 114168362848978650, guid: 9bbe54e93063e4647bc7c43685f45a77, type: 2}
+    - {fileID: 114533721375808950, guid: 9bbe54e93063e4647bc7c43685f45a77, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 9bbe54e93063e4647bc7c43685f45a77, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &481020788
@@ -683,6 +724,8 @@ MonoBehaviour:
   magicEffect: {fileID: 1261907038905618, guid: 137db1c4180635d498a2d24b2b91d9eb,
     type: 2}
   MaxPow: 5
+  magicCirclePre: {fileID: 1872411207511352, guid: b13cff0dbe67e3043a49e0b96df22395,
+    type: 2}
 --- !u!114 &619326684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,7 +831,7 @@ MonoBehaviour:
   spawnPosA: {x: 30, y: 0, z: -3}
   spawnPosB: {x: 43, y: 0, z: -3}
   monster:
-  - {fileID: 1342194395623272, guid: 687c87da19a31c344967400ad6090aad, type: 2}
+  - {fileID: 1503571866058162, guid: d03f5939ce80d0d4f8f96e5c199314d1, type: 2}
   bossMonster: {fileID: 1999468570618324, guid: a214f8aefae10c947a4226dd08141344,
     type: 2}
 --- !u!4 &1103178536

@@ -81,7 +81,14 @@ public class Shot : MonoBehaviour {
     void MagicSet(MagicType type)
     {
         if (memoryState != MagicType._none) return;
-        actionLis[(int)type].Charge(pos);
+
+        this.UpdateAsObservable()
+            .Subscribe(_ => {
+                Transform movePos = pos;
+                movePos.position = PlayerInput.Instance.RayHitPos;
+                actionLis[(int)type].Charge(pos,movePos,PlayerInput.Instance.IsHitRay);
+            });
+
         memoryState = type;
     }
 
@@ -92,7 +99,7 @@ public class Shot : MonoBehaviour {
     void MagicShot(MagicType type)
     {
         if (memoryState == MagicType._none) return;
-        actionLis[(int)type].Shot(pos.gameObject);
+        actionLis[(int)type].Shot(pos);
 
         memoryState = MagicType._none;
     }

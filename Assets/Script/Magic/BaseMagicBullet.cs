@@ -28,7 +28,6 @@ public class BaseMagicBullet : MonoBehaviour
 
     protected virtual void Start()
     {
-
         MagicCollision();
 
         BulletMove();

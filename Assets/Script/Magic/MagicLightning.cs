@@ -17,21 +17,21 @@ public class MagicLightning : BaseMagic
 
     }
 
-    public override void Shot(GameObject target)
+    public override void Shot(Transform target)
     {
         base.Shot(target);
     }
 
-    public override void Charge(Transform pos)
+    public override void Charge(Transform pos, Transform movePos = null, bool isEffectDisplay = true)
     {
         base.Charge(pos);
 
-        PlayEffect();
+        PlayEffect(pos);
     }
 
-    public override void PlayEffect()
+    public override void PlayEffect(Transform pos, Transform movePos = null, bool isEffectDisplay = true)
     {
-        base.PlayEffect();
+        base.PlayEffect(pos);
 
         float tempScale = effect.transform.localScale.x;
 

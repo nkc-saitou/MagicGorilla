@@ -66,7 +66,7 @@ abstract public class BaseMagic : MonoBehaviour, IAction
     /// 魔法を生成
     /// </summary>
     /// <param name="pos">魔法を生成する位置</param>
-    public virtual void Charge(Transform pos)
+    public virtual void Charge(Transform pos, Transform movePos = null, bool isEffectDisplay = true)
     {
         Pow = Mathf.Min(Pow += Time.deltaTime, MaxPow);
 
@@ -76,16 +76,19 @@ abstract public class BaseMagic : MonoBehaviour, IAction
     /// <summary>
     /// 魔法を発射
     /// </summary>
-    /// <param name="target"></param>
-    public virtual void Shot(GameObject target)
+    /// <param name="pos"></param>
+    public virtual void Shot(Transform pos)
     {
-        if (target == null) return;
-        shotSubject.OnNext(target.transform);
+        if (pos == null) return;
+        shotSubject.OnNext(pos);
     }
 
-    public virtual void PlayEffect()
+    public virtual void PlayEffect(Transform pos, Transform movePos = null, bool isEffectDisplay = true)
     {
-        effect = Instantiate(magicEffect, effectPos.position, magicEffect.transform.rotation);
+        if (effect != null) return;
+
+        Debug.Log(pos);
+        effect = Instantiate(magicEffect, pos.position, magicEffect.transform.rotation);
         BaseMagicBullet magic = effect.GetComponent<BaseMagicBullet>();
         magic._BaseMagic = baseMagic;
     }

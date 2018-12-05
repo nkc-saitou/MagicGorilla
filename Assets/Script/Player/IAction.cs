@@ -7,10 +7,10 @@ public interface IAction
     /// <summary>
     /// チャージ
     /// </summary>
-    void Charge(Transform pos);
+    void Charge(Transform pos,Transform movePos = null,bool isEffectDisplay = true);
 
     /// <summary>
     /// 打つ,投げる
     /// </summary>
-    void Shot(GameObject target);
+    void Shot(Transform pos);
 }
