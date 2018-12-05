@@ -11,6 +11,7 @@ public class WalkEnemy : BaseEnemy
     private int currentPositionIndex=0;                     //目標値用
     private const float speed=2.0f;                         //移動速度
     private const float jumpPower = 5f;                     //飛ぶ力
+    private const float ShiftRange=0.5f;
     private Vector3 quaternion;
     float speedrot = 120f;
 
@@ -43,6 +44,7 @@ public class WalkEnemy : BaseEnemy
 
         stateMachineObservables.
             OnStateEnterObservable.
+            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Attack")).
             Subscribe(_ =>
                 {
@@ -52,6 +54,7 @@ public class WalkEnemy : BaseEnemy
 
         stateMachineObservables.
             OnStateEnterObservable.
+            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Run")&& Vector3.Distance(PlayerPos.position, transform.position) >= 1.8f).
             Subscribe(_ => {
                 PathSet();
@@ -59,11 +62,13 @@ public class WalkEnemy : BaseEnemy
 
         stateMachineObservables.
             OnStateUpdateObservable.
+            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Set")&&enemyRay.OnGround).
             Subscribe(_ =>Rotate());
 
         stateMachineObservables.
             OnStateUpdateObservable.
+            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Attack")).
             Subscribe(_ => AttackRotate());
 
@@ -98,8 +103,20 @@ public class WalkEnemy : BaseEnemy
         path = null;
         currentPositionIndex = 0;
         path = agent.path;
-        agent.CalculatePath(PlayerPos.position, path);
+        Vector3 shift = Shift;
+        agent.CalculatePath(PlayerPos.position+shift, path);
         agent.enabled = false;
+    }
+
+    Vector3 Shift//目標地点をずらす
+    {
+        get
+        {
+            Vector3 vector3=Vector3.zero;
+            vector3.x = UnityEngine.Random.Range(ShiftRange, -ShiftRange);
+            vector3.z = UnityEngine.Random.Range(ShiftRange, -ShiftRange);
+            return vector3;
+        }
     }
 
     /// <summary>
