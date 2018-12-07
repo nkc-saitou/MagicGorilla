@@ -27,7 +27,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected Transform PlayerPos;
 
 
-    public float EnemyHP
+    public virtual float EnemyHP
     {
         get { return enemyHp; }
         set {
