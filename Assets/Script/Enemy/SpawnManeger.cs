@@ -21,6 +21,8 @@ public class SpawnManeger : MonoBehaviour {
     private Vector3 spawnPosA;                                      //AからBまでの範囲でわく
     [SerializeField]
     private Vector3 spawnPosB;
+    [SerializeField, Tooltip("ボスの沸き位置")]
+    private Vector3 spawnPosOfBoss;
 
     [Space,SerializeField]
     private GameObject[] monster; //敵
@@ -92,8 +94,7 @@ public class SpawnManeger : MonoBehaviour {
     /// </summary>
     void BossSpawn()
     {
-        Vector3 spawnPos = new Vector3((spawnPosA.x + spawnPosB.x) / 2, 3, (spawnPosA.z + spawnPosB.z) / 2);
-        Instantiate(bossMonster,spawnPos,Quaternion.identity);
+        Instantiate(bossMonster,spawnPosOfBoss,Quaternion.identity);
     }
 
 

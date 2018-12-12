@@ -15,6 +15,8 @@ public class GolemAttack : BaseEnemy {
     Transform startpos;
     GolemAnimator golemAnim;
 
+
+    Vector3 targetpos;
     private const int layerMask = ~(1 << 9);
     float deg =10;
     float distance;
@@ -162,6 +164,7 @@ public class GolemAttack : BaseEnemy {
     }
     #endregion
 
+
     protected void Rotate()
     {
         var targetPosition = PlayerPos.position;//現在の目的地
@@ -172,5 +175,4 @@ public class GolemAttack : BaseEnemy {
         Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 2 * Time.deltaTime, 0f);
         transform.rotation = Quaternion.LookRotation(newdir);
     }
-
 }

@@ -22,6 +22,8 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     protected float enemyHp=1;
     protected int score=10;
+    [SerializeField,Tooltip("死ぬまでのロスタイム")]
+    protected float deadLossTime = 3;
 
     //プレイヤーの座標
     protected Transform PlayerPos;
@@ -52,6 +54,7 @@ public abstract class BaseEnemy : MonoBehaviour {
         {
             PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         }
+        StartRotate();
         OnStart();
     }
 
@@ -61,12 +64,22 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected virtual void Dead()
     {
         GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
-        Destroy(gameObject,0.001f);
+        anim.enabled = false;
+        Destroy(gameObject,deadLossTime);
     }
 
     /// <summary>
     /// Startと同義
     /// </summary>
     protected virtual void OnStart(){}
+
+
+    void StartRotate()
+    {
+        Vector3 direction = (PlayerPos.position - transform.position).normalized;
+        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
+        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
+        transform.rotation = Quaternion.LookRotation(zAxis, Vector3.up);
+    }
 
 }
