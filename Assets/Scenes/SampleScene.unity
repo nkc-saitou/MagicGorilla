@@ -215,8 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97715b63229f984abc7d26c3bc7d5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 473510323}
-  ScoreText: {fileID: 110810091}
 --- !u!4 &142810746
 Transform:
   m_ObjectHideFlags: 0
@@ -645,6 +643,7 @@ GameObject:
   - component: {fileID: 881376630}
   - component: {fileID: 881376629}
   - component: {fileID: 881376628}
+  - component: {fileID: 881376632}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -730,6 +729,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &881376632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 881376627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b34b76aa517c854b8e3575887a70d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerText: {fileID: 473510323}
+  scoreText: {fileID: 110810091}
 --- !u!1 &1103178534
 GameObject:
   m_ObjectHideFlags: 0

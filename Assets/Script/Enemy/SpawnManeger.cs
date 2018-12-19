@@ -127,15 +127,12 @@ public class SpawnManeger : MonoBehaviour {
         int monNum = Random.Range(0, monster.Length);   //モンスターの選択
         int spawnNum = RandomSpawnNumber();             //沸かせる数
         Vector3[] spawnPos=new Vector3[spawnNum];       //沸かせる位置
-        Debug.Log("a");
         for (int i = 0; i < spawnNum; i++)
         {
             for(int j = 0; j < 15; j++)
             {
                 if (GetRayHitPos(out spawnPos[i]))
                 {
-                    Debug.Log("aaa");
-
                     bool flg = false;
                     for(int k = 0; k < i; k++)
                     {

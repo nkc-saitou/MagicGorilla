@@ -17,10 +17,13 @@ public class GameManager : MonoBehaviour {
 
     string sceneName = "ResultScene";
 
+    ScoreManager sManager;
+
 
     void Start()
     {
         clearText.enabled = false;
+        sManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
 
         gameObject.UpdateAsObservable().
             Where(_ => GameObject.FindGameObjectWithTag("Boss")).
@@ -53,6 +56,7 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Clear");
         clearText.enabled = true;
+        sManager.TimeFlg = false;
         Observable.Timer(System.TimeSpan.FromSeconds(3)).
             Subscribe(_ => SceneManager.LoadScene(sceneName));
 
@@ -63,6 +67,7 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     void GameOver()
     {
+        sManager.TimeFlg = false;
 
     }
 }

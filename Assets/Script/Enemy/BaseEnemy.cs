@@ -27,6 +27,7 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     //プレイヤーの座標
     protected Transform PlayerPos;
+    protected bool dead;
 
 
     public virtual float EnemyHP
@@ -34,7 +35,7 @@ public abstract class BaseEnemy : MonoBehaviour {
         get { return enemyHp; }
         set {
             enemyHp = value >= 0 ? value : 0;   //HPがマイナスにならないように
-            if (enemyHp == 0)
+            if (enemyHp == 0&&!dead)
             {
                 Dead();
             }
@@ -63,6 +64,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     /// </summary>
     protected virtual void Dead()
     {
+        dead = true;
         GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
         anim.enabled = false;
         Destroy(gameObject,deadLossTime);

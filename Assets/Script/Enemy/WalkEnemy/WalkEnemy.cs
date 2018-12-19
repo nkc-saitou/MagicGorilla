@@ -61,6 +61,7 @@ public class WalkEnemy : BaseEnemy
 
         stateMachineObservables.
             OnStateEnterObservable.
+            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Run")&& Vector3.Distance(PlayerPos.position, transform.position) >= 1.8f).
             Subscribe(_ => {
                 PathSet();
@@ -114,7 +115,6 @@ public class WalkEnemy : BaseEnemy
         agent.CalculatePath(PlayerPos.position, path);
         agent.enabled = false;
         targetPosition = path.corners[currentPositionIndex];
-
     }
 
 

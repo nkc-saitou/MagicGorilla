@@ -7,11 +7,8 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
 
-    public Text timerText;
-    public Text ScoreText;
-
     GameManager gameManager;
-    float time;
+    public bool TimeFlg { get; set; }
 
     public int Score { get; set; }
 
@@ -46,26 +43,17 @@ public class ScoreManager : MonoBehaviour {
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
 
-        
-
-        this.ObserveEveryValueChanged(_=>Score).
-            Where(_=>ScoreText).
-            Subscribe(_ =>ScoreText.text="Score : "+_.ToString());
-
-        this.ObserveEveryValueChanged(_=>Timer).
-            Where(_=>timerText).
-            Subscribe(_ => timerText.text ="Time : "+ _.ToString("f2"));
-
         this.UpdateAsObservable().
             TakeUntilDestroy(this).
-            Where(_ => gameManager&&!gameManager.IsGameClear).
+            Where(_ => TimeFlg).
             Subscribe(_ => Timer += Time.deltaTime);
     }
 
-    public void Reset()
+    public void ReStartValue()
     {
         Score = 0;
         Timer = 0;
+        TimeFlg = true;
     }
 
 

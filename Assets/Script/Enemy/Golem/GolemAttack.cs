@@ -30,7 +30,7 @@ public class GolemAttack : BaseEnemy {
         {
             enemyHp = value >= 0 ? value : 0;   //HPがマイナスにならないように
             golemAnim.Damage();
-            if (enemyHp == 0)
+            if (enemyHp == 0&&!dead)
             {
                 Dead();
             }
