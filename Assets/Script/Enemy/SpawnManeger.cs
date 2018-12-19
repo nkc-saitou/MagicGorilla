@@ -8,22 +8,16 @@ public class SpawnManeger : MonoBehaviour {
     private int maxSpawn;
     [SerializeField, Tooltip("同時に沸く最大数")]
     private int maxSameTimeSpawn;
-    public int NowSpawn { get; set; }                               //今沸いている数
-    private int spawnedMonster;                                     //沸いた合計数
-    public int DestroyedMonster { get; set; }                       //倒した数
     [SerializeField, Tooltip("ボスが沸くまでの敵の数")]
     private int numberOfSpawnBoss;
-    public int BossLimit { get; set; }                              //ボスの沸く数
     [SerializeField, Tooltip("沸き間隔(秒)")]
     private float waitTime;
-
     [SerializeField,Header("沸く範囲")]
     private Vector3 spawnPosA;                                      //AからBまでの範囲でわく
     [SerializeField]
     private Vector3 spawnPosB;
     [SerializeField, Tooltip("ボスの沸き位置")]
     private Vector3 spawnPosOfBoss;
-
     [Space,SerializeField]
     private GameObject[] monster; //敵
     [SerializeField]
@@ -31,11 +25,18 @@ public class SpawnManeger : MonoBehaviour {
 
 
 
-    private const float rayFall = 30;          //rayを落とす高さ
-    private bool startSpawn = false;           //沸き開始
-    private bool endSpawn;                     //沸き終了
+    const float rayFall = 30;                                       //rayを落とす高さ
+    int spawnedMonster;                                             //沸いた合計数
 
-    public bool BossSpawned { get; set; }      //ボスが沸いているか否か
+    bool startSpawn = false;                                        //沸き開始
+    bool endSpawn;                                                  //沸き終了
+
+
+    public int NowSpawn { get; set; }                               //今沸いている数
+    public int DestroyedMonster { get; set; }                       //倒した数
+    public bool BossSpawned { get; set; }                           //ボスが沸いているか否か
+    public int BossLimit { get; set; }                              //ボスの沸く数
+
 
 
     private List<BaseEnemy> enemies = new List<BaseEnemy>();        //enemy監視用
@@ -125,26 +126,31 @@ public class SpawnManeger : MonoBehaviour {
     {
         int monNum = Random.Range(0, monster.Length);   //モンスターの選択
         int spawnNum = RandomSpawnNumber();             //沸かせる数
-        Vector3 spawnPos;                               //沸かせる位置
+        Vector3[] spawnPos=new Vector3[spawnNum];       //沸かせる位置
+        Debug.Log("a");
         for (int i = 0; i < spawnNum; i++)
         {
-            int loop = 0;                               //ループ処理用
-            while (true)//最大15回実行し駄目だったら終了
+            for(int j = 0; j < 15; j++)
             {
-                if (GetRayHitPos(out spawnPos))
+                if (GetRayHitPos(out spawnPos[i]))
                 {
-                    GameObject monsterObj = (GameObject)Instantiate(monster[monNum], spawnPos, Quaternion.identity); //沸かせる
-                    enemies.Add(monsterObj.GetComponent<BaseEnemy>());
-                    NowSpawn++;         //生存している敵の数にプラス
-                    spawnedMonster++;   //沸かせた数にプラス
-                    break;
-                }
-                else
-                {
-                    loop++;
-                    if (loop > 15)
+                    Debug.Log("aaa");
+
+                    bool flg = false;
+                    for(int k = 0; k < i; k++)
                     {
-                        Debug.Log("none");
+                        if (Vector3.Distance(spawnPos[k], spawnPos[i]) < 1)
+                        {
+                            flg = true;
+                            break;
+                        }
+                    }
+                    if (!flg)
+                    {
+                        GameObject monsterObj = (GameObject)Instantiate(monster[monNum], spawnPos[i], Quaternion.identity); //沸かせる
+                        enemies.Add(monsterObj.GetComponent<BaseEnemy>());
+                        NowSpawn++;         //生存している敵の数にプラス
+                        spawnedMonster++;   //沸かせた数にプラス
                         break;
                     }
                 }
@@ -179,9 +185,11 @@ public class SpawnManeger : MonoBehaviour {
     {
         float posX = Random.Range(spawnPosA.x, spawnPosB.x);//X座標範囲ランダム
         float posZ = Random.Range(spawnPosA.z, spawnPosB.z);//Z座標範囲ランダム
+        int layerMask = ~(1 << 9);//レイヤーマスク
+
         Ray ray = new Ray(new Vector3(posX, rayFall, posZ), new Vector3(posX, -10, posZ) - new Vector3(posX,rayFall,posZ));
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit))
+        if(Physics.Raycast(ray, out hit,100,layerMask))
         {
             if (hit.collider.tag == "Untagged")
             {

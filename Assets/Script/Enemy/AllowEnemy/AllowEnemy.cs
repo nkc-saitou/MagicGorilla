@@ -98,7 +98,6 @@ public class AllowEnemy : BaseEnemy {
             if ((currentPositionIndex + 1 == path.corners.Length && Vector3.Distance(targetPosition, transform.position) < 1.5f) ||
                  jumpSet)
             {
-                Debug.Log("A");
                 return;
             }
 

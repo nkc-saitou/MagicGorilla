@@ -29,7 +29,7 @@ public class WalkEnemyAnimator : MonoBehaviour {
     {
         if (anim)
         {
-            if (Vector3.Distance(playerPos.position, transform.position) <= 2.0f)
+            if (Vector3.Distance(playerPos.position, transform.position) <= 1.5f)
             {
                 anim.SetBool("near", true);
             }
