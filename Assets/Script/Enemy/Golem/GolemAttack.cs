@@ -39,7 +39,7 @@ public class GolemAttack : BaseEnemy {
 
     protected override void OnStart()
     {
-        enemyHp = 30;
+        enemyHp = 15;
         golemAnim = GetComponent<GolemAnimator>();
         var a = transform.position;
         var b = PlayerPos.position;
@@ -100,7 +100,7 @@ public class GolemAttack : BaseEnemy {
         for (int i = 0; i < 4; ++i)
         {
             yield return new WaitForSeconds(0.31f);
-            if (!shoot) yield break;
+            if (!shoot||enemyHp<=0) yield break;
             yield return null;
             RockBlast(arm,i);
         }

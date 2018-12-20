@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(EnemyRay))]
 public abstract class BaseEnemy : MonoBehaviour {
 

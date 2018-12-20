@@ -15,7 +15,11 @@ public class RockShoot : MonoBehaviour {
 
         this.FixedUpdateAsObservable().
             TakeUntilDestroy(this).
-            Subscribe(_ => setLocalGravity());
+            Subscribe(_ =>
+            {
+                setLocalGravity();
+                transform.Rotate(new Vector3(0, 0, 30) * Time.deltaTime, Space.World); 
+            });
 
         Destroy(gameObject, 3);
 

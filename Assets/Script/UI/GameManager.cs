@@ -13,17 +13,21 @@ public class GameManager : MonoBehaviour {
     public bool IsGameClear;
     public bool IsGameOver;
 
-    public Text clearText;
+    public Text text;
 
     string sceneName = "ResultScene";
 
     ScoreManager sManager;
-
+    FadeController fade;
 
     void Start()
     {
-        clearText.enabled = false;
         sManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+        fade = GameObject.Find("Canvas").GetComponent<FadeController>();
+        fade.IsFadeOut = true;
+
+        StartCoroutine(StartText());
+
 
         gameObject.UpdateAsObservable().
             Where(_ => GameObject.FindGameObjectWithTag("Boss")).
@@ -49,25 +53,48 @@ public class GameManager : MonoBehaviour {
             Subscribe(_ => GameOver());
     }
 
+    IEnumerator StartText()
+    {
+        yield return new WaitForSeconds(1.5f);
+        text.text = "Ready...";
+        yield return new WaitForSeconds(1f);
+        text.text = "Start!";
+        yield return new WaitForSeconds(1f);
+        IsStart = true;
+        sManager.TimeFlg = true;
+        text.enabled = false;
+    }
+
     /// <summary>
     /// クリア処理
     /// </summary>
     void GameClear()
     {
         Debug.Log("Clear");
-        clearText.enabled = true;
+        text.enabled = true;
+        text.text = "クリア";
         sManager.TimeFlg = false;
         Observable.Timer(System.TimeSpan.FromSeconds(3)).
-            Subscribe(_ => SceneManager.LoadScene(sceneName));
-
+            Subscribe(_ => SceneChange());
     }
+
 
     /// <summary>
     /// ゲームオーヴァー処理
     /// </summary>
     void GameOver()
     {
+        text.enabled = true;
+        text.text = "失敗";
         sManager.TimeFlg = false;
+        Observable.Timer(System.TimeSpan.FromSeconds(3)).
+            Subscribe(_ => SceneChange());
+    }
 
+    void SceneChange()
+    {
+        fade.IsFadeIn = true;
+        Observable.Timer(System.TimeSpan.FromSeconds(1)).
+            Subscribe(_ => SceneManager.LoadScene(sceneName));
     }
 }

@@ -42,7 +42,6 @@ public class ScoreManager : MonoBehaviour {
         {
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
-
         this.UpdateAsObservable().
             TakeUntilDestroy(this).
             Where(_ => TimeFlg).
@@ -53,7 +52,6 @@ public class ScoreManager : MonoBehaviour {
     {
         Score = 0;
         Timer = 0;
-        TimeFlg = true;
     }
 
 

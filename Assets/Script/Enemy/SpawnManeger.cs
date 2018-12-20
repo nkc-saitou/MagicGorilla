@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UniRx.Triggers;
 
 public class SpawnManeger : MonoBehaviour {
     [SerializeField, Header("沸き数"),Tooltip("同時に存在可能な数")]
@@ -28,46 +29,47 @@ public class SpawnManeger : MonoBehaviour {
     const float rayFall = 30;                                       //rayを落とす高さ
     int spawnedMonster;                                             //沸いた合計数
 
-    bool startSpawn = false;                                        //沸き開始
     bool endSpawn;                                                  //沸き終了
+    List<BaseEnemy> enemies = new List<BaseEnemy>();                //enemy監視用
+    GameManager gManager;
 
 
     public int NowSpawn { get; set; }                               //今沸いている数
     public int DestroyedMonster { get; set; }                       //倒した数
-    public bool BossSpawned { get; set; }                           //ボスが沸いているか否か
     public int BossLimit { get; set; }                              //ボスの沸く数
 
 
 
-    private List<BaseEnemy> enemies = new List<BaseEnemy>();        //enemy監視用
 
 
     void Start () {
-        startSpawn = true;
+        gManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        this.ObserveEveryValueChanged(_ => gManager.IsStart).
+            Where(_ => gManager.IsStart).
+            Take(1).
+            Subscribe(_ => StartCoroutine(LoopSpawner()));
+
+        this.ObserveEveryValueChanged(_ => spawnedMonster).
+            Where(_ => _ >= numberOfSpawnBoss).
+            Take(1).
+            Subscribe(_ => endSpawn = true);
+
+        this.ObserveEveryValueChanged(_ => DestroyedMonster).
+            Where(_ => _ == numberOfSpawnBoss).
+            Take(1).
+            Subscribe(_ =>
+            {
+                BossSpawn();
+            });
+
+        this.UpdateAsObservable().
+            TakeUntilDestroy(this).
+            Where(_ => !gManager.IsGameClear && !gManager.IsGameOver).
+            Subscribe(_=>EnemyMonitoring());
 	}
 	
-	void Update () {
-        //開始処理
-        if (startSpawn)
-        {
-            startSpawn = false;
-            StartCoroutine(LoopSpawner());
-        }
-        //一定数沸いたら沸きを止める
-        if (spawnedMonster >= numberOfSpawnBoss&&!endSpawn)
-        {
-            endSpawn = true;
-            Debug.Log("endSpawn");
-        }
-        //倒した数が必要数に達したらボスを沸かせる
-        if (DestroyedMonster == numberOfSpawnBoss&&!BossSpawned)
-        {
-            Debug.Log("BOSS");
-            BossSpawned = true;
-            BossSpawn();
-        }
-        EnemyMonitoring();
-    }
+
 
 
     IEnumerator LoopSpawner()

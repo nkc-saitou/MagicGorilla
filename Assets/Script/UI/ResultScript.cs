@@ -14,22 +14,28 @@ public class ResultScript : MonoBehaviour {
     Text timeText;
 
     ScoreManager scoreManager;
-
+    FadeController fade;
 	
 	void Start () {
         scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
-        scoreText.text = "スコア : " + scoreManager.Score;
-        timeText.text = "タイム : " + scoreManager.Timer;
+        fade = GameObject.Find("Canvas").GetComponent<FadeController>();
+        fade.IsFadeOut = true;
+        scoreText.text = "スコア : " + scoreManager.Score.ToString();
+        timeText.text = "タイム : " + scoreManager.Timer.ToString("f2");
 
         gameObject.UpdateAsObservable().
             TakeUntilDestroy(this).
+            Delay(System.TimeSpan.FromSeconds(1f)).
             Where(_ => Input.anyKeyDown).
+            Take(1).
             Subscribe(_ => SceneChange());
     }
 	
 
     void SceneChange()
     {
-        SceneManager.LoadScene("Title");
+        fade.IsFadeIn = true;
+        Observable.Timer(System.TimeSpan.FromSeconds(1)).
+            Subscribe(_ => SceneManager.LoadScene("Title"));
     }
 }

@@ -203,7 +203,6 @@ GameObject:
   - component: {fileID: 95922560599171972}
   - component: {fileID: 54354458765945930}
   - component: {fileID: 136585097809436698}
-  - component: {fileID: 195328982460435714}
   - component: {fileID: 114286359317576192}
   - component: {fileID: 114204627825014888}
   - component: {fileID: 114513274343447506}
@@ -769,7 +768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 934436f12e09ef04184039be6f55ff41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rock: {fileID: 1772027353732196, guid: f40f6cef33226754e8d5a7f2dd82be11, type: 2}
+  deadLossTime: 3
+  rock: {fileID: 1519725356235152, guid: 5c67a9809872627439ee9751eccc971d, type: 2}
   armTipL: {fileID: 4707840471468936}
   armTipR: {fileID: 4552722829252660}
 --- !u!114 &114513274343447506
@@ -861,24 +861,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000094242394, y: 0.012756944, z: -0.0003640959}
     m_Extent: {x: 0.07161378, y: 0.04620295, z: 0.022460721}
   m_DirtyAABB: 0
---- !u!195 &195328982460435714
-NavMeshAgent:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1484995543633418}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
