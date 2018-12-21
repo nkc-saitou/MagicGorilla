@@ -69,16 +69,15 @@ public class GameManager : MonoBehaviour {
 
         gameObject.UpdateAsObservable().
             TakeUntilDestroy(this).
-            Delay(System.TimeSpan.FromSeconds(1f)).
-            Where(_ => Input.GetKey(KeyCode.A)).
+            Where(_ => Input.GetKeyDown(KeyCode.A)).
             Subscribe(_ => {
                 foreach (var ene in GameObject.FindGameObjectsWithTag("Enemy"))
                 {
                     ene.GetComponent<BaseEnemy>().EnemyHP -= 1;
                 }
-                foreach(var boss in GameObject.FindGameObjectsWithTag("Boss"))
+                if(GameObject.FindGameObjectWithTag("Boss"))
                 {
-                    boss.GetComponent<BaseEnemy>().EnemyHP -= 1;
+                    GameObject.FindGameObjectWithTag("Boss").GetComponent<BaseEnemy>().EnemyHP -= 1;
                 }
             });
         ///////////////////
