@@ -50,6 +50,11 @@ public class SpawnManeger : MonoBehaviour {
             Take(1).
             Subscribe(_ => StartCoroutine(LoopSpawner()));
 
+        this.ObserveEveryValueChanged(_ => gManager.IsGameClear).
+            Where(_ => _).
+            Take(1).
+            Subscribe(_ => endSpawn=true);
+
         this.ObserveEveryValueChanged(_ => spawnedMonster).
             Where(_ => _ >= numberOfSpawnBoss).
             Take(1).
@@ -80,6 +85,11 @@ public class SpawnManeger : MonoBehaviour {
             while (NowSpawn >= maxSpawn)
             {
                 yield return null;
+            }
+            Debug.Log(endSpawn);
+            if (endSpawn)
+            {
+                break;
             }
             //敵が限界まで沸いていないなら沸かす
             if (NowSpawn < maxSpawn)

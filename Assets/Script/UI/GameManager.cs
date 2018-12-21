@@ -51,6 +51,37 @@ public class GameManager : MonoBehaviour {
             Where(_ => _).
             Take(1).
             Subscribe(_ => GameOver());
+
+        //動画用///////////////
+        gameObject.UpdateAsObservable().
+            TakeUntilDestroy(this).
+            Delay(System.TimeSpan.FromSeconds(1f)).
+            Where(_ => Input.GetKey(KeyCode.R)).
+            Take(1).
+            Subscribe(_ => {
+                sManager.AddScore(150);
+                IsGameClear = true;
+                foreach(var ene in GameObject.FindGameObjectsWithTag("Enemy"))
+                {
+                    ene.GetComponent<BaseEnemy>().EnemyHP -= 1;
+                }
+            });
+
+        gameObject.UpdateAsObservable().
+            TakeUntilDestroy(this).
+            Delay(System.TimeSpan.FromSeconds(1f)).
+            Where(_ => Input.GetKey(KeyCode.A)).
+            Subscribe(_ => {
+                foreach (var ene in GameObject.FindGameObjectsWithTag("Enemy"))
+                {
+                    ene.GetComponent<BaseEnemy>().EnemyHP -= 1;
+                }
+                foreach(var boss in GameObject.FindGameObjectsWithTag("Boss"))
+                {
+                    boss.GetComponent<BaseEnemy>().EnemyHP -= 1;
+                }
+            });
+        ///////////////////
     }
 
     IEnumerator StartText()

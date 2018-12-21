@@ -18,7 +18,7 @@ public class RockShoot : MonoBehaviour {
             Subscribe(_ =>
             {
                 setLocalGravity();
-                transform.Rotate(new Vector3(0, 0, 30) * Time.deltaTime, Space.World); 
+                transform.Rotate(new Vector3(0, 0, -60) * Time.deltaTime, Space.World); 
             });
 
         Destroy(gameObject, 3);
