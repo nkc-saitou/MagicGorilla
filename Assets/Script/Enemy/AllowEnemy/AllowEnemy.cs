@@ -7,7 +7,6 @@ using System;
 
 public class AllowEnemy : BaseEnemy {
 
-
     [SerializeField]
     private GameObject allow;
     [SerializeField]
@@ -22,10 +21,7 @@ public class AllowEnemy : BaseEnemy {
     private int currentPositionIndex = 0;                    //目標値用
     private bool moveFinish;                                 //移動終了
 
-
-
     private AllowEnemyAttack allowAttack;
-
 
     protected override void OnStart()
     {

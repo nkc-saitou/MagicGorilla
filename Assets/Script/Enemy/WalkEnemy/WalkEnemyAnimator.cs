@@ -9,7 +9,9 @@ public class WalkEnemyAnimator : BaseEnemy {
 
     protected override void OnStart () {
         var every = Observable.EveryUpdate();
-        every.Subscribe(_ => AnimationChanger());
+
+        every.TakeUntilDestroy(this)
+             .Subscribe(_ => AnimationChanger());
     }
 
     void AnimationChanger()

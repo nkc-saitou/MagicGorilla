@@ -51,7 +51,7 @@ public class BaseMagicBullet : MonoBehaviour
             .Subscribe(_ => Destroy(gameObject));
 
         //弾が誰にも当たらなかった場合は一定時間後に削除
-        Observable.Timer(TimeSpan.FromSeconds(3))
+        Observable.Timer(TimeSpan.FromSeconds(5))
             .TakeUntilDestroy(gameObject)
             .Where(_ => isShot == true)
             .Subscribe(_ => Destroy(gameObject));

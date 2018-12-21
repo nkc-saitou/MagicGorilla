@@ -16,30 +16,20 @@ public class MagicFire : BaseMagic {
     {
 
     }
-
-    public override void Shot(GameObject target)
-    {
-        base.Shot(target);
-    }
-
-    public override void Charge(Transform pos)
+    public override void Charge(Transform pos, bool isFollow = true)
     {
         base.Charge(pos);
 
         PlayEffect();
     }
 
+    public override void Shot(GameObject target)
+    {
+        base.Shot(target);
+    }
+
     public override void PlayEffect()
     {
         base.PlayEffect();
-
-        this.UpdateAsObservable()
-            .TakeUntilDestroy(effect)
-            .Where(_ => effect != null)
-            .Subscribe(_ =>
-            {
-                Vector3 tempVec = new Vector3(Mathf.Sin(Time.time * 20.0f), Mathf.Sin(Time.time * 20.0f), Mathf.Sin(Time.time * 20.0f));
-                effect.transform.localScale = tempVec;
-            });
     }
 }

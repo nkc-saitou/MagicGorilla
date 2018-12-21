@@ -68,7 +68,11 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
         rayOrigin = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.5f));
 
-        if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out hit, Mathf.Infinity) == false) return;
+        if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out hit, Mathf.Infinity) == false)
+        {
+            HitGameObject = null;
+            return;
+        }
 
         RayHitPos = hit.point;
         HitGameObject = hit.transform.gameObject;
@@ -123,11 +127,11 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Subscribe(_ => _InputState = InputState._accel);
 
         //腕を下に向けているとき
-        this.ObserveEveryValueChanged(playerInput => playerInput.fvr.palmOrientation)
-            .TakeUntilDestroy(this)
-            .Where(_ => fvr.horizontalOrientation == FVRConnection.HorizontalOrientation.front &&
-                        fvr.palmOrientation == FVRConnection.PalmOrientation.down)
-            .Subscribe(_ => _InputState = InputState._armFront);
+        //this.ObserveEveryValueChanged(playerInput => playerInput.fvr.palmOrientation)
+            //.TakeUntilDestroy(this)
+            //.Where(_ => fvr.horizontalOrientation == FVRConnection.HorizontalOrientation.front &&
+                        //fvr.palmOrientation == FVRConnection.PalmOrientation.down)
+            //.Subscribe(_ => _InputState = InputState._armFront);
 
         //腕を左に向けているとき
         this.ObserveEveryValueChanged(playerInput => playerInput.fvr.horizontalOrientation)

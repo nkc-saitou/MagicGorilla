@@ -34,3 +34,18 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# PopcornFX
+/Assets/Gizmos/FX.png
+/Assets/Gizmos/FX.png.meta
+
+/Assets/Plugins/x86/
+/Assets/Plugins/x86.meta
+/Assets/Plugins/x86_64/
+/Assets/Plugins/x86_64.meta
+/Assets/Plugins/PK-UnityPlugin.bundle
+/Assets/Plugins/PK-UnityPlugin.bundle.meta
+popcorn.htm
+
+/Assets/PopcornFX/
+/Assets/PopcornFX.meta
