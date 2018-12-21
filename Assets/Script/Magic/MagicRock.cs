@@ -16,6 +16,13 @@ public class MagicRock : BaseMagic {
 
     }
 
+    public override void Charge(Transform pos, bool isFollow = true)
+    {
+        base.Charge(pos);
+
+        PlayEffect();
+    }
+
     public override void Shot(GameObject target)
     {
         base.Shot(target);
@@ -23,12 +30,6 @@ public class MagicRock : BaseMagic {
         Debug.Log("Rock");
     }
 
-    public override void Charge(Transform pos)
-    {
-        base.Charge(pos);
-
-        PlayEffect();
-    }
 
     public override void PlayEffect()
     {

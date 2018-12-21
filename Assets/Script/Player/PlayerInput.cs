@@ -20,7 +20,7 @@ public enum InputState
     _accel,
 }
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 {
     //------------------------------------
     // private
@@ -32,10 +32,25 @@ public class PlayerInput : MonoBehaviour
     //------------------------------------
     public InputState _InputState { get; private set; }
 
+    public Vector3 RayHitPos { get; private set; }
+
+    public GameObject HitGameObject { get; private set; }
 
     //------------------------------------
     // 関数
     //------------------------------------
+
+    void Awake()
+    {
+        if(this != Instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         fvr = FindObjectOfType(typeof(FVRConnection)) as FVRConnection;
@@ -44,10 +59,33 @@ public class PlayerInput : MonoBehaviour
     }
 
     /// <summary>
+    /// 視点入力
+    /// </summary>
+    void IsViewPointInput()
+    {
+        Vector3 rayOrigin;
+        RaycastHit hit;
+
+        rayOrigin = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.5f));
+
+        if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out hit, Mathf.Infinity) == false)
+        {
+            HitGameObject = null;
+            return;
+        }
+
+        RayHitPos = hit.point;
+        HitGameObject = hit.transform.gameObject;
+    }
+
+    /// <summary>
     /// Inputの入力状態を監視
     /// </summary>
     void InputObserver()
     {
+        this.UpdateAsObservable()
+            .Subscribe(_ => IsViewPointInput());
+
 #if UNITY_EDITOR
 
         this.UpdateAsObservable()
@@ -89,11 +127,11 @@ public class PlayerInput : MonoBehaviour
             .Subscribe(_ => _InputState = InputState._accel);
 
         //腕を下に向けているとき
-        this.ObserveEveryValueChanged(playerInput => playerInput.fvr.palmOrientation)
-            .TakeUntilDestroy(this)
-            .Where(_ => fvr.horizontalOrientation == FVRConnection.HorizontalOrientation.front &&
-                        fvr.palmOrientation == FVRConnection.PalmOrientation.down)
-            .Subscribe(_ => _InputState = InputState._armFront);
+        //this.ObserveEveryValueChanged(playerInput => playerInput.fvr.palmOrientation)
+            //.TakeUntilDestroy(this)
+            //.Where(_ => fvr.horizontalOrientation == FVRConnection.HorizontalOrientation.front &&
+                        //fvr.palmOrientation == FVRConnection.PalmOrientation.down)
+            //.Subscribe(_ => _InputState = InputState._armFront);
 
         //腕を左に向けているとき
         this.ObserveEveryValueChanged(playerInput => playerInput.fvr.horizontalOrientation)

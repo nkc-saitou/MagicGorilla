@@ -7,7 +7,7 @@ public interface IAction
     /// <summary>
     /// チャージ
     /// </summary>
-    void Charge(Transform pos);
+    void Charge(Transform pos, bool isFollow = true);
 
     /// <summary>
     /// 打つ,投げる

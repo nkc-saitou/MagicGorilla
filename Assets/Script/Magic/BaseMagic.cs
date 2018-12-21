@@ -13,8 +13,11 @@ abstract public class BaseMagic : MonoBehaviour, IAction
 
     public GameObject magicEffect;
 
-    public float Pow { get; protected set; }
+    public GameObject attackEffect;
 
+    public GameObject magicCol;
+
+    public float Pow { get; protected set; }
 
     public float MaxPow = 5;
 
@@ -34,6 +37,8 @@ abstract public class BaseMagic : MonoBehaviour, IAction
     protected GameObject effect;
 
     protected BaseMagic baseMagic;
+
+    protected bool isAttackFollow = false;
     //---------------------------------------------
     // private
     //---------------------------------------------
@@ -48,7 +53,6 @@ abstract public class BaseMagic : MonoBehaviour, IAction
     public abstract void DoStart();
 
     public abstract void DoUpdate();
-
 
     //---------------------------------------------
     // 関数
@@ -67,11 +71,14 @@ abstract public class BaseMagic : MonoBehaviour, IAction
     /// 魔法を生成
     /// </summary>
     /// <param name="pos">魔法を生成する位置</param>
-    public virtual void Charge(Transform pos)
+    public virtual void Charge(Transform pos, bool isFollow = true)
     {
         Pow = Mathf.Min(Pow += Time.deltaTime, MaxPow);
 
+        //エフェクト生成位置を設定
         effectPos = pos;
+
+        isAttackFollow = isFollow;
     }
 
     /// <summary>
@@ -86,6 +93,7 @@ abstract public class BaseMagic : MonoBehaviour, IAction
 
     public virtual void PlayEffect()
     {
+        //エフェクト生成
         effect = Instantiate(magicEffect, effectPos.position, magicEffect.transform.rotation);
         BaseMagicBullet magic = effect.GetComponent<BaseMagicBullet>();
         magic._BaseMagic = baseMagic;

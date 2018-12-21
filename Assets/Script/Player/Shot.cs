@@ -32,13 +32,11 @@ public class Shot : MonoBehaviour {
     {
         actionLis.AddRange(MagicProvider.ActionLis);
 
-        Debug.Log(actionLis.Count);
-
         memoryState = MagicType._none;
 
         //毎フレームInputStateを監視
         this.UpdateAsObservable()
-            .Subscribe(_ => state = GetComponent<PlayerInput>()._InputState);
+            .Subscribe(_ => state = PlayerInput.Instance._InputState);
 
         //InputStateに変化があった場合、MagicShotを実行
         this.UpdateAsObservable()
@@ -94,7 +92,7 @@ public class Shot : MonoBehaviour {
     void MagicShot(MagicType type)
     {
         if (memoryState == MagicType._none) return;
-        actionLis[(int)type].Shot(Enemy);
+        actionLis[(int)type].Shot(pos.gameObject);
 
         memoryState = MagicType._none;
     }
