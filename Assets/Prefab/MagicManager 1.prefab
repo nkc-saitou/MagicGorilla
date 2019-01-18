@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1219024286626270}
+  m_IsPrefabParent: 1
+--- !u!1 &1219024286626270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4355362734915244}
+  - component: {fileID: 114773236587960088}
+  - component: {fileID: 114834899722210318}
+  - component: {fileID: 114008653122579166}
+  - component: {fileID: 114489200193391924}
+  - component: {fileID: 114496430932541488}
+  m_Layer: 0
+  m_Name: MagicManager 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4355362734915244
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219024286626270}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 42.61047, y: 9.390698, z: -13.568415}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114008653122579166
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219024286626270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72207f1b8c43de4d8b48cdcc226ee20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magicEffect: {fileID: 1261907038905618, guid: 137db1c4180635d498a2d24b2b91d9eb,
+    type: 2}
+  attackEffect: {fileID: 1094476601863952, guid: 15424a69abb2e4f4e9d7f67d650a0bf7,
+    type: 2}
+  magicCol: {fileID: 1850215745028446, guid: 88433c07ab1029744af6aecb5efc4e73, type: 2}
+  MaxPow: 5
+  magicPre: {fileID: 1765865189463520, guid: 5102a96479ad30544b5f7b2385236461, type: 2}
+--- !u!114 &114489200193391924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219024286626270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6e636bcb3457243a8e8bb5395050d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magicEffect: {fileID: 1996355500194098, guid: 155ded7a7dd292a44b241caec003f510,
+    type: 2}
+  attackEffect: {fileID: 1415004761789060, guid: 4deb761dae4b412478541336ea861f1f,
+    type: 2}
+  magicCol: {fileID: 0}
+  MaxPow: 5
+  createPos:
+  - {fileID: 0}
+  - {fileID: 0}
+  parent: {fileID: 0}
+--- !u!114 &114496430932541488
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219024286626270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3d7b8ad4b4894d438d2b4404019b368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114773236587960088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219024286626270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 623e98b76a16d58489ae9d652d571415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magicEffect: {fileID: 1137565112067168, guid: f2f77e9a1926a794fa3e0aa3367ae997,
+    type: 2}
+  attackEffect: {fileID: 1303757644503374, guid: 476e946e88a2f4b43a4337c00fcfc3c9,
+    type: 2}
+  magicCol: {fileID: 1304809083725508, guid: 881eabf4de59b7143ae27a26b9073018, type: 2}
+  MaxPow: 5
+  magicCreatePos:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &114834899722210318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219024286626270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7ed5312b6080846a006516ecd39bcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magicEffect: {fileID: 1890554822379630, guid: 3ae2e8ed5ccd1d645ba196cc1cd55f82,
+    type: 2}
+  attackEffect: {fileID: 1951599040897198, guid: 4ed6fe893db209a4fb1f469b1a533b9f,
+    type: 2}
+  magicCol: {fileID: 1113397591772028, guid: 93da4688aa9699046b51d671bb984b3e, type: 2}
+  MaxPow: 5
+  magicPre: {fileID: 1657172177357994, guid: d8c93545a58b7b64484be0abf11f9f24, type: 2}
