@@ -13,6 +13,8 @@ public class MagicLightning : BaseMagic
 
     Vector3 rayPos;
 
+    bool isCircleMove = true;
+
     public override void DoStart()
     {
         baseMagic = GetComponent<MagicLightning>();
@@ -26,12 +28,16 @@ public class MagicLightning : BaseMagic
     {
         base.Charge(pos);
 
+        isCircleMove = true;
+
         PlayEffect();
     }
 
     public override void Shot(GameObject target)
     {
         base.Shot(target);
+
+        isCircleMove = false;
 
         Vector3 createPos = new Vector3(magicCircle.transform.position.x, magicCol.transform.position.y, magicCircle.transform.position.z);
 
@@ -66,6 +72,7 @@ public class MagicLightning : BaseMagic
             .TakeUntilDestroy(magicCircle)
             .Where(_ => hitObject != null && circleCreateCol != null)
             .Where(_ => circleCreateCol.type == MagicStageType.Lightning)
+            .Where(_ => isCircleMove == true)
             .Subscribe(_ => magicCircle.transform.position = rayPos);
     }
 }

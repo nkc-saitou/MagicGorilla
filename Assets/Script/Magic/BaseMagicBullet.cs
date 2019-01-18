@@ -20,7 +20,7 @@ public class BaseMagicBullet : MonoBehaviour
 
     protected ObjectCollision collision;
 
-    protected float speed = 0.1f;
+    protected float speed = 0.5f;
 
     protected bool isShot = false;
 

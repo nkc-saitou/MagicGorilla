@@ -6,6 +6,9 @@ using UniRx.Triggers;
 
 public class MagicRock : BaseMagic {
 
+    [Header("0 : プレイヤー　, 1 : エネミー")]
+    public Transform[] magicCreatePos;
+
     public override void DoStart()
     {
         baseMagic = GetComponent<MagicRock>();
@@ -20,30 +23,22 @@ public class MagicRock : BaseMagic {
     {
         base.Charge(pos);
 
-        PlayEffect();
+        //PlayEffect();
     }
 
     public override void Shot(GameObject target)
     {
         base.Shot(target);
 
-        Debug.Log("Rock");
-    }
+        GameObject attackMagic = Instantiate(attackEffect, magicCreatePos[0].position, attackEffect.transform.rotation);
+        GameObject attackCol = Instantiate(magicCol, magicCreatePos[0].position, magicCol.transform.rotation);
 
+        Destroy(attackMagic, 5.0f);
+        Destroy(attackCol, 2.5f);
+    }
 
     public override void PlayEffect()
     {
-        base.PlayEffect();
 
-        float tempScale = effect.transform.localScale.x;
-
-        this.UpdateAsObservable()
-            .TakeUntilDestroy(this)
-            .Where(_ => effect != null)
-            .Subscribe(_ =>
-            {
-                Vector3 tempVec = new Vector3(Mathf.Sin(Time.time * 20.0f), Mathf.Sin(Time.time * 20.0f), Mathf.Sin(Time.time * 20.0f));
-                effect.transform.localScale = tempVec;
-            });
     }
 }

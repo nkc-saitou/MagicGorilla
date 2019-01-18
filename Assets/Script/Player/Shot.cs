@@ -32,6 +32,8 @@ public class Shot : MonoBehaviour {
     {
         actionLis.AddRange(MagicProvider.ActionLis);
 
+
+
         memoryState = MagicType._none;
 
         //毎フレームInputStateを監視
@@ -67,7 +69,7 @@ public class Shot : MonoBehaviour {
             case InputState._armLeft:  tempType = MagicType._ice;       break;
             case InputState._armUp:    tempType = MagicType._lightning; break;
             case InputState._armDown:  tempType = MagicType._rock;      break;
-            case InputState._armFront: tempType = MagicType._sword;     break;
+            //case InputState._armFront: tempType = MagicType._sword;     break;
         }
 
         if (tempType == MagicType._none) return;

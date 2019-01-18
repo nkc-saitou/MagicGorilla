@@ -93,10 +93,10 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Where(_ => Input.GetKeyDown(KeyCode.A))
             .Subscribe(_ => _InputState = InputState._armLeft);
 
-        this.UpdateAsObservable()
-            .TakeUntilDestroy(this)
-            .Where(_ => Input.GetKeyDown(KeyCode.S))
-            .Subscribe(_ => _InputState = InputState._armFront);
+        //this.UpdateAsObservable()
+        //    .TakeUntilDestroy(this)
+        //    .Where(_ => Input.GetKeyDown(KeyCode.S))
+        //    .Subscribe(_ => _InputState = InputState._armFront);
 
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
@@ -105,17 +105,17 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
         this.UpdateAsObservable()
              .TakeUntilDestroy(this)
-            .Where(_ => Input.GetKeyDown(KeyCode.F))
+            .Where(_ => Input.GetKeyDown(KeyCode.S))
             .Subscribe(_ => _InputState = InputState._armDown);
 
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
-            .Where(_ => Input.GetKeyDown(KeyCode.G))
+            .Where(_ => Input.GetKeyDown(KeyCode.W))
             .Subscribe(_ => _InputState = InputState._armUp);
 
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
-            .Where(_ => Input.GetKeyDown(KeyCode.H))
+            .Where(_ => Input.GetKeyDown(KeyCode.F))
             .Subscribe(_ => _InputState = InputState._accel);
 
 #else 

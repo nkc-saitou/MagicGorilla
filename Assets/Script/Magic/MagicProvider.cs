@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public enum MagicType
 {
-    _fire,
     _ice,
-    _lightning,
+    _fire,
     _rock,
-    _sword,
+    _lightning,
+    //_sword,
     _none
 }
 
@@ -18,12 +19,15 @@ public class MagicProvider : MonoBehaviour {
 
     public static List<IAction> ActionLis
     {
-        get { return _actionLis; }
+        get; private set;
     }
 
     void Awake()
     {
+        ActionLis = new List<IAction>();
+
         _actionLis.AddRange(FindObjectInterface<IAction>());
+        ActionLis.AddRange(_actionLis.OrderBy(x => x.ToString().Length));
     }
 
     void Start ()
