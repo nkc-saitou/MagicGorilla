@@ -753,6 +753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadLossTime: 3
+  ragdoll: {fileID: 1102166090740326, guid: 6724d4635c36f174ba3ff0d9e3a39420, type: 2}
   allow: {fileID: 1962734079634080, guid: ee5f2cd1aec66b64bad4c600fea7d534, type: 2}
   shotPos: {fileID: 1943901014257860}
   eye: {fileID: 4781181270003830}

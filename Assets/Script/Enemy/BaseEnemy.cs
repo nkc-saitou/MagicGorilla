@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UniRx;
+using UniRx.Triggers;
+
 
 [RequireComponent(typeof(EnemyRay))]
 public abstract class BaseEnemy : MonoBehaviour {
@@ -28,6 +31,8 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected Transform PlayerPos;
     protected bool dead;
 
+    [SerializeField, Tooltip("ラグドール")]
+    protected GameObject ragdoll;
 
     public virtual float EnemyHP
     {
@@ -49,6 +54,10 @@ public abstract class BaseEnemy : MonoBehaviour {
         enemyRay = GetComponent<EnemyRay>();
         agent = GetComponent<NavMeshAgent>();
 
+        this.UpdateAsObservable().
+            TakeUntilDestroy(this).
+            Where(_ => transform.position.y<-20).
+            Subscribe(_ => transform.position=new Vector3(transform.position.x,20,transform.position.z));
 
         if (!PlayerPos)//プレイヤーを探す
         {
@@ -66,7 +75,8 @@ public abstract class BaseEnemy : MonoBehaviour {
         dead = true;
         GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
         anim.enabled = false;
-        Destroy(gameObject,deadLossTime);
+        Instantiate(ragdoll, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 
     /// <summary>

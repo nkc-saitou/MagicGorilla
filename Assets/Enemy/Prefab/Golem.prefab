@@ -769,6 +769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadLossTime: 3
+  ragdoll: {fileID: 1213975928300634, guid: 60c9d32f80ac086459f7e1b2a46fbbed, type: 2}
   rock: {fileID: 1519725356235152, guid: 5c67a9809872627439ee9751eccc971d, type: 2}
   armTipL: {fileID: 4707840471468936}
   armTipR: {fileID: 4552722829252660}
