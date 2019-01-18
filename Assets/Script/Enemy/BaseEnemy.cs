@@ -68,7 +68,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     }
 
     /// <summary>
-    /// 死亡処理（仮）
+    /// 死亡処理
     /// </summary>
     protected virtual void Dead()
     {

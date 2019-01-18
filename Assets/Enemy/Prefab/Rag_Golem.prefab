@@ -135,6 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4932726051341018}
   - component: {fileID: 114992703005003152}
+  - component: {fileID: 95777273799392838}
   m_Layer: 0
   m_Name: Rag_Golem
   m_TagString: Untagged
@@ -929,6 +930,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.029091861, y: 0.02, z: 0.029091861}
   m_Center: {x: 0, y: 0.007, z: 0.00026975293}
+--- !u!95 &95777273799392838
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1213975928300634}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: c0acb9413ac7ac047bebc257cf30234f, type: 3}
+  m_Controller: {fileID: 9100000, guid: 0afba194186569e49b669b1ede00b9fe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114992703005003152
 MonoBehaviour:
   m_ObjectHideFlags: 1
