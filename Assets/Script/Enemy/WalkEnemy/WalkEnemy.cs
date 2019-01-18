@@ -8,11 +8,16 @@ using System;
 
 public class WalkEnemy : BaseEnemy
 {
-    private int currentPositionIndex=0;                     //目標値用
-    private const float speed=2.0f;                         //移動速度
-    private const float jumpPower = 5f;                     //飛ぶ力
-    private const float ShiftRange=0.5f;
-    private Vector3 quaternion;
+    WalkEnemyAnimator walkAnim;
+    AttackAllocation allocation;
+
+    int currentPositionIndex=0;                     //目標値用
+    const float speed=2.0f;                         //移動速度
+    const float jumpPower = 5f;                     //飛ぶ力
+    const float ShiftRange=0.5f;
+    bool jumpSet;
+    Vector3 quaternion;
+    Vector3 targetPosition;
     float speedrot = 120f;
 
 
@@ -20,18 +25,21 @@ public class WalkEnemy : BaseEnemy
     private float attackWait;
 
 
+
     /// <summary>
     /// Startと同義
     /// </summary>
     protected override void OnStart()
     {
-        StartRotate();
+        walkAnim = GetComponent<WalkEnemyAnimator>();
+        allocation = GameObject.Find("AttackAllocation").GetComponent<AttackAllocation>();
+
         PathSet();
 
 
         this.FixedUpdateAsObservable().
             TakeUntilDestroy(this).
-            Where(_ => Vector3.Distance(PlayerPos.position, transform.position) > 2.0f).
+            Where(_ => Vector3.Distance(PlayerPos.position, transform.position) > 1.5f).
             Subscribe(_ => Move());
 
 
@@ -44,12 +52,11 @@ public class WalkEnemy : BaseEnemy
 
         stateMachineObservables.
             OnStateEnterObservable.
-            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Attack")).
             Subscribe(_ =>
                 {
                     quaternion = transform.eulerAngles;
-                    quaternion.y -= 40;
+                    quaternion.y -= 40;//剣が当てる位置まで回転させる
                 });
 
         stateMachineObservables.
@@ -60,25 +67,26 @@ public class WalkEnemy : BaseEnemy
                 PathSet();
                 });
 
+        //プレイヤーをに向く
         stateMachineObservables.
             OnStateUpdateObservable.
-            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Set")&&enemyRay.OnGround).
-            Subscribe(_ =>Rotate());
+            Subscribe(_ => {
+                targetPosition = PlayerPos.position;
+                Rotate();
+                });
 
         stateMachineObservables.
             OnStateUpdateObservable.
-            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Attack")).
             Subscribe(_ => AttackRotate());
 
+        stateMachineObservables.
+            OnStateEnterObservable.
+            Where(_ => _.IsName("Base Layer.Jump")).
+            Subscribe(_ => JumpSet());
+
     }
-
-
-
-
-
-
 
     protected void Attack()
     {
@@ -87,11 +95,12 @@ public class WalkEnemy : BaseEnemy
 
     protected void AttackRotate()
     {
-        float step = speedrot * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(quaternion), step);
+        if (EnemyHP > 0)
+        {
+            float step = speedrot * Time.deltaTime;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(quaternion), step);
+        }
     }
-
-
 
     #region 移動
     /// <summary>
@@ -103,88 +112,94 @@ public class WalkEnemy : BaseEnemy
         path = null;
         currentPositionIndex = 0;
         path = agent.path;
-        Vector3 shift = Shift;
-        agent.CalculatePath(PlayerPos.position+shift, path);
+        agent.CalculatePath(PlayerPos.position, path);
         agent.enabled = false;
+        targetPosition = path.corners[currentPositionIndex];
     }
 
-    Vector3 Shift//目標地点をずらす
-    {
-        get
-        {
-            Vector3 vector3=Vector3.zero;
-            vector3.x = UnityEngine.Random.Range(ShiftRange, -ShiftRange);
-            vector3.z = UnityEngine.Random.Range(ShiftRange, -ShiftRange);
-            return vector3;
-        }
-    }
 
-    /// <summary>
-    /// パスの地点までの移動を繰り返す
-    /// </summary>
+
     protected void Move()
     {
-        var targetPosition = path.corners[currentPositionIndex];//現在の目的地
-        //終点に近いなら止まる
-        if (currentPositionIndex + 1 == path.corners.Length&& Vector3.Distance(targetPosition, transform.position) < 1.5f)
+        if (EnemyHP > 0)
         {
-            return;
+            if (jumpSet)
+            {
+                return;
+            }
+            else
+            {
+                PositionSet();
+                transform.localPosition += transform.forward * speed * Time.deltaTime;
+            }
+
+            if (enemyRay.OnGround)
+            {
+                Rotate();
+                if (enemyRay.StepDetection)
+                {
+                    walkAnim.Jump();
+                }
+            }
         }
+    }
+
+    void PositionSet()
+    {
         //目標値についたら次へ
-        if (Vector3.Distance(new Vector3(targetPosition.x,transform.position.y,targetPosition.z), transform.position) < 0.5f)
+        if (Vector3.Distance(new Vector3(targetPosition.x, transform.position.y, targetPosition.z), transform.position) < 4.5f)
         {
             //現在の数+1が長さより少ない
-            currentPositionIndex = currentPositionIndex + 1 < path.corners.Length ? currentPositionIndex + 1 : currentPositionIndex;
-        }
-        transform.localPosition += transform.forward * speed * Time.deltaTime;
-
-        if (enemyRay.OnGround)
-        {
-            Rotate();
-            if (enemyRay.StepDetection)
+            if (currentPositionIndex < path.corners.Length)
             {
-                Jump();
+                currentPositionIndex++;
+                if (currentPositionIndex < path.corners.Length)
+                    targetPosition = path.corners[currentPositionIndex];
+            }
+            else if (currentPositionIndex == path.corners.Length)
+            {
+                targetPosition = allocation.PositionCheck(gameObject);
+                if (targetPosition == Vector3.zero)
+                {
+                    targetPosition = PlayerPos.position;
+                }
             }
         }
     }
 
 
-
-
-    /// <summary>
-    /// ジャンプ
-    /// </summary>
+    #region Jump
+    void JumpSet()
+    {
+        jumpSet = true;
+        Observable.Timer(System.TimeSpan.FromSeconds(0.4f)).
+            Subscribe(_ =>
+            {
+                jumpSet = false;
+                Jump();
+            });
+    }
     protected void Jump()
     {
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        rb.velocity = (Vector3.up * jumpPower);
-    }
-
-
-
-    void StartRotate()
-    {
-        Vector3 direction = (PlayerPos.position - transform.position).normalized;
-        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
-        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
-        transform.rotation = Quaternion.LookRotation(zAxis,Vector3.up);
-    }
-
-
-
-    protected void Rotate()
-    {
-        var targetPosition = path.corners[currentPositionIndex];//現在の目的地
-        //Y軸回転
-        Vector3 direction = (targetPosition - transform.position).normalized;
-        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
-        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
-        //ゆっくり回る
-        Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
-        transform.rotation = Quaternion.LookRotation(newdir);
+        if (EnemyHP > 0)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.velocity = (Vector3.up * jumpPower);
+        }
     }
     #endregion
 
-
+    protected void Rotate()
+    {
+        if (EnemyHP > 0)
+        {   //Y軸回転
+            Vector3 direction = (targetPosition - transform.position).normalized;
+            Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
+            Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
+            Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
+            transform.rotation = Quaternion.LookRotation(newdir);
+        }
+    }
+    #endregion
 }

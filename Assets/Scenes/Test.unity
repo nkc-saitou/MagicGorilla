@@ -282,7 +282,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0a4dd9f91ca8fc9479a30bca5aee149e, type: 2}
+  - {fileID: 2100000, guid: 2f7728eda6904724580d973b34c807c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -366,7 +366,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0a4dd9f91ca8fc9479a30bca5aee149e, type: 2}
+  - {fileID: 2100000, guid: 2f7728eda6904724580d973b34c807c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -540,11 +540,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpawn: 3
+  maxSameTimeSpawn: 0
+  numberOfSpawnBoss: 0
   waitTime: 1
   spawnPosA: {x: -10, y: 0, z: 20}
   spawnPosB: {x: 0, y: 0, z: 20}
+  spawnPosOfBoss: {x: 0, y: 0, z: 0}
   monster:
-  - {fileID: 1342194395623272, guid: 687c87da19a31c344967400ad6090aad, type: 2}
+  - {fileID: 0}
+  bossMonster: {fileID: 0}
 --- !u!4 &1103178536
 Transform:
   m_ObjectHideFlags: 0
@@ -602,7 +606,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0a4dd9f91ca8fc9479a30bca5aee149e, type: 2}
+  - {fileID: 2100000, guid: 2f7728eda6904724580d973b34c807c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -770,7 +774,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0a4dd9f91ca8fc9479a30bca5aee149e, type: 2}
+  - {fileID: 2100000, guid: 2f7728eda6904724580d973b34c807c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1005,7 +1009,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ae07d41a916a97e4588803a74885c0ba, type: 2}
+  - {fileID: 2100000, guid: ee02a6abf8733d046bf74f9e22d45b9e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

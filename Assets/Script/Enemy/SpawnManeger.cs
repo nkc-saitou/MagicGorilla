@@ -2,26 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UniRx.Triggers;
 
 public class SpawnManeger : MonoBehaviour {
     [SerializeField, Header("沸き数"),Tooltip("同時に存在可能な数")]
     private int maxSpawn;
     [SerializeField, Tooltip("同時に沸く最大数")]
     private int maxSameTimeSpawn;
-    public int NowSpawn { get; set; }                               //今沸いている数
-    private int spawnedMonster;                                     //沸いた合計数
-    public int DestroyedMonster { get; set; }                       //倒した数
     [SerializeField, Tooltip("ボスが沸くまでの敵の数")]
     private int numberOfSpawnBoss;
-    public int BossLimit { get; set; }                              //ボスの沸く数
     [SerializeField, Tooltip("沸き間隔(秒)")]
     private float waitTime;
-
     [SerializeField,Header("沸く範囲")]
     private Vector3 spawnPosA;                                      //AからBまでの範囲でわく
     [SerializeField]
     private Vector3 spawnPosB;
-
+    [SerializeField, Tooltip("ボスの沸き位置")]
+    private Vector3 spawnPosOfBoss;
     [Space,SerializeField]
     private GameObject[] monster; //敵
     [SerializeField]
@@ -29,42 +26,55 @@ public class SpawnManeger : MonoBehaviour {
 
 
 
-    private const float rayFall = 30;          //rayを落とす高さ
-    private bool startSpawn = false;           //沸き開始
-    private bool endSpawn;                     //沸き終了
+    const float rayFall = 30;                                       //rayを落とす高さ
+    int spawnedMonster;                                             //沸いた合計数
 
-    public bool BossSpawned { get; set; }      //ボスが沸いているか否か
+    bool endSpawn;                                                  //沸き終了
+    List<BaseEnemy> enemies = new List<BaseEnemy>();                //enemy監視用
+    GameManager gManager;
 
 
-    private List<BaseEnemy> enemies = new List<BaseEnemy>();        //enemy監視用
+    public int NowSpawn { get; set; }                               //今沸いている数
+    public int DestroyedMonster { get; set; }                       //倒した数
+    public int BossLimit { get; set; }                              //ボスの沸く数
+
+
+
 
 
     void Start () {
-        startSpawn = true;
+        gManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        this.ObserveEveryValueChanged(_ => gManager.IsStart).
+            Where(_ => gManager.IsStart).
+            Take(1).
+            Subscribe(_ => StartCoroutine(LoopSpawner()));
+
+        this.ObserveEveryValueChanged(_ => gManager.IsGameClear).
+            Where(_ => _).
+            Take(1).
+            Subscribe(_ => endSpawn=true);
+
+        this.ObserveEveryValueChanged(_ => spawnedMonster).
+            Where(_ => _ >= numberOfSpawnBoss).
+            Take(1).
+            Subscribe(_ => endSpawn = true);
+
+        this.ObserveEveryValueChanged(_ => DestroyedMonster).
+            Where(_ => _ == numberOfSpawnBoss).
+            Take(1).
+            Subscribe(_ =>
+            {
+                BossSpawn();
+            });
+
+        this.UpdateAsObservable().
+            TakeUntilDestroy(this).
+            Where(_ => !gManager.IsGameClear && !gManager.IsGameOver).
+            Subscribe(_=>EnemyMonitoring());
 	}
 	
-	void Update () {
-        //開始処理
-        if (startSpawn)
-        {
-            startSpawn = false;
-            StartCoroutine(LoopSpawner());
-        }
-        //一定数沸いたら沸きを止める
-        if (spawnedMonster >= numberOfSpawnBoss&&!endSpawn)
-        {
-            endSpawn = true;
-            Debug.Log("endSpawn");
-        }
-        //倒した数が必要数に達したらボスを沸かせる
-        if (DestroyedMonster == numberOfSpawnBoss&&!BossSpawned)
-        {
-            Debug.Log("BOSS");
-            BossSpawned = true;
-            BossSpawn();
-        }
-        EnemyMonitoring();
-    }
+
 
 
     IEnumerator LoopSpawner()
@@ -75,6 +85,11 @@ public class SpawnManeger : MonoBehaviour {
             while (NowSpawn >= maxSpawn)
             {
                 yield return null;
+            }
+            Debug.Log(endSpawn);
+            if (endSpawn)
+            {
+                break;
             }
             //敵が限界まで沸いていないなら沸かす
             if (NowSpawn < maxSpawn)
@@ -92,8 +107,7 @@ public class SpawnManeger : MonoBehaviour {
     /// </summary>
     void BossSpawn()
     {
-        Vector3 spawnPos = new Vector3((spawnPosA.x + spawnPosB.x) / 2, 3, (spawnPosA.z + spawnPosB.z) / 2);
-        Instantiate(bossMonster,spawnPos,Quaternion.identity);
+        Instantiate(bossMonster,spawnPosOfBoss,Quaternion.identity);
     }
 
 
@@ -124,26 +138,28 @@ public class SpawnManeger : MonoBehaviour {
     {
         int monNum = Random.Range(0, monster.Length);   //モンスターの選択
         int spawnNum = RandomSpawnNumber();             //沸かせる数
-        Vector3 spawnPos;                               //沸かせる位置
+        Vector3[] spawnPos=new Vector3[spawnNum];       //沸かせる位置
         for (int i = 0; i < spawnNum; i++)
         {
-            int loop = 0;                               //ループ処理用
-            while (true)//最大15回実行し駄目だったら終了
+            for(int j = 0; j < 15; j++)
             {
-                if (GetRayHitPos(out spawnPos))
+                if (GetRayHitPos(out spawnPos[i]))
                 {
-                    GameObject monsterObj = (GameObject)Instantiate(monster[monNum], spawnPos, Quaternion.identity); //沸かせる
-                    enemies.Add(monsterObj.GetComponent<BaseEnemy>());
-                    NowSpawn++;         //生存している敵の数にプラス
-                    spawnedMonster++;   //沸かせた数にプラス
-                    break;
-                }
-                else
-                {
-                    loop++;
-                    if (loop > 15)
+                    bool flg = false;
+                    for(int k = 0; k < i; k++)
                     {
-                        Debug.Log("none");
+                        if (Vector3.Distance(spawnPos[k], spawnPos[i]) < 1)
+                        {
+                            flg = true;
+                            break;
+                        }
+                    }
+                    if (!flg)
+                    {
+                        GameObject monsterObj = (GameObject)Instantiate(monster[monNum], spawnPos[i], Quaternion.identity); //沸かせる
+                        enemies.Add(monsterObj.GetComponent<BaseEnemy>());
+                        NowSpawn++;         //生存している敵の数にプラス
+                        spawnedMonster++;   //沸かせた数にプラス
                         break;
                     }
                 }
@@ -178,9 +194,11 @@ public class SpawnManeger : MonoBehaviour {
     {
         float posX = Random.Range(spawnPosA.x, spawnPosB.x);//X座標範囲ランダム
         float posZ = Random.Range(spawnPosA.z, spawnPosB.z);//Z座標範囲ランダム
+        int layerMask = ~(1 << 9);//レイヤーマスク
+
         Ray ray = new Ray(new Vector3(posX, rayFall, posZ), new Vector3(posX, -10, posZ) - new Vector3(posX,rayFall,posZ));
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit))
+        if(Physics.Raycast(ray, out hit,100,layerMask))
         {
             if (hit.collider.tag == "Untagged")
             {

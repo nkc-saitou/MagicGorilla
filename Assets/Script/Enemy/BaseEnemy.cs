@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UniRx;
+using UniRx.Triggers;
 
-[RequireComponent(typeof(NavMeshAgent))]
+
 [RequireComponent(typeof(EnemyRay))]
 public abstract class BaseEnemy : MonoBehaviour {
 
@@ -22,17 +24,22 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     protected float enemyHp=1;
     protected int score=10;
+    [SerializeField,Tooltip("死ぬまでのロスタイム")]
+    protected float deadLossTime = 3;
 
     //プレイヤーの座標
     protected Transform PlayerPos;
+    protected bool dead;
 
+    [SerializeField, Tooltip("ラグドール")]
+    protected GameObject ragdoll;
 
-    public float EnemyHP
+    public virtual float EnemyHP
     {
         get { return enemyHp; }
         set {
             enemyHp = value >= 0 ? value : 0;   //HPがマイナスにならないように
-            if (enemyHp == 0)
+            if (enemyHp == 0&&!dead)
             {
                 Dead();
             }
@@ -47,26 +54,43 @@ public abstract class BaseEnemy : MonoBehaviour {
         enemyRay = GetComponent<EnemyRay>();
         agent = GetComponent<NavMeshAgent>();
 
+        this.UpdateAsObservable().
+            TakeUntilDestroy(this).
+            Where(_ => transform.position.y<-20).
+            Subscribe(_ => transform.position=new Vector3(transform.position.x,20,transform.position.z));
 
         if (!PlayerPos)//プレイヤーを探す
         {
             PlayerPos = GameObject.FindGameObjectWithTag("Player").transform;
         }
+        StartRotate();
         OnStart();
     }
 
     /// <summary>
-    /// 死亡処理（仮）
+    /// 死亡処理
     /// </summary>
     protected virtual void Dead()
     {
+        dead = true;
         GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
-        Destroy(gameObject,0.001f);
+        anim.enabled = false;
+        Instantiate(ragdoll, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 
     /// <summary>
     /// Startと同義
     /// </summary>
     protected virtual void OnStart(){}
+
+
+    void StartRotate()
+    {
+        Vector3 direction = (PlayerPos.position - transform.position).normalized;
+        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
+        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
+        transform.rotation = Quaternion.LookRotation(zAxis, Vector3.up);
+    }
 
 }

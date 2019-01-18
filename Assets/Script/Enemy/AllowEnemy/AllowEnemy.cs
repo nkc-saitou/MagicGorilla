@@ -7,6 +7,7 @@ using System;
 
 public class AllowEnemy : BaseEnemy {
 
+
     [SerializeField]
     private GameObject allow;
     [SerializeField]
@@ -20,18 +21,18 @@ public class AllowEnemy : BaseEnemy {
 
     private int currentPositionIndex = 0;                    //目標値用
     private bool moveFinish;                                 //移動終了
+    private bool jumpSet;
 
-    private AllowEnemyAttack allowAttack;
+
+    AllowEnemyAttack allowAttack;
 
     protected override void OnStart()
     {
         allowAttack = GetComponent<AllowEnemyAttack>();
-        StartRotate();
         PathSet();
 
         stateMachineObservables.
             OnStateEnterObservable.
-            TakeUntilDestroy(this).
             Where(_ => _.IsName("Base Layer.Run")).
             Subscribe(_ =>{
                 PathSet();
@@ -39,12 +40,16 @@ public class AllowEnemy : BaseEnemy {
 
         stateMachineObservables.
             OnStateEnterObservable.
-            TakeUntilDestroy(this).
             Throttle(TimeSpan.FromSeconds(0.5f)).
             Where(_ => _.IsName("Base Layer.Attack")).
             Subscribe(_=> {
                 Attack();
                 });
+
+        stateMachineObservables.
+            OnStateEnterObservable.
+            Where(_ => _.IsName("Base Layer.Jump")).
+            Subscribe(_ => JumpSet());
 
 
         this.FixedUpdateAsObservable().
@@ -80,55 +85,78 @@ public class AllowEnemy : BaseEnemy {
 
     }
 
-    void StartRotate()
-    {
-        Vector3 direction = (PlayerPos.position - transform.position).normalized;
-        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
-        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
-        transform.rotation = Quaternion.LookRotation(zAxis, Vector3.up);
-    }
 
     /// <summary>
     /// パスの地点までの移動を繰り返す
     /// </summary>
     protected void Move()
     {
-        var targetPosition = path.corners[currentPositionIndex];//現在の目的地
-        if (currentPositionIndex + 1 == path.corners.Length && Vector3.Distance(targetPosition, transform.position) < 1.8f)
+        if (EnemyHP > 0)
         {
-            return;
-        }
-        //目標値についたら次へ
-        if (Vector3.Distance(new Vector3(targetPosition.x, transform.position.y, targetPosition.z), transform.position) < 0.5f)
-        {
-            //現在の数+1が長さより少ない
-            currentPositionIndex = currentPositionIndex + 1 < path.corners.Length ? currentPositionIndex + 1 : currentPositionIndex;
-        }
-        transform.localPosition += transform.forward * speed * Time.deltaTime;
-
-
-        //ジャンプ
-        if (enemyRay.OnGround)
-        {
-            MoveRotate();
-            if (enemyRay.StepDetection)
+            var targetPosition = path.corners[currentPositionIndex];//現在の目的地
+                                                                    //終点に近いなら止まる
+            if ((currentPositionIndex + 1 == path.corners.Length && Vector3.Distance(targetPosition, transform.position) < 1.5f) ||
+                 jumpSet)
             {
-                Jump();
+                return;
+            }
+
+            //目標値についたら次へ
+            if (Vector3.Distance(new Vector3(targetPosition.x, transform.position.y, targetPosition.z), transform.position) < 0.5f)
+            {
+                //現在の数+1が長さより少ない
+                currentPositionIndex = currentPositionIndex + 1 < path.corners.Length ? currentPositionIndex + 1 : currentPositionIndex;
+            }
+            transform.localPosition += transform.forward * speed * Time.deltaTime;
+
+            if (enemyRay.OnGround)
+            {
+                Rotate();
+                if (enemyRay.StepDetection)
+                {
+                    anim.SetTrigger("Jump");
+                }
             }
         }
     }
 
-    /// <summary>
-    /// ジャンプ
-    /// </summary>
-    protected void Jump()
+
+    #region Jump
+    void JumpSet()
     {
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        rb.velocity = (Vector3.up * jumpPower);
+        jumpSet = true;
+        Observable.Timer(System.TimeSpan.FromSeconds(0.4f)).
+            Subscribe(_ =>
+            {
+                jumpSet = false;
+                Jump();
+            });
     }
 
+    protected void Jump()
+    {
+        if (EnemyHP > 0)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.velocity = (Vector3.up * jumpPower);
+        }
+    }
+    #endregion
 
+    #region rotate
+    protected void Rotate()
+    {
+        if (EnemyHP > 0)
+        {
+            Vector3 direction = (PlayerPos.position - transform.position).normalized;
+            Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
+            Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
+
+            Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
+            transform.rotation = Quaternion.LookRotation(newdir);
+        }
+    }
     protected void MoveRotate()
     {
         var targetPosition = path.corners[currentPositionIndex];//現在の目的地
@@ -140,20 +168,11 @@ public class AllowEnemy : BaseEnemy {
         Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
         transform.rotation = Quaternion.LookRotation(newdir);
     }
+
     #endregion
 
-    /// <summary>
-    /// 回転
-    /// </summary>
-    protected void Rotate()
-    {
-        Vector3 direction = (PlayerPos.position - transform.position).normalized;
-        Vector3 xAxis = Vector3.Cross(Vector3.up, direction).normalized;
-        Vector3 zAxis = Vector3.Cross(xAxis, Vector3.up).normalized;
 
-        Vector3 newdir = Vector3.RotateTowards(transform.forward, zAxis, 5 * Time.deltaTime, 0f);
-        transform.rotation = Quaternion.LookRotation(newdir);
-    }
+    #endregion
 
 
 

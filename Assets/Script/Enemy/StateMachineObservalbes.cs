@@ -67,18 +67,18 @@ public class StateMachineObservalbes : StateMachineBehaviour {
 
 
 
-    #region OnStateMove
+    //#region OnStateMove
 
-    private Subject<AnimatorStateInfo> onStateMoveSubject = new Subject<AnimatorStateInfo>();
+    //private Subject<AnimatorStateInfo> onStateMoveSubject = new Subject<AnimatorStateInfo>();
 
-    public IObservable<AnimatorStateInfo> OnStateMoveObservable { get { return onStateMoveSubject.AsObservable(); } }
+    //public IObservable<AnimatorStateInfo> OnStateMoveObservable { get { return onStateMoveSubject.AsObservable(); } }
 
-    public override void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        onStateMoveSubject.OnNext(stateInfo);
-    }
+    //public override void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    onStateMoveSubject.OnNext(stateInfo);
+    //}
 
-    #endregion
+    //#endregion
 
 
 
@@ -96,13 +96,15 @@ public class StateMachineObservalbes : StateMachineBehaviour {
     #endregion
 
 
-    // OnStateMachineEnter is called when entering a statemachine via its Entry Node
-    //override public void OnStateMachineEnter(Animator animator, int stateMachinePathHash){
-    //
+    ////OnStateMachineEnter is called when entering a statemachine via its Entry Node
+    //override public void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
+    //{
+
     //}
 
-    // OnStateMachineExit is called when exiting a statemachine via its Exit Node
-    //override public void OnStateMachineExit(Animator animator, int stateMachinePathHash) {
-    //
+    ////OnStateMachineExit is called when exiting a statemachine via its Exit Node
+    //override public void OnStateMachineExit(Animator animator, int stateMachinePathHash)
+    //{
+
     //}
 }

@@ -4,25 +4,47 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
-public class WalkEnemyAnimator : BaseEnemy {
+public class WalkEnemyAnimator : MonoBehaviour {
+
+    Animator anim;
+    StateMachineObservalbes stateMachineObservables;
+    Transform playerPos;
+
+    void Start () {
+        anim = GetComponent<Animator>();
+        //stateMachineObservables = GetComponent<Animator>().GetBehaviour<StateMachineObservalbes>();
+
+        if (!playerPos)//プレイヤーを探す
+        {
+            playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        }
 
 
-    protected override void OnStart () {
-        var every = Observable.EveryUpdate();
-
-        every.TakeUntilDestroy(this)
-             .Subscribe(_ => AnimationChanger());
+        Observable.EveryUpdate().
+            TakeUntilDestroy(this).
+            Subscribe(_ => AnimationChanger());
     }
 
     void AnimationChanger()
     {
-        if(Vector3.Distance(PlayerPos.position, transform.position) <= 2.0f)
+        if (anim)
         {
-            anim.SetBool("near", true);
+            if (Vector3.Distance(playerPos.position, transform.position) <= 1.5f)
+            {
+                anim.SetBool("near", true);
+            }
+            else
+            {
+                anim.SetBool("near", false);
+            }
         }
-        else
+    }
+
+    public void Jump()
+    {
+        if (anim)
         {
-            anim.SetBool("near", false);
+            anim.SetTrigger("Jump");
         }
     }
 }
