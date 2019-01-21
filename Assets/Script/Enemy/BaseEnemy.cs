@@ -31,8 +31,25 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected Transform PlayerPos;
     protected bool dead;
 
+
     [SerializeField, Tooltip("ラグドール")]
     protected GameObject ragdoll;
+
+    protected bool ragDollFlg;
+
+    public bool RagDollFlg
+    {
+        set
+        {
+            ragDollFlg = value;
+            if (ragDollFlg==true)
+            {
+                OnRagDoll();
+            }
+        }
+    }
+
+
 
     public virtual float EnemyHP
     {
@@ -68,13 +85,20 @@ public abstract class BaseEnemy : MonoBehaviour {
     }
 
     /// <summary>
-    /// 死亡処理
+    /// 死亡時処理
     /// </summary>
     protected virtual void Dead()
     {
         dead = true;
         GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
         anim.enabled = false;
+    }
+
+    /// <summary>
+    /// ラグドール化
+    /// </summary>
+    void OnRagDoll()
+    {
         Instantiate(ragdoll, transform.position, transform.rotation);
         Destroy(gameObject);
     }
