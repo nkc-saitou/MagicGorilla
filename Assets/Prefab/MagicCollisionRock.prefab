@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65102584806984948}
   - component: {fileID: 23816247692200832}
   - component: {fileID: 114955534482319356}
-  - component: {fileID: 114425249995252632}
+  - component: {fileID: 114107159973055076}
   m_Layer: 2
   m_Name: MagicCollisionRock
   m_TagString: MagicCollision
@@ -97,7 +97,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114425249995252632
+--- !u!114 &114107159973055076
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1729449492344588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed67bece4ffc264fbd2ec8fcf527d91, type: 3}
+  m_Script: {fileID: 11500000, guid: 3946621de29b71f41931e8a25cce4985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114955534482319356

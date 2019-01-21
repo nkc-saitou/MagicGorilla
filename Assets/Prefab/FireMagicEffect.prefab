@@ -22,10 +22,10 @@ GameObject:
   - component: {fileID: 33650829196474064}
   - component: {fileID: 135508574443571570}
   - component: {fileID: 23102970862796786}
-  - component: {fileID: 114855116247273984}
   - component: {fileID: 114841679841337564}
   - component: {fileID: 114385260474965706}
   - component: {fileID: 114343433524500780}
+  - component: {fileID: 114769505630386680}
   m_Layer: 2
   m_Name: FireMagicEffect
   m_TagString: Untagged
@@ -115,6 +115,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f715d9c65dc6946acbfea1c207abb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114769505630386680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1996355500194098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3946621de29b71f41931e8a25cce4985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114841679841337564
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,17 +135,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09d2c25a88fb53f4e83a789406f2ac6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114855116247273984
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1996355500194098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed67bece4ffc264fbd2ec8fcf527d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &135508574443571570
