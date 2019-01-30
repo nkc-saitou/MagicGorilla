@@ -14,7 +14,7 @@ public class Shot : MonoBehaviour {
 
     List<IAction> actionLis = new List<IAction>();
 
-    InputState state;
+    FVRInputState state;
 
     MagicType memoryState;
 
@@ -32,13 +32,11 @@ public class Shot : MonoBehaviour {
     {
         actionLis.AddRange(MagicProvider.ActionLis);
 
-
-
         memoryState = MagicType._none;
 
         //毎フレームInputStateを監視
         this.UpdateAsObservable()
-            .Subscribe(_ => state = PlayerInput.Instance._InputState);
+            .Subscribe(_ => state = PlayerInput.Instance._FVRInputState);
 
         //InputStateに変化があった場合、MagicShotを実行
         this.UpdateAsObservable()
@@ -46,10 +44,10 @@ public class Shot : MonoBehaviour {
             .Subscribe(_ => MagicShot());
 
         this.UpdateAsObservable()
-            .Where(_ => state != InputState._none)
+            .Where(_ => state != FVRInputState.none)
             .Subscribe(_ =>
             {
-                if(state == InputState._accel) MagicShot(memoryState);
+                if(state == FVRInputState.accel) MagicShot(memoryState);
             });
 
         this.UpdateAsObservable()
@@ -65,10 +63,10 @@ public class Shot : MonoBehaviour {
 
         switch(state)
         {
-            case InputState._armRight: tempType = MagicType._fire;      break;
-            case InputState._armLeft:  tempType = MagicType._ice;       break;
-            case InputState._armUp:    tempType = MagicType._lightning; break;
-            case InputState._armDown:  tempType = MagicType._rock;      break;
+            case FVRInputState.armRight: tempType = MagicType._fire;      break;
+            case FVRInputState.armLeft:  tempType = MagicType._ice;       break;
+            case FVRInputState.armUp:    tempType = MagicType._lightning; break;
+            case FVRInputState.armDown:  tempType = MagicType._rock;      break;
             //case InputState._armFront: tempType = MagicType._sword;     break;
         }
 

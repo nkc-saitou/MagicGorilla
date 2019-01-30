@@ -19,7 +19,6 @@ public class WalkEnemyAnimator : MonoBehaviour {
             playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
-
         Observable.EveryUpdate().
             TakeUntilDestroy(this).
             Subscribe(_ => AnimationChanger());

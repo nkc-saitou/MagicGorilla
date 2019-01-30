@@ -15,7 +15,7 @@ public class ArmTest : MonoBehaviour {
 
     FVRConnection fvr;
 
-    InputState playerInputState;
+    FVRInputState playerInputState;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +24,7 @@ public class ArmTest : MonoBehaviour {
 
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
-            .Subscribe(_ => playerInputState = GetComponent<PlayerInput>()._InputState);
+            .Subscribe(_ => playerInputState = GetComponent<PlayerInput>()._FVRInputState);
 
         gameObject.ObserveEveryValueChanged(_ => playerInputState)
             .Subscribe(x => inputState.text = x.ToString());

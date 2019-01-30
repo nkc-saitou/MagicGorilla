@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 136021173574649168}
   - component: {fileID: 114692142705223532}
   - component: {fileID: 114710675755631976}
+  - component: {fileID: 114246358889005474}
   m_Layer: 9
   m_Name: Bowman
   m_TagString: Enemy
@@ -717,6 +718,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114246358889005474
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1833822624387572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d98569a87b87574f84359f67cc59969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handType: 1
+  attributeType: 4
 --- !u!114 &114692142705223532
 MonoBehaviour:
   m_ObjectHideFlags: 1

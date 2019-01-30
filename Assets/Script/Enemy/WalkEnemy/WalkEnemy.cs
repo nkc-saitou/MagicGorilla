@@ -129,7 +129,8 @@ public class WalkEnemy : BaseEnemy
             }
             else
             {
-                PositionSet();
+                targetPosition = PlayerPos.position;
+                //PositionSet();
                 transform.localPosition += transform.forward * speed * Time.deltaTime;
             }
 
