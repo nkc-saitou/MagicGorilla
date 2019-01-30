@@ -24,11 +24,13 @@ public enum GestureInputState
     gesturePaper
 }
 
-public enum OVRInputState
-{
-    ovrGetUpTrigger = 0,
-    ovrGetDownTrigger,
-}
+//public enum OVRInputState
+//{
+//    ovrGetUpTrigger = 0,
+//    ovrGetDownTrigger,
+//    ovrGetDownTouchpad,
+//    ovrGetUpTouchpad,
+//}
 
 public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 {
@@ -42,7 +44,7 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     //------------------------------------
     public FVRInputState _FVRInputState { get; private set; }
 
-    public OVRInputState _OVRInputState { get; private set; }
+    //public OVRInputState _OVRInputState { get; private set; }
 
     public GestureInputState _GestureInputState { get; private set; }
 
@@ -51,6 +53,10 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     public GameObject HitGameObject { get; private set; }
 
     public bool IsRockGesture { get; set; }
+
+    public bool IsOVRTochPadGetDown { get; set; }
+
+    public bool IsOVRTriggerDown { get; set; }
 
     //------------------------------------
     // 関数
@@ -109,10 +115,10 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Where(_ => Input.GetKeyDown(KeyCode.A))
             .Subscribe(_ => _FVRInputState = FVRInputState.armLeft);
 
-        //this.UpdateAsObservable()
-        //    .TakeUntilDestroy(this)
-        //    .Where(_ => Input.GetKeyDown(KeyCode.S))
-        //    .Subscribe(_ => _InputState = InputState._armFront);
+        this.UpdateAsObservable()
+            .TakeUntilDestroy(this)
+            .Where(_ => Input.GetKeyDown(KeyCode.S))
+            .Subscribe(_ => _FVRInputState = FVRInputState.armFront);
 
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
@@ -148,13 +154,25 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
             .Where(_ => Input.GetKeyDown(KeyCode.C))
-            .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetDownTrigger);
+            .Subscribe(_ => IsOVRTriggerDown = true);
 
         //Oculusコントローラーのトリガーを離したとき
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
             .Where(_ => Input.GetKeyDown(KeyCode.V))
-            .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetUpTrigger);
+            .Subscribe(_ => IsOVRTriggerDown = false);
+
+        //Oculusコントローラーのタッチパッドをクリックしたとき
+        this.UpdateAsObservable()
+            .TakeUntilDestroy(this)
+            .Where(_ => Input.GetKeyDown(KeyCode.T))
+            .Subscribe(_ => IsOVRTochPadGetDown = true);
+
+        //Oculusコントローラーのタッチパッドをクリックしたとき
+        this.UpdateAsObservable()
+            .TakeUntilDestroy(this)
+            .Where(_ => Input.GetKeyDown(KeyCode.Y))
+            .Subscribe(_ => IsOVRTochPadGetDown = false);
 
 #else 
 
@@ -165,11 +183,11 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Subscribe(_ => _FVRInputState = FVRInputState.accel);
 
         //腕を下に向けているとき
-        //this.ObserveEveryValueChanged(playerInput => playerInput.fvr.palmOrientation)
-            //.TakeUntilDestroy(this)
-            //.Where(_ => fvr.horizontalOrientation == FVRConnection.HorizontalOrientation.front &&
-                        //fvr.palmOrientation == FVRConnection.PalmOrientation.down)
-            //.Subscribe(_ => _InputState = InputState._armFront);
+        this.ObserveEveryValueChanged(playerInput => playerInput.fvr.palmOrientation)
+            .TakeUntilDestroy(this)
+            .Where(_ => fvr.horizontalOrientation == FVRConnection.HorizontalOrientation.front &&
+                        fvr.palmOrientation == FVRConnection.PalmOrientation.down)
+            .Subscribe(_ => _FVRInputState = FVRInputState.armFront);
 
         //腕を左に向けているとき
         this.ObserveEveryValueChanged(playerInput => playerInput.fvr.horizontalOrientation)
@@ -207,17 +225,37 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Where(_ => IsRockGesture == false)
             .Subscribe(_ => _GestureInputState = GestureInputState.gesturePaper);
 
-        //Oculusコントローラーのトリガーを押したとき
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
-            .Where(_ => OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
-            .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetDownTrigger);
+            .Subscribe(_ => 
+            {
+                IsOVRTochPadGetDown = OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad);
+                IsOVRTriggerDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
+            });
 
-        //Oculusコントローラーのトリガーを離したとき
-        this.UpdateAsObservable()
-            .TakeUntilDestroy(this)
-            .Where(_ => OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
-            .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetUpTrigger);
+        ////Oculusコントローラーのトリガーを押したとき
+        //this.UpdateAsObservable()
+        //    .TakeUntilDestroy(this)
+        //    .Where(_ => OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+        //    .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetDownTrigger);
+
+        ////Oculusコントローラーのトリガーを離したとき
+        //this.UpdateAsObservable()
+        //    .TakeUntilDestroy(this)
+        //    .Where(_ => OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
+        //    .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetUpTrigger);
+
+        ////Oculusコントローラーのトリガーを離したとき
+        //this.UpdateAsObservable()
+        //    .TakeUntilDestroy(this)
+        //    .Where(_ => OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
+        //    .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetDownTouchpad);
+
+        ////Oculusコントローラーのトリガーを離したとき
+        //this.UpdateAsObservable()
+        //    .TakeUntilDestroy(this)
+        //    .Where(_ => OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad) == false)
+        //    .Subscribe(_ => _OVRInputState = OVRInputState.ovrGetUpTouchpad);
 
 #endif
     }

@@ -40,7 +40,10 @@ public class AttackHandShot : MonoBehaviour {
 
     FVRInputState fvrState;
 
-    OVRInputState ovrState;
+    //OVRInputState ovrState;
+
+    bool isOVRTriggerDown;
+    bool isOVRTochPadDown;
 
     GestureInputState gestureState;
 
@@ -55,7 +58,9 @@ public class AttackHandShot : MonoBehaviour {
         this.UpdateAsObservable()
             .Subscribe(_ =>
             {
-                ovrState = PlayerInput.Instance._OVRInputState;
+                isOVRTriggerDown = PlayerInput.Instance.IsOVRTriggerDown;
+                isOVRTochPadDown = PlayerInput.Instance.IsOVRTochPadGetDown;
+
                 SetAttributeType();
             });
 
@@ -83,7 +88,7 @@ public class AttackHandShot : MonoBehaviour {
                 break;
         }
 
-        if (ovrState == OVRInputState.ovrGetDownTrigger) CreateType = CreateAttributeType.none;
+        if (isOVRTriggerDown) CreateType = CreateAttributeType.none;
     }
 
     /// <summary>
