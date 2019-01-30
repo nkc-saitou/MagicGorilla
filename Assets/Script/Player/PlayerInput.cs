@@ -42,13 +42,13 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
     void Awake()
     {
-        if(this != Instance)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        //if(this != Instance)
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     void Start()
