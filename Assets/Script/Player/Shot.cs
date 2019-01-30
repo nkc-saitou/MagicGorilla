@@ -5,6 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 using System.Linq;
 using System;
+using UnityEngine.UI;
 
 public class Shot : MonoBehaviour {
 
@@ -27,6 +28,8 @@ public class Shot : MonoBehaviour {
     public GameObject Enemy { get; private set; }
 
     public Transform pos;
+
+    public Text testText;
 
     void Start ()
     {
@@ -83,6 +86,10 @@ public class Shot : MonoBehaviour {
     void MagicSet(MagicType type)
     {
         if (memoryState != MagicType._none) return;
+
+        //消す
+        testText.text = type.ToString();
+
         actionLis[(int)type].Charge(pos);
         memoryState = type;
     }
