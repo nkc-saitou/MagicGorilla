@@ -19,12 +19,16 @@ public class GameManager : MonoBehaviour {
 
     ScoreManager sManager;
     //FadeController fade;
+    //Fader fader;
 
     void Start()
     {
         sManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+        //fader = FindObjectOfType<Fader>();
         //fade = GameObject.Find("Canvas").GetComponent<FadeController>();
         //fade.IsFadeOut = true;
+
+        //fader.FadeIn();
 
         StartCoroutine(StartText());
 
@@ -125,7 +129,8 @@ public class GameManager : MonoBehaviour {
 
     void SceneChange()
     {
-        //fade.IsFadeIn = true;
+        //fader.FadeOut();
+        //Fader.Instance.gameLogic("result");
         Observable.Timer(System.TimeSpan.FromSeconds(1)).
             Subscribe(_ => SceneManager.LoadScene(sceneName));
     }

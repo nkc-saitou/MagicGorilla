@@ -58,7 +58,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicEffect: {fileID: 1996355500194098, guid: 155ded7a7dd292a44b241caec003f510,
     type: 2}
+  attackEffect: {fileID: 0}
+  magicCol: {fileID: 0}
   MaxPow: 5
+  createPos: []
+  parent: {fileID: 0}
 --- !u!114 &114268944698544008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -72,6 +76,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicEffect: {fileID: 1319587999151290, guid: f6324e836eabefe45aba48fe78d586d9,
     type: 2}
+  attackEffect: {fileID: 0}
+  magicCol: {fileID: 0}
   MaxPow: 5
 --- !u!114 &114285781892539448
 MonoBehaviour:
@@ -86,7 +92,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicEffect: {fileID: 1137565112067168, guid: f2f77e9a1926a794fa3e0aa3367ae997,
     type: 2}
+  attackEffect: {fileID: 0}
+  magicCol: {fileID: 0}
   MaxPow: 5
+  magicCreatePos: []
 --- !u!114 &114313255844259580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,7 +120,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicEffect: {fileID: 1890554822379630, guid: 3ae2e8ed5ccd1d645ba196cc1cd55f82,
     type: 2}
+  attackEffect: {fileID: 0}
+  magicCol: {fileID: 0}
   MaxPow: 5
+  magicPre: {fileID: 0}
 --- !u!114 &114615945512824306
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,4 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicEffect: {fileID: 1261907038905618, guid: 137db1c4180635d498a2d24b2b91d9eb,
     type: 2}
+  attackEffect: {fileID: 0}
+  magicCol: {fileID: 0}
   MaxPow: 5
+  magicPre: {fileID: 0}

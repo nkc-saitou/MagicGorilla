@@ -6,11 +6,11 @@ using UniRx;
 using UniRx.Triggers;
 
 public class TitleSceneScript : MonoBehaviour {
-    FadeController fade;
+    //FadeController fade;
 
 	void Start () {
-        fade = GameObject.Find("Canvas").GetComponent<FadeController>();
-        fade.IsFadeOut = true;
+        //fade = GameObject.Find("Canvas").GetComponent<FadeController>();
+        //fade.IsFadeOut = true;
         gameObject.UpdateAsObservable().
             TakeUntilDestroy(this).
             Delay(System.TimeSpan.FromSeconds(1f)).
@@ -31,8 +31,8 @@ public class TitleSceneScript : MonoBehaviour {
 
     void SceneChange()
     {
-        fade.IsFadeIn = true;
-        Observable.Timer(System.TimeSpan.FromSeconds(1)).
-            Subscribe(_ => SceneManager.LoadScene("SampleScene"));
+        //fade.IsFadeIn = true;
+        //Observable.Timer(System.TimeSpan.FromSeconds(1)).
+        //    Subscribe(_ => SceneManager.LoadScene("SampleScene"));
     }
 }

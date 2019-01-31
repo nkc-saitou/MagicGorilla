@@ -96,25 +96,25 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
         InputObserver();
     }
 
-    /// <summary>
-    /// 視点入力
-    /// </summary>
-    void IsViewPointInput()
-    {
-        Vector3 rayOrigin;
-        RaycastHit hit;
+    ///// <summary>
+    ///// 視点入力
+    ///// </summary>
+    //void IsViewPointInput()
+    //{
+    //    Vector3 rayOrigin;
+    //    RaycastHit hit;
 
-        rayOrigin = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.5f));
+    //    rayOrigin = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.5f));
 
-        if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out hit, Mathf.Infinity) == false)
-        {
-            HitGameObject = null;
-            return;
-        }
+    //    if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out hit, Mathf.Infinity) == false)
+    //    {
+    //        HitGameObject = null;
+    //        return;
+    //    }
 
-        RayHitPos = hit.point;
-        HitGameObject = hit.transform.gameObject;
-    }
+    //    RayHitPos = hit.point;
+    //    HitGameObject = hit.transform.gameObject;
+    //}
 
     /// <summary>
     /// エフェクトを一度消した時に呼ぶ
@@ -129,8 +129,8 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     /// </summary>
     void InputObserver()
     {
-        this.UpdateAsObservable()
-            .Subscribe(_ => IsViewPointInput());
+        //this.UpdateAsObservable()
+        //    .Subscribe(_ => IsViewPointInput());
 
 #if UNITY_EDITOR
 
