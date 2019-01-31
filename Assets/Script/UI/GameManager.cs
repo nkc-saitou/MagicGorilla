@@ -53,35 +53,35 @@ public class GameManager : MonoBehaviour {
             Subscribe(_ => GameOver());
 
         //動画用///////////////
-        gameObject.UpdateAsObservable().
-            TakeUntilDestroy(this).
-            Delay(System.TimeSpan.FromSeconds(1f)).
-            Where(_ => Input.GetKey(KeyCode.R)).
-            Take(1).
-            Subscribe(_ =>
-            {
-                sManager.AddScore(150);
-                IsGameClear = true;
-                foreach (var ene in GameObject.FindGameObjectsWithTag("Enemy"))
-                {
-                    ene.GetComponent<BaseEnemy>().EnemyHP -= 1;
-                }
-            });
+        //gameObject.UpdateAsObservable().
+        //    TakeUntilDestroy(this).
+        //    Delay(System.TimeSpan.FromSeconds(1f)).
+        //    Where(_ => Input.GetKey(KeyCode.R)).
+        //    Take(1).
+        //    Subscribe(_ =>
+        //    {
+        //        sManager.AddScore(150);
+        //        IsGameClear = true;
+        //        foreach (var ene in GameObject.FindGameObjectsWithTag("Enemy"))
+        //        {
+        //            ene.GetComponent<BaseEnemy>().EnemyHP -= 1;
+        //        }
+        //    });
 
-        gameObject.UpdateAsObservable().
-            TakeUntilDestroy(this).
-            Where(_ => Input.GetKeyDown(KeyCode.A)).
-            Subscribe(_ =>
-            {
-                foreach (var ene in GameObject.FindGameObjectsWithTag("Enemy"))
-                {
-                    ene.GetComponent<BaseEnemy>().EnemyHP -= 1;
-                }
-                if (GameObject.FindGameObjectWithTag("Boss"))
-                {
-                    GameObject.FindGameObjectWithTag("Boss").GetComponent<BaseEnemy>().EnemyHP -= 1;
-                }
-            });
+        //gameObject.UpdateAsObservable().
+        //    TakeUntilDestroy(this).
+        //    Where(_ => Input.GetKeyDown(KeyCode.A)).
+        //    Subscribe(_ =>
+        //    {
+        //        foreach (var ene in GameObject.FindGameObjectsWithTag("Enemy"))
+        //        {
+        //            ene.GetComponent<BaseEnemy>().EnemyHP -= 1;
+        //        }
+        //        if (GameObject.FindGameObjectWithTag("Boss"))
+        //        {
+        //            GameObject.FindGameObjectWithTag("Boss").GetComponent<BaseEnemy>().EnemyHP -= 1;
+        //        }
+        //    });
         ///////////////////
     }
 

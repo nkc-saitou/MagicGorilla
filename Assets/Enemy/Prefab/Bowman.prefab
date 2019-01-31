@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 114710675755631976}
   - component: {fileID: 114246358889005474}
   - component: {fileID: 114506036399060376}
+  - component: {fileID: 114503072555275312}
   m_Layer: 9
   m_Name: Bowman
   m_TagString: Enemy
@@ -762,6 +763,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   attributeType: 4
+--- !u!114 &114503072555275312
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1833822624387572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f262eaf1a0593f42a152ee55219418d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114506036399060376
 MonoBehaviour:
   m_ObjectHideFlags: 1

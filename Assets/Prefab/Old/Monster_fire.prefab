@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 114379612585722446}
   - component: {fileID: 114647936650751810}
   - component: {fileID: 114393884637834990}
+  - component: {fileID: 114786164770070440}
   m_Layer: 9
   m_Name: Monster_fire
   m_TagString: Enemy
@@ -342,6 +343,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 279a514140e5dee449f938751d0e1ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114786164770070440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1806294055256580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4753059954791f941b02d4c10e49864d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!198 &198313102257147618

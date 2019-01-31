@@ -9,17 +9,17 @@ public enum CreateHandType
 {
     noneRock,
     nonePaper,
-    upRock,
-    upPaper,
-    downRock,
-    downPaper
+    leftRock,
+    leftPaper,
+    rightRock,
+    rightPaper
 }
 
 public enum CreateAttributeType
 {
     none,
-    up,
-    down
+    left,
+    right
 }
 
 public class AttackHandShot : MonoBehaviour {
@@ -98,12 +98,12 @@ public class AttackHandShot : MonoBehaviour {
     {
         switch(fvrState)
         {
-            case FVRInputState.armUp:
-                CreateType = CreateAttributeType.up;
+            case FVRInputState.armLeft:
+                CreateType = CreateAttributeType.left;
                 break;
 
-            case FVRInputState.armDown:
-                CreateType = CreateAttributeType.down;
+            case FVRInputState.armRight:
+                CreateType = CreateAttributeType.right;
                 break;
         }
 
@@ -123,18 +123,18 @@ public class AttackHandShot : MonoBehaviour {
 
         switch (CreateType)
         {
-            case CreateAttributeType.up:
+            case CreateAttributeType.left:
                 if (gestureState == GestureInputState.gestureRock)
-                    tempHandObj = attributePre[(int)CreateHandType.upRock]; 
+                    tempHandObj = attributePre[(int)CreateHandType.leftRock]; 
                 else
-                    tempHandObj = attributePre[(int)CreateHandType.upPaper];
+                    tempHandObj = attributePre[(int)CreateHandType.leftPaper];
                 break;
 
-            case CreateAttributeType.down:
+            case CreateAttributeType.right:
                 if (gestureState == GestureInputState.gestureRock)
-                    tempHandObj = attributePre[(int)CreateHandType.downRock];
+                    tempHandObj = attributePre[(int)CreateHandType.rightRock];
                 else
-                    tempHandObj = attributePre[(int)CreateHandType.downPaper];
+                    tempHandObj = attributePre[(int)CreateHandType.rightPaper];
                 break;
 
             default:

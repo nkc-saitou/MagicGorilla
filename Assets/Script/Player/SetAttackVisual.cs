@@ -26,8 +26,8 @@ public class SetAttackVisual : MonoBehaviour {
 
         attackHandShot = GetComponent<AttackHandShot>();
 
-        int upIndex = ((int)CreateAttributeType.up) - 1;
-        int downIndex = ((int)CreateAttributeType.down) - 1;
+        int leftIndex = ((int)CreateAttributeType.left) - 1;
+        int rightIndex = ((int)CreateAttributeType.right) - 1;
 
         this.UpdateAsObservable()
             .Subscribe(_ =>
@@ -45,18 +45,18 @@ public class SetAttackVisual : MonoBehaviour {
                 switch(type)
                 {
                     case CreateAttributeType.none:
-                        attribute[upIndex].SetActive(false);
-                        attribute[downIndex].SetActive(false);
+                        attribute[leftIndex].SetActive(false);
+                        attribute[rightIndex].SetActive(false);
                         break;
 
-                    case CreateAttributeType.up:
-                        attribute[upIndex].SetActive(true);
-                        attribute[downIndex].SetActive(false);
+                    case CreateAttributeType.left:
+                        attribute[leftIndex].SetActive(true);
+                        attribute[rightIndex].SetActive(false);
                         break;
 
-                    case CreateAttributeType.down:
-                        attribute[upIndex].SetActive(false);
-                        attribute[downIndex].SetActive(true);
+                    case CreateAttributeType.right:
+                        attribute[leftIndex].SetActive(false);
+                        attribute[rightIndex].SetActive(true);
                         break;
                 }
             });

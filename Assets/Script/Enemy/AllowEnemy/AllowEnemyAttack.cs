@@ -14,8 +14,13 @@ public class AllowEnemyAttack : MonoBehaviour {
     public void Attack(GameObject allow,Vector3 playerPos)
     {
         Vector3 shiftpos = Shift;
-        Vector3 rot = (playerPos+shiftpos) - offset.position;
-        Instantiate(allow, offset.position, Quaternion.LookRotation(rot));
+
+        if (offset != null)
+        {
+            Vector3 rot = (playerPos + shiftpos) - offset.position;
+            Instantiate(allow, offset.position, Quaternion.LookRotation(rot));
+
+        }
     }
 
 

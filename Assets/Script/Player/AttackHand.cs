@@ -38,13 +38,48 @@ public class AttackHand : MonoBehaviour {
 
 
         objCollision.OnCollision
-            .Where(collider => collider.GetComponent<ObjectCollision>() != null)
+            .Where(collider => collider.GetComponent<ObjectType>() != null)
             .Subscribe(collider => 
             {
-
+                BreakObj(collider.GetComponent<ObjectType>()._ObjectType,collider.gameObject);
             });
 
 	}
+
+    void BreakObj(E_ObjectType type,GameObject colObj)
+    {
+        BaseEnemy baseEnemy = colObj.GetComponent<BaseEnemy>();
+
+        EnemyAttribute state = colObj.GetComponent<EnemyAttribute>();
+        AttributeEnemyDamage attributeDamage = colObj.GetComponent<AttributeEnemyDamage>();
+
+        if (state.EnemyAttackType.handType == handType && state.EnemyAttackType.attribute == attribute)
+        {
+            // ベースエネミーが基底のクラスだったら(WalkEnemy,BowEnemy)
+            if (baseEnemy != null)
+            {
+                baseEnemy.EnemyHP--;
+            }
+            //BaseEnemyが実装されていないEnemyだったら(Attribute系のEnemy)
+            else if (type == E_ObjectType.enemy)
+            {
+                if (attributeDamage != null)
+                {
+                    attributeDamage.Dead();
+                }
+            }
+        }
+        // Enemyが打ってくる障害物だったら(矢、岩など)
+        else if (type == E_ObjectType.enemyObject)
+        {
+            Destroy(colObj);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()

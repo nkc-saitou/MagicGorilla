@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 114647614662522790}
   - component: {fileID: 114182851777516506}
   - component: {fileID: 114968620724379630}
+  - component: {fileID: 114075771776411898}
   m_Layer: 9
   m_Name: Soldier
   m_TagString: Enemy
@@ -732,6 +733,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0.3, z: 0}
+--- !u!114 &114075771776411898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1503571866058162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f262eaf1a0593f42a152ee55219418d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114182851777516506
 MonoBehaviour:
   m_ObjectHideFlags: 1
