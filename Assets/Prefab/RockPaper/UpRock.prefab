@@ -242,6 +242,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attribute: 0
   handType: 0
+  effect:
+  - {fileID: 1346824710269904, guid: 1e63d0d10bfc407488c815f58f671fc5, type: 2}
+  - {fileID: 1010812767980060, guid: 5f4cff23c9328b7468eb0cd0f6670348, type: 2}
 --- !u!114 &114466024262007046
 MonoBehaviour:
   m_ObjectHideFlags: 1

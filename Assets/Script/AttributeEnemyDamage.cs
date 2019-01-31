@@ -8,6 +8,8 @@ public class AttributeEnemyDamage : MonoBehaviour {
 
     AttributeEnemyMove move;
 
+    public GameObject deadObj;
+
     private void Start()
     {
 
@@ -17,7 +19,8 @@ public class AttributeEnemyDamage : MonoBehaviour {
     public void Dead()
     {
         move.isMoveStop = true;
-        Destroy(gameObject, 1.0f);
+        Instantiate(deadObj, transform.position, deadObj.transform.rotation);
+        Destroy(gameObject);
     }
 
 }

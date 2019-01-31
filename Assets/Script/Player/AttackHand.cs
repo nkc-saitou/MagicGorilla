@@ -19,6 +19,11 @@ public class AttackHand : MonoBehaviour {
 
     public HandType handType;
 
+    SpawnManeger manager;
+
+    [Header("0:HitEffect、1:GardEffect")]
+    public GameObject[] effect;
+
     float speed = 5.0f;
 
     Transform movePos;
@@ -28,6 +33,8 @@ public class AttackHand : MonoBehaviour {
     {
         state.attribute = attribute;
         state.handType = handType;
+
+        manager = FindObjectOfType<SpawnManeger>();
 
         objCollision = GetComponent<ObjectCollision>();
 
@@ -53,7 +60,7 @@ public class AttackHand : MonoBehaviour {
         EnemyAttribute state = colObj.GetComponent<EnemyAttribute>();
         AttributeEnemyDamage attributeDamage = colObj.GetComponent<AttributeEnemyDamage>();
 
-        if (state.EnemyAttackType.handType == handType && state.EnemyAttackType.attribute == attribute)
+        if (state.EnemyAttackType.handType == handType && state.EnemyAttackType.attribute == attribute && type == E_ObjectType.enemy)
         {
             // ベースエネミーが基底のクラスだったら(WalkEnemy,BowEnemy)
             if (baseEnemy != null)
@@ -61,18 +68,36 @@ public class AttackHand : MonoBehaviour {
                 baseEnemy.EnemyHP--;
             }
             //BaseEnemyが実装されていないEnemyだったら(Attribute系のEnemy)
-            else if (type == E_ObjectType.enemy)
+            else
             {
                 if (attributeDamage != null)
                 {
                     attributeDamage.Dead();
                 }
             }
+
+            manager.EnemyDeadCount();
+            Instantiate(effect[0], transform.position, effect[0].transform.rotation);
+        }
+        else if (state.EnemyAttackType.handType == handType && state.EnemyAttackType.attribute == attribute && type == E_ObjectType.boss)
+        {
+            // ベースエネミーが基底のクラスだったら(WalkEnemy,BowEnemy)
+            if (baseEnemy != null)
+            {
+                baseEnemy.EnemyHP--;
+                Instantiate(effect[0], transform.position, effect[0].transform.rotation);
+            }
         }
         // Enemyが打ってくる障害物だったら(矢、岩など)
         else if (type == E_ObjectType.enemyObject)
         {
+            Instantiate(effect[0], transform.position, effect[0].transform.rotation);
             Destroy(colObj);
+        }
+        // 攻撃できないオブジェクトにあたってしまったら
+        else
+        {
+            Instantiate(effect[1], transform.position, effect[1].transform.rotation);
         }
 
         Destroy(gameObject);

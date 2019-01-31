@@ -19,7 +19,5 @@ public class ObjectCollision : MonoBehaviour {
     {
         //何かに当たった時にイベントを発行
         collSubject.OnNext(other);
-
-        Debug.Log(other);
     }
 }

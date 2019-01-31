@@ -8,10 +8,16 @@ public class AttributeEnemyMove : MonoBehaviour {
 
     public bool isMoveStop { get; set; }
 
+    float time = 0;
+
+    SpawnManeger manager;
+
 	// Use this for initialization
 	void Start ()
     {
         Destroy(gameObject, 30.0f);
+
+        manager = FindObjectOfType<SpawnManeger>();
 
         isMoveStop = false;
 	}
@@ -20,5 +26,14 @@ public class AttributeEnemyMove : MonoBehaviour {
 	void Update ()
     {
         if(isMoveStop == false) transform.position += (-transform.forward).normalized * Time.deltaTime * speed;
-	}
+
+        time += Time.deltaTime;
+
+        if (time >= 29.0f)
+        {
+            time = 0;
+            manager.WallAttack();
+        }
+
+    }
 }

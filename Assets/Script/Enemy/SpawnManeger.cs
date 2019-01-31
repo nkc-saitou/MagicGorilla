@@ -56,7 +56,7 @@ public class SpawnManeger : MonoBehaviour {
             Subscribe(_ => endSpawn=true);
 
         this.ObserveEveryValueChanged(_ => spawnedMonster).
-            Where(_ => _ >= numberOfSpawnBoss).
+            Where(_ => _ >= numberOfSpawnBoss && DestroyedMonster == spawnedMonster).
             Take(1).
             Subscribe(_ => endSpawn = true);
 
@@ -68,12 +68,17 @@ public class SpawnManeger : MonoBehaviour {
                 BossSpawn();
             });
 
-        this.UpdateAsObservable().
-            TakeUntilDestroy(this).
-            Where(_ => !gManager.IsGameClear && !gManager.IsGameOver).
-            Subscribe(_=>EnemyMonitoring());
+        //this.UpdateAsObservable().
+        //    TakeUntilDestroy(this).
+        //    Where(_ => !gManager.IsGameClear && !gManager.IsGameOver).
+        //    Subscribe(_=>EnemyMonitoring());
 	}
-	
+
+    private void Update()
+    {
+
+    }
+
 
 
 
@@ -129,6 +134,23 @@ public class SpawnManeger : MonoBehaviour {
         enemies.RemoveAll(enemies => enemies == null);
     }
 
+    /// <summary>
+    /// 敵が死んだときに呼ぶもの
+    /// </summary>
+    public void EnemyDeadCount()
+    {
+        NowSpawn--;
+        DestroyedMonster++;
+    }
+
+    /// <summary>
+    /// 壁にぶつかっていったやつはカウントしない
+    /// </summary>
+    public void WallAttack()
+    {
+        spawnedMonster--;
+        NowSpawn--;
+    }
 
 
     /// <summary>
