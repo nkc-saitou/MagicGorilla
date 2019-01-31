@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using System;
 
 public enum CreateHandType
 {
@@ -45,12 +46,15 @@ public class AttackHandShot : MonoBehaviour {
     bool isOVRTriggerDown;
     bool isOVRTochPadDown;
 
+    bool isInterbar = false; // インターバル中かどうか
+
     GestureInputState gestureState;
 
 
     // Use this for initialization
     void Start ()
     {
+
         //毎フレームInputStateを監視
         this.UpdateAsObservable()
             .Subscribe(_ => fvrState = PlayerInput.Instance._FVRInputState);
@@ -67,12 +71,27 @@ public class AttackHandShot : MonoBehaviour {
         this.UpdateAsObservable()
             .Subscribe(_ => gestureState = PlayerInput.Instance._GestureInputState);
 
-        this.UpdateAsObservable()
-            .Where(_ => fvrState == FVRInputState.accel)
+
+        PlayerInput.Instance.OnAccel
+            .Where(_ => isInterbar == false)
             .Subscribe(_ =>
             {
+                isInterbar = true;
+
                 HandShot();
+
+                Interbar();
             });
+
+
+        //this.UpdateAsObservable()
+        //    .Where(_ => PlayerInput.Instance.IsFVRAccel)
+        //    .Subscribe(_ =>
+        //    {
+        //        HandShot();
+        //    });
+
+
     }
 
     void SetAttributeType()
@@ -88,7 +107,11 @@ public class AttackHandShot : MonoBehaviour {
                 break;
         }
 
-        if (isOVRTriggerDown) CreateType = CreateAttributeType.none;
+        if (isOVRTriggerDown)
+        {
+            CreateType = CreateAttributeType.none;
+            PlayerInput.Instance.InitFVRInputState();
+        }
     }
 
     /// <summary>
@@ -122,6 +145,24 @@ public class AttackHandShot : MonoBehaviour {
                 break;
         }
 
-        if(tempHandObj != null) Instantiate(tempHandObj, CreatePos.position, tempHandObj.transform.rotation);
+        if (tempHandObj != null)
+        {
+            Instantiate(tempHandObj, CreatePos.position, tempHandObj.transform.rotation);
+            fvrState = FVRInputState.armFront;
+        }
+    }
+
+    void Interbar()
+    {
+        StartCoroutine(DelayMethod(0.5f, () =>
+        {
+            isInterbar = false;
+        }));
+    }
+
+    private IEnumerator DelayMethod(float waitTime, Action action)
+    {
+        yield return new WaitForSeconds(waitTime);
+        action();
     }
 }

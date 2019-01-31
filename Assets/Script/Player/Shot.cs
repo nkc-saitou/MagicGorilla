@@ -47,7 +47,7 @@ public class Shot : MonoBehaviour {
             .Where(_ => state != FVRInputState.none)
             .Subscribe(_ =>
             {
-                if(state == FVRInputState.accel) MagicShot(memoryState);
+                if(PlayerInput.Instance.IsFVRAccel) MagicShot(memoryState);
             });
 
         this.UpdateAsObservable()

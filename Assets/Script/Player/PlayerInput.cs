@@ -4,6 +4,7 @@ using UnityEngine;
 using FVRlib;
 using UniRx;
 using UniRx.Triggers;
+using System;
 
 public enum FVRInputState
 {
@@ -15,7 +16,7 @@ public enum FVRInputState
     armFront,
     handUp,
     handDown,
-    accel,
+    //accel,
 }
 
 public enum GestureInputState
@@ -35,9 +36,22 @@ public enum GestureInputState
 public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 {
     //------------------------------------
+    // public
+    //------------------------------------
+
+    public IObservable<Unit> OnAccel
+    {
+        get { return accelSubject; }
+    }
+
+    //------------------------------------
     // private
     //------------------------------------
     FVRConnection fvr;
+
+    Subject<Unit> accelSubject = new Subject<Unit>();
+
+    bool isInterbar = false; //　インターバル中かどうか
 
     //------------------------------------
     // プロパティ
@@ -57,6 +71,8 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     public bool IsOVRTochPadGetDown { get; set; }
 
     public bool IsOVRTriggerDown { get; set; }
+
+    public bool IsFVRAccel { get; set; }
 
     //------------------------------------
     // 関数
@@ -101,6 +117,14 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     }
 
     /// <summary>
+    /// エフェクトを一度消した時に呼ぶ
+    /// </summary>
+    public void InitFVRInputState()
+    {
+        _FVRInputState = FVRInputState.armFront;
+    }
+
+    /// <summary>
     /// Inputの入力状態を監視
     /// </summary>
     void InputObserver()
@@ -135,10 +159,22 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Where(_ => Input.GetKeyDown(KeyCode.W))
             .Subscribe(_ => _FVRInputState = FVRInputState.armUp);
 
+        //this.UpdateAsObservable()
+        //    .TakeUntilDestroy(this)
+        //    .Subscribe(_ => 
+        //    {
+        //        if (Input.GetKeyDown(KeyCode.F)) IsFVRAccel = true;
+        //        else IsFVRAccel = false;
+
+        //    });
+
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
             .Where(_ => Input.GetKeyDown(KeyCode.F))
-            .Subscribe(_ => _FVRInputState = FVRInputState.accel);
+            .Subscribe(_ =>
+            {
+                accelSubject.OnNext(_);
+            });
 
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
@@ -174,13 +210,16 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Where(_ => Input.GetKeyDown(KeyCode.Y))
             .Subscribe(_ => IsOVRTochPadGetDown = false);
 
-#else 
+#else
 
         //一定速度以上で腕を動かしたとき
         this.UpdateAsObservable()
             .TakeUntilDestroy(this)
             .Where(_ => fvr.accel.magnitude > 1.0f)
-            .Subscribe(_ => _FVRInputState = FVRInputState.accel);
+            .Subscribe(_ =>
+            {
+                accelSubject.OnNext(_);
+            });
 
         //腕を下に向けているとき
         this.ObserveEveryValueChanged(playerInput => playerInput.fvr.palmOrientation)
