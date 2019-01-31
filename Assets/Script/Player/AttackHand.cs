@@ -73,12 +73,9 @@ public class AttackHand : MonoBehaviour {
         else if (type == E_ObjectType.enemyObject)
         {
             Destroy(colObj);
-            Destroy(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Destroy(gameObject);
     }
 	
 	// Update is called once per frame
