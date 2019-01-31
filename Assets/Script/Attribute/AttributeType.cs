@@ -21,7 +21,8 @@ public enum Attribute
 public enum HandType
 {
     rock = 0,
-    paper
+    paper,
+    none
 }
 
 public class AttributeType : MonoBehaviour

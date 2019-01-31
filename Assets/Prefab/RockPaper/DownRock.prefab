@@ -103,6 +103,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4955533591970488}
   - component: {fileID: 114924045391353076}
+  - component: {fileID: 65587695908690998}
+  - component: {fileID: 114451130497158130}
+  - component: {fileID: 114882718566049308}
   m_Layer: 0
   m_Name: DownRock
   m_TagString: Untagged
@@ -186,7 +189,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1955154180527534}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.27, y: 5.092, z: 0.544}
+  m_LocalPosition: {x: 1.682, y: 5.092, z: 0.544}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4859779681020378}
@@ -234,6 +237,41 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1533957104139836}
   m_Mesh: {fileID: 4300000, guid: c1bf421a2909eed4aaa24d4d9a406fab, type: 3}
+--- !u!65 &65587695908690998
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955154180527534}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.6, z: 0.25}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114451130497158130
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955154180527534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d2c25a88fb53f4e83a789406f2ac6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114882718566049308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955154180527534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f0efaf423ff32f4891bbeae0a186582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: 3
 --- !u!114 &114924045391353076
 MonoBehaviour:
   m_ObjectHideFlags: 1

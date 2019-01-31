@@ -55,6 +55,8 @@ GameObject:
   - component: {fileID: 135762140301773670}
   - component: {fileID: 54729567221599240}
   - component: {fileID: 114874230121490576}
+  - component: {fileID: 114384604412274326}
+  - component: {fileID: 114727264011178894}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Untagged
@@ -195,6 +197,31 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114384604412274326
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1519725356235152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d98569a87b87574f84359f67cc59969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handType: 2
+  attributeType: 4
+--- !u!114 &114727264011178894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1519725356235152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f0efaf423ff32f4891bbeae0a186582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: 1
 --- !u!114 &114874230121490576
 MonoBehaviour:
   m_ObjectHideFlags: 1

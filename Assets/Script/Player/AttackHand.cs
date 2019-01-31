@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 public class AttackHand : MonoBehaviour {
 
@@ -8,6 +10,8 @@ public class AttackHand : MonoBehaviour {
     {
         get { return state; }
     }
+
+    ObjectCollision objCollision;
 
     AttackState state;
 
@@ -25,10 +29,20 @@ public class AttackHand : MonoBehaviour {
         state.attribute = attribute;
         state.handType = handType;
 
+        objCollision = GetComponent<ObjectCollision>();
+
         movePos = GameObject.FindGameObjectWithTag("LeftHandAnchor").transform;
         transform.LookAt(movePos);
 
         Destroy(gameObject, 5.0f);
+
+
+        objCollision.OnCollision
+            .Where(collider => collider.GetComponent<ObjectCollision>() != null)
+            .Subscribe(collider => 
+            {
+
+            });
 
 	}
 	

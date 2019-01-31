@@ -206,6 +206,8 @@ GameObject:
   - component: {fileID: 114286359317576192}
   - component: {fileID: 114204627825014888}
   - component: {fileID: 114513274343447506}
+  - component: {fileID: 114775693017458452}
+  - component: {fileID: 114464596158103532}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Boss
@@ -773,6 +775,18 @@ MonoBehaviour:
   rock: {fileID: 1519725356235152, guid: 5c67a9809872627439ee9751eccc971d, type: 2}
   armTipL: {fileID: 4707840471468936}
   armTipR: {fileID: 4552722829252660}
+--- !u!114 &114464596158103532
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1484995543633418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f0efaf423ff32f4891bbeae0a186582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: 0
 --- !u!114 &114513274343447506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -784,6 +798,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe0efcb42202594e8425ebd8f1bab2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114775693017458452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1484995543633418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d98569a87b87574f84359f67cc59969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handType: 0
+  attributeType: 0
 --- !u!136 &136585097809436698
 CapsuleCollider:
   m_ObjectHideFlags: 1

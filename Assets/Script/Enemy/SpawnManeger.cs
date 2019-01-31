@@ -136,7 +136,6 @@ public class SpawnManeger : MonoBehaviour {
     /// </summary>
     void RandomSpawn()
     {
-        int monNum = Random.Range(0, monster.Length);   //モンスターの選択
         int spawnNum = RandomSpawnNumber();             //沸かせる数
         Vector3[] spawnPos=new Vector3[spawnNum];       //沸かせる位置
         for (int i = 0; i < spawnNum; i++)
@@ -156,6 +155,7 @@ public class SpawnManeger : MonoBehaviour {
                     }
                     if (!flg)
                     {
+                        int monNum = Random.Range(0, monster.Length);   //モンスターの選択
                         GameObject monsterObj = (GameObject)Instantiate(monster[monNum], spawnPos[i], Quaternion.identity); //沸かせる
                         enemies.Add(monsterObj.GetComponent<BaseEnemy>());
                         NowSpawn++;         //生存している敵の数にプラス
