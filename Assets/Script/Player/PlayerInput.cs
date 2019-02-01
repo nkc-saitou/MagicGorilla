@@ -5,6 +5,7 @@ using FVRlib;
 using UniRx;
 using UniRx.Triggers;
 using System;
+using UnityEngine.UI;
 
 public enum FVRInputState
 {
@@ -44,12 +45,25 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
         get { return accelSubject; }
     }
 
+    public GameObject pointer;
+
+    public Text text;
+
     //------------------------------------
     // private
     //------------------------------------
+
+    [SerializeField]
+    private Transform _LeftHandAnchor;
+
+    [SerializeField]
+    private float _MaxDistance = 100.0f;
+
     FVRConnection fvr;
 
     Subject<Unit> accelSubject = new Subject<Unit>();
+
+
 
     bool isInterbar = false; //　インターバル中かどうか
 
@@ -65,6 +79,8 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     public Vector3 RayHitPos { get; private set; }
 
     public GameObject HitGameObject { get; private set; }
+
+    public GameObject OVRRayHitGameObject { get; private set; }
 
     public bool IsRockGesture { get; set; }
 
@@ -94,6 +110,28 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
         fvr = FindObjectOfType(typeof(FVRConnection)) as FVRConnection;
 
         InputObserver();
+    }
+
+    private void Update()
+    {
+        RayHit();
+    }
+
+    void RayHit()
+    {
+        Ray pointerRay = new Ray(_LeftHandAnchor.transform.position, pointer.transform.position);
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(pointerRay, out hitInfo, _MaxDistance))
+        {
+            HitGameObject = hitInfo.transform.gameObject;
+        }
+        else
+        {
+            HitGameObject = null;
+        }
+
+        if(HitGameObject != null)text.text = HitGameObject.ToString();
     }
 
     ///// <summary>
