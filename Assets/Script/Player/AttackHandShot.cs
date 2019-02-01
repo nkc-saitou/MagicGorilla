@@ -18,8 +18,8 @@ public enum CreateHandType
 public enum CreateAttributeType
 {
     none,
-    left,
-    right
+    up,
+    down
 }
 
 public class AttackHandShot : MonoBehaviour {
@@ -98,12 +98,12 @@ public class AttackHandShot : MonoBehaviour {
     {
         switch(fvrState)
         {
-            case FVRInputState.armLeft:
-                CreateType = CreateAttributeType.left;
+            case FVRInputState.armUp:
+                CreateType = CreateAttributeType.up;
                 break;
 
-            case FVRInputState.armRight:
-                CreateType = CreateAttributeType.right;
+            case FVRInputState.armDown:
+                CreateType = CreateAttributeType.down;
                 break;
         }
 
@@ -123,14 +123,14 @@ public class AttackHandShot : MonoBehaviour {
 
         switch (CreateType)
         {
-            case CreateAttributeType.left:
+            case CreateAttributeType.up:
                 if (gestureState == GestureInputState.gestureRock)
                     tempHandObj = attributePre[(int)CreateHandType.leftRock]; 
                 else
                     tempHandObj = attributePre[(int)CreateHandType.leftPaper];
                 break;
 
-            case CreateAttributeType.right:
+            case CreateAttributeType.down:
                 if (gestureState == GestureInputState.gestureRock)
                     tempHandObj = attributePre[(int)CreateHandType.rightRock];
                 else

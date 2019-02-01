@@ -26,8 +26,8 @@ public class SetAttackVisual : MonoBehaviour {
 
         attackHandShot = GetComponent<AttackHandShot>();
 
-        int leftIndex = ((int)CreateAttributeType.left) - 1;
-        int rightIndex = ((int)CreateAttributeType.right) - 1;
+        int leftIndex = ((int)CreateAttributeType.up) - 1;
+        int rightIndex = ((int)CreateAttributeType.down) - 1;
 
         this.UpdateAsObservable()
             .Subscribe(_ =>
@@ -49,14 +49,16 @@ public class SetAttackVisual : MonoBehaviour {
                         attribute[rightIndex].SetActive(false);
                         break;
 
-                    case CreateAttributeType.left:
+                    case CreateAttributeType.up:
                         attribute[leftIndex].SetActive(true);
                         attribute[rightIndex].SetActive(false);
+                        AudioManager.Instance.PlaySE("HandUp");
                         break;
 
-                    case CreateAttributeType.right:
+                    case CreateAttributeType.down:
                         attribute[leftIndex].SetActive(false);
                         attribute[rightIndex].SetActive(true);
+                        AudioManager.Instance.PlaySE("HandDown");
                         break;
                 }
             });

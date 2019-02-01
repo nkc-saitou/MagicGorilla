@@ -8,15 +8,27 @@ using UniRx.Triggers;
 public class TitleSceneScript : MonoBehaviour {
     //FadeController fade;
 
-	void Start () {
+    bool isFade = false;
+
+    void Start () {
         //fade = GameObject.Find("Canvas").GetComponent<FadeController>();
         //fade.IsFadeOut = true;
-        gameObject.UpdateAsObservable().
-            TakeUntilDestroy(this).
-            Delay(System.TimeSpan.FromSeconds(1f)).
-            Where(_ => Input.anyKeyDown).
-            Take(1).
-            Subscribe(_ => GameStart());
+        //gameObject.UpdateAsObservable().
+        //    TakeUntilDestroy(this).
+        //    Delay(System.TimeSpan.FromSeconds(1f)).
+        //    Where(_ => Input.anyKeyDown).
+        //    Take(1).
+        //    Subscribe(_ => GameStart());
+
+        this.UpdateAsObservable()
+            .TakeUntilDestroy(this)
+            .Where(_ => PlayerInput.Instance.IsOVRTriggerDown && isFade == false)
+            .Subscribe(_ =>
+            {
+                isFade = true;
+                EffectManager.Instance.FadeScene("PlayerTest");
+                GameStart();
+            });
 	}
 	
     void GameStart()
@@ -26,7 +38,7 @@ public class TitleSceneScript : MonoBehaviour {
             ScoreManager sManager=GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
             sManager.ReStartValue();
         }
-        SceneChange();
+        //SceneChange();
     }
 
     void SceneChange()

@@ -31,6 +31,9 @@ public class AttackHand : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+
+        AudioManager.Instance.PlaySE("ObjectCreate");
+
         state.attribute = attribute;
         state.handType = handType;
 
@@ -76,6 +79,8 @@ public class AttackHand : MonoBehaviour {
                 }
             }
 
+            AudioManager.Instance.PlaySE("DamageHit");
+
             manager.EnemyDeadCount();
             Instantiate(effect[0], transform.position, effect[0].transform.rotation);
         }
@@ -87,17 +92,23 @@ public class AttackHand : MonoBehaviour {
                 baseEnemy.EnemyHP--;
                 Instantiate(effect[0], transform.position, effect[0].transform.rotation);
             }
+
+            AudioManager.Instance.PlaySE("DamageHit");
         }
         // Enemyが打ってくる障害物だったら(矢、岩など)
         else if (type == E_ObjectType.enemyObject)
         {
             Instantiate(effect[0], transform.position, effect[0].transform.rotation);
             Destroy(colObj);
+
+            AudioManager.Instance.PlaySE("DamageHit");
         }
         // 攻撃できないオブジェクトにあたってしまったら
         else
         {
             Instantiate(effect[1], transform.position, effect[1].transform.rotation);
+
+            AudioManager.Instance.PlaySE("DamageGard");
         }
 
         Destroy(gameObject);

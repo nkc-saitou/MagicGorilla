@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour {
 
     void Start()
     {
+        AudioManager.Instance.PlayBGM("GameScene");
+
         sManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
         //fader = FindObjectOfType<Fader>();
         //fade = GameObject.Find("Canvas").GetComponent<FadeController>();
