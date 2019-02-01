@@ -47,8 +47,6 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
     public GameObject pointer;
 
-    public Text text;
-
     //------------------------------------
     // private
     //------------------------------------
@@ -119,6 +117,16 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
     void RayHit()
     {
+
+#if UNITY_EDITOR
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            HitGameObject = hit.transform.gameObject;
+        }
+#else
         Ray pointerRay = new Ray(_LeftHandAnchor.transform.position, pointer.transform.position);
 
         RaycastHit hitInfo;
@@ -126,12 +134,7 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
         {
             HitGameObject = hitInfo.transform.gameObject;
         }
-        else
-        {
-            HitGameObject = null;
-        }
-
-        if(HitGameObject != null)text.text = HitGameObject.ToString();
+#endif
     }
 
     ///// <summary>

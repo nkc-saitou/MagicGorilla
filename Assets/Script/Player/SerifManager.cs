@@ -4,32 +4,60 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using UnityEngine.SceneManagement;
 
-public class SerifManager : MonoBehaviour {
+public class SerifManager : SingletonMonoBehaviour<SerifManager> {
 
-    public GestureSetting gestureSetting;
+    Text serifText;
 
-    public string[] rootSerif;
-
-    public Text serifText;
-
-    public Animator anim;
+    Animator anim;
 
     int rootSerifIndex = 0;
 
-    int setCount = 0;
-
     bool isSerifInterbar = false; //インターバル中かどうか
-
-    bool isSerifSend = true; //セリフ送りをしても良いか
 
     float time;
 
+    int serifLength;
+
+    public bool IsSerinSend { get; private set; }
+
+    private void Awake()
+    {
+        if (this != Instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        serifText = GameObject.FindGameObjectWithTag("ChatSystem").transform.GetChild(0).GetComponent<Text>();
+        anim = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<Animator>();
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        serifText = GameObject.FindGameObjectWithTag("ChatSystem").transform.GetChild(0).GetComponent<Text>();
+        anim = GameObject.FindGameObjectWithTag("ChatSystem").GetComponent<Animator>();
+    }
+
+    public void SerifStart(string[] str)
+    {
+        if (IsSerinSend != false) return;
+
+        serifLength = str.Length;
+
+        IsSerinSend = true;
+
         this.ObserveEveryValueChanged(_ => rootSerifIndex)
-            .Where(_ => rootSerif.Length > rootSerifIndex)
-            .Subscribe(_ => serifText.text = rootSerif[rootSerifIndex]);
+            .Where(_ => serifLength > rootSerifIndex)
+            .Subscribe(_ => serifText.text = str[rootSerifIndex]);
 
         anim.SetTrigger("IsStartChat");
     }
@@ -45,7 +73,12 @@ public class SerifManager : MonoBehaviour {
 
         if(isSerifInterbar == true) TimeInterbar();
 
-        if (rootSerif.Length == rootSerifIndex) anim.SetTrigger("IsEndChat");
+        if (serifLength == rootSerifIndex && IsSerinSend == true)
+        {
+            IsSerinSend = false;
+            anim.SetTrigger("IsEndChat");
+            serifLength = 0;
+        }
 
 
     }
