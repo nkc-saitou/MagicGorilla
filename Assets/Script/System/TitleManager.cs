@@ -12,8 +12,6 @@ public class TitleManager : MonoBehaviour {
     bool isOVRTriggerDown;
     bool isOVRTochPadDown;
 
-    public Text text;
-
     // Use this for initialization
     void Start()
     {
@@ -28,8 +26,6 @@ public class TitleManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        text.text = isOVRTriggerDown.ToString();
-
         if (isOVRTriggerDown && isFade == false)
         {
             PlayerInput.Instance.IsOVRTochPadGetDown = false;
