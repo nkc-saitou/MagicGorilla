@@ -65,10 +65,10 @@ public class TutorialGaid : BaseGaid {
             case GameState.none:
                 GameModeManager.Instance.ChangeGameState(GameState.tutorial);
 
-                noneSerif[0] = "おお、よく来たのう！ゆっくりしていけ";
+                noneSerif[0] = "おお、よく来たのう！";
                 noneSerif[1] = "…ん…？なんじゃ？";
-                noneSerif[2] = "もしや、WASHI流の魔法を教えてほしいのか？";
-                noneSerif[3] = "ふむ、よかろう！わしがしっかりと鍛えてやる";
+                noneSerif[2] = "もしや、WASHI流の魔法を習いに来たのか？";
+                noneSerif[3] = "よかろう！わしがしっかりと鍛えてやる";
                 noneSerif[4] = "ではまずは、奥の本の所でジェスチャーを登録してくるのじゃ";
                 noneSerif[5] = "終わったらわしにもう一回話しかけるのじゃぞ";
                 SerifManager.Instance.SerifStart(noneSerif, "noneSerif");
@@ -82,7 +82,7 @@ public class TutorialGaid : BaseGaid {
                 break;
 
             case GameState.tutorial_2:
-                t_2[0] = "ふむ、登録もできたようじゃの";
+                t_2[0] = "登録もできたようじゃの";
                 t_2[1] = "ではさっそくじゃが、説明にはいるとするかの";
                 t_2[2] = "習うより慣れろ。実際に体験してもらった方が早いかのう";
                 t_2[3] = "準備するからちと待っておれ";

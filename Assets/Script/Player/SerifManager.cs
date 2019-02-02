@@ -24,6 +24,8 @@ public class SerifManager : SingletonMonoBehaviour<SerifManager> {
     List<string> checkStr = new List<string>(); //この文字列が今会話中の内容かどうかを確かめる
     string checkKey;
 
+    bool isSerifs = false;
+
 
     public bool IsSerinSend { get; private set; }
 
@@ -31,6 +33,8 @@ public class SerifManager : SingletonMonoBehaviour<SerifManager> {
     /// セリフをストップするかどうか
     /// </summary>
     public bool IsSerifStop { get; set; }
+
+    public int IndexNumber { get { return rootSerifIndex; } }
 
     private void Awake()
     {
@@ -70,9 +74,12 @@ public class SerifManager : SingletonMonoBehaviour<SerifManager> {
 
         IsSerinSend = true;
 
-        this.ObserveEveryValueChanged(_ => rootSerifIndex)
-            .Where(_ => serifLength > rootSerifIndex)
-            .Subscribe(_ => serifText.text = str[rootSerifIndex]);
+        //this.ObserveEveryValueChanged(_ => rootSerifIndex)
+        //    .Where(_ => serifLength > rootSerifIndex)
+        //    .Subscribe(_ =>
+        //    {
+        //        serifText.text = str[rootSerifIndex];
+        //    });
 
         anim.SetTrigger("IsStartChat");
     }
@@ -101,11 +108,19 @@ public class SerifManager : SingletonMonoBehaviour<SerifManager> {
     /// <returns></returns>
     public bool IsSerifNumber(string[] str, string key,int index)
     {
-        if (IsSerinSend != true || checkStr[0] != str[0] || checkKey != key) return false;
+        if (IsSerinSend != true) return false;
 
-        if (index == rootSerifIndex) return true;
+        if (checkStr[0] == str[0] && checkKey == key)
+        {
+            Debug.Log("ok");
+            if (index == rootSerifIndex) return true;
+            else return false;
+        }
         else return false;
     }
+
+
+
     /// <summary>
     /// 外部からセリフを次に送る
     /// </summary>
@@ -120,7 +135,15 @@ public class SerifManager : SingletonMonoBehaviour<SerifManager> {
         {
             rootSerifIndex++;
 
+            isSerifs = false;
+
             isSerifInterbar = true;
+        }
+
+        if (checkStr.Count > rootSerifIndex && isSerifs == false)
+        {
+            isSerifs = true;
+            serifText.text = checkStr[rootSerifIndex];
         }
 
         if(isSerifInterbar == true) TimeInterbar();
@@ -134,15 +157,13 @@ public class SerifManager : SingletonMonoBehaviour<SerifManager> {
             checkStr.Clear();
             checkKey = "";
         }
-
-
     }
 
     void TimeInterbar()
     {
         time += Time.deltaTime;
 
-        if(time >= 0.5f)
+        if(time >= 0.2f)
         {
             isSerifInterbar = false;
             time = 0.0f;

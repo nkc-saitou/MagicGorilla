@@ -81,7 +81,7 @@ public class AttackHand : MonoBehaviour {
 
             AudioManager.Instance.PlaySE("DamageHit");
 
-            manager.EnemyDeadCount();
+            if(manager != null) manager.EnemyDeadCount();
             Instantiate(effect[0], transform.position, effect[0].transform.rotation);
         }
         else if (state.EnemyAttackType.handType == handType && state.EnemyAttackType.attribute == attribute && type == E_ObjectType.boss)

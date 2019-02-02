@@ -18,7 +18,7 @@ public class AttributeEnemyDamage : MonoBehaviour {
 
     public void Dead()
     {
-        move.isMoveStop = true;
+        if(move != null) move.isMoveStop = true;
         Instantiate(deadObj, transform.position, deadObj.transform.rotation);
         Destroy(gameObject);
     }
