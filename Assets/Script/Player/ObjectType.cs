@@ -9,7 +9,8 @@ public enum E_ObjectType
     player,
     playerHand,
     wall,
-    boss
+    boss,
+    bossSta
 }
 
 public class ObjectType : MonoBehaviour {

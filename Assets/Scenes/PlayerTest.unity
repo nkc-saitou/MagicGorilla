@@ -1212,9 +1212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c0709d84798ed41a72d697e14e6fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpawn: 5
+  maxSpawn: 3
   maxSameTimeSpawn: 1
-  numberOfSpawnBoss: 20
+  numberOfSpawnBoss: 15
   waitTime: 3
   spawnPosA: {x: 7, y: 4, z: 16}
   spawnPosB: {x: -4, y: 4, z: 16}
