@@ -10,6 +10,9 @@ public enum GameState
 {
     none = 0,
     tutorial,
+    tutorial_2,
+    tutorial_3,
+    tutorial_4,
     game,
 }
 

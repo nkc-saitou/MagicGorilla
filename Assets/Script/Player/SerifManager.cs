@@ -91,6 +91,21 @@ public class SerifManager : SingletonMonoBehaviour<SerifManager> {
         else return false;
     }
 
+
+    /// <summary>
+    /// 現在のセリフの段階を調べる
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="key"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public bool IsSerifNumber(string[] str, string key,int index)
+    {
+        if (IsSerinSend != true || checkStr[0] != str[0] || checkKey != key) return false;
+
+        if (index == rootSerifIndex) return true;
+        else return false;
+    }
     /// <summary>
     /// 外部からセリフを次に送る
     /// </summary>

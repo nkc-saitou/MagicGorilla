@@ -48,6 +48,8 @@ public class GestureGaid : BaseGaid {
 
     int gestureNum = 0;
 
+    bool isEnd = false;
+
     protected override void DoStart()
     {
         HandGestureImageObj[0].SetActive(true);
@@ -77,7 +79,7 @@ public class GestureGaid : BaseGaid {
 
     protected override void DoUpdate()
     {
-        if ((OVRInput.GetDown(OVRInput.Button.One) || Input.GetMouseButtonDown(1))&& isStart)
+        if ((OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad) || Input.GetMouseButtonDown(1))&& isStart)
         {
             isStart = false;
             setting.SetTargetPress();
@@ -90,7 +92,7 @@ public class GestureGaid : BaseGaid {
             HandGestureImageObj[1].SetActive(true);
         }
 
-        if ((OVRInput.GetDown(OVRInput.Button.One) || Input.GetMouseButtonDown(1)) && isRockEnd == true)
+        if ((OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad) || Input.GetMouseButtonDown(1)) && isRockEnd == true)
         {
             isRockEnd = false;
             gestureNum++;
@@ -114,21 +116,41 @@ public class GestureGaid : BaseGaid {
         if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || Input.GetMouseButtonDown(0))
         {
             GestureSettingBord.GetComponent<Animator>().SetBool("IsStartAnim",false);
-            StartCoroutine(EndWaitTime());
-            manager.ObjectActive();
+            isEnd = true;
         }
 
+        WaitTime();
     }
 
-    IEnumerator EndWaitTime()
+    float t = 0;
+
+    void WaitTime()
     {
-        yield return new WaitForSeconds(1.0f);
-        GestureSettingBord.SetActive(false);
-        gestureNum = 0;
-        isAnimationEnd = true;
-        isSettingEnd = false;
+        
+        t += Time.deltaTime;
 
+        if(t >= 1.0f && isEnd)
+        {
+            manager.ObjectActive();
+            GestureSettingBord.SetActive(false);
+            gestureNum = 0;
+            isAnimationEnd = true;
+            isSettingEnd = false;
+            isEnd = false;
+            t = 0;
+            if (GameModeManager.Instance._GameState == GameState.tutorial) GameModeManager.Instance._GameState = GameState.tutorial_2;
+        }
     }
+
+    //IEnumerator EndWaitTime()
+    //{
+    //    yield return new WaitForSeconds(1.0f);
+    //    GestureSettingBord.SetActive(false);
+    //    gestureNum = 0;
+    //    isAnimationEnd = true;
+    //    isSettingEnd = false;
+
+    //}
 
     public override void GaidAction()
     {

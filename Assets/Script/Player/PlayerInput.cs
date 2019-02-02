@@ -144,6 +144,12 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 #endif
     }
 
+
+    public void SetFVRGesture(FVRGesture gesture)
+    {
+        _FVRGesture = gesture;
+    }
+
     ///// <summary>
     ///// 視点入力
     ///// </summary>
@@ -301,15 +307,15 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
             .Subscribe(_ => _FVRInputState = FVRInputState.armDown);
 
         //グーのとき
-        this.ObserveEveryValueChanged(playerInput => fvr.verticalOrientation)
+        this.ObserveEveryValueChanged(_ => IsRockGesture)
             .TakeUntilDestroy(this)
-            .Where(_ => _FVRGesture.held == true)
+            .Where(_ => IsRockGesture == true)
             .Subscribe(_ => _GestureInputState = GestureInputState.gestureRock);
 
         //パーのとき
-        this.ObserveEveryValueChanged(playerInput => fvr.verticalOrientation)
+        this.ObserveEveryValueChanged(_ => IsRockGesture)
             .TakeUntilDestroy(this)
-            .Where(_ => _FVRGesture.held == false)
+            .Where(_ => IsRockGesture == false)
             .Subscribe(_ => _GestureInputState = GestureInputState.gesturePaper);
 
         this.UpdateAsObservable()
