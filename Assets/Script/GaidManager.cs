@@ -94,7 +94,7 @@ public class GaidManager : MonoBehaviour {
 
         choiceGaidObj = PlayerInput.Instance.HitGameObject.transform.parent.gameObject;
 
-        if (Input.GetMouseButtonDown(0) || OVRInput.GetDown(OVRInput.Touch.One))
+        if (Input.GetMouseButtonDown(0) || OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
         {
             choiceGaid = ChoiceGaid(choiceGaidObj);
             choiceGaid.GaidAction();

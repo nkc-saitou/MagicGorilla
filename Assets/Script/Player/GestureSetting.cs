@@ -16,6 +16,8 @@ public class GestureSetting : MonoBehaviour {
     public Image targetImg;
     public Image nonTargetImg;
 
+    bool isFirst = false;
+
     public Subject<string> endCalibSub = new Subject<string>();
 
     public IObservable<string> OnEndCalib { get { return endCalibSub; } }
@@ -63,10 +65,18 @@ public class GestureSetting : MonoBehaviour {
         while (gesture.registering)
         {
             t += Time.deltaTime;
-            if (target) targetImg.fillAmount = t / roundLength;
-            else nonTargetImg.fillAmount = t / roundLength;
+            if (target)
+            {
+                targetImg.fillAmount = t / roundLength;
+            }
+            else
+            {
+                nonTargetImg.fillAmount = t / roundLength;
+            }
             yield return null;
         }
+
+        yield return new WaitWhile(() => Fillamount(target));
 
         if (target) endCalibSub.OnNext("rock");
         else endCalibSub.OnNext("paper");
@@ -74,6 +84,16 @@ public class GestureSetting : MonoBehaviour {
         targetImg.fillAmount = 0;
         nonTargetImg.fillAmount = 0;
 
+
         PlayerInput.Instance._FVRGesture = gesture;
+
+    }
+
+    bool Fillamount(bool isTarget)
+    {
+        targetImg.fillAmount += Time.deltaTime;
+
+        if (targetImg.fillAmount >= 1.0f) return false;
+        return true;
     }
 }

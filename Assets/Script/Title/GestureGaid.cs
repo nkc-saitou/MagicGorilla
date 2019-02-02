@@ -32,7 +32,13 @@ public class GestureGaid : BaseGaid {
 
     public GaidManager manager;
 
+    int rockCount;
+
     bool isRockEnd = false;
+
+    bool isPaperEnd = false;
+
+    bool RedyPaperStart = false;
 
     bool isSettingEnd = false;
 
@@ -46,34 +52,54 @@ public class GestureGaid : BaseGaid {
     {
         HandGestureImageObj[0].SetActive(true);
         HandGestureImageObj[1].SetActive(false);
+
+        End();
+    }
+
+    void End()
+    {
+        setting.OnEndCalib
+            .Where(name => name == "rock")
+            .Subscribe(name =>
+            {
+                Debug.Log(gestureNum);
+                //setting.SetTargetPress();
+                isRockEnd = true;
+            });
+
+        setting.OnEndCalib
+            .Where(name => name == "paper")
+            .Subscribe(name =>
+            {
+                isPaperEnd = true;
+            });
     }
 
     protected override void DoUpdate()
     {
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || Input.GetMouseButtonDown(0) && isStart)
+        if ((OVRInput.GetDown(OVRInput.Button.One) || Input.GetMouseButtonDown(1))&& isStart)
         {
             isStart = false;
             setting.SetTargetPress();
             gestureNum++;
         }
 
-        if (gestureNum == 1 && handImage[0].fillAmount >= 1 && isRockEnd == false)
+        if (gestureNum == 1 &&  isRockEnd == true)
         {
-            isRockEnd = true;
             HandGestureImageObj[0].SetActive(false);
             HandGestureImageObj[1].SetActive(true);
         }
 
-        if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || Input.GetMouseButtonDown(0)) && isRockEnd == true)
+        if ((OVRInput.GetDown(OVRInput.Button.One) || Input.GetMouseButtonDown(1)) && isRockEnd == true)
         {
             isRockEnd = false;
             gestureNum++;
             setting.SetNonTargetPress();
         }
 
-        if (gestureNum == 2 && handImage[1].fillAmount >= 1)
+        if (gestureNum == 2 && isPaperEnd == true)
         {
-            Debug.Log("ok");
+            isPaperEnd = false;
             calibController.SetActive(false);
             doneController.SetActive(true);
 
@@ -109,6 +135,8 @@ public class GestureGaid : BaseGaid {
         if (isAnimationEnd != true) return;
 
         Debug.Log("はじまったよー");
+
+        setting.ResetCalibrationPress();
 
         GestureSettingBord.SetActive(true);
         GestureSettingBord.GetComponent<Animator>().SetBool("IsStartAnim",true);

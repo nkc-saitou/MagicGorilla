@@ -116,7 +116,10 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     {
         RayHit();
 
-        if(_FVRGesture != null) IsRockGesture = _FVRGesture.held;
+        if (_FVRGesture != null)
+        {
+            IsRockGesture = _FVRGesture.held;
+        }
     }
 
     void RayHit()
@@ -300,13 +303,13 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
         //グーのとき
         this.ObserveEveryValueChanged(playerInput => fvr.verticalOrientation)
             .TakeUntilDestroy(this)
-            .Where(_ => IsRockGesture == true)
+            .Where(_ => _FVRGesture.held == true)
             .Subscribe(_ => _GestureInputState = GestureInputState.gestureRock);
 
         //パーのとき
         this.ObserveEveryValueChanged(playerInput => fvr.verticalOrientation)
             .TakeUntilDestroy(this)
-            .Where(_ => IsRockGesture == false)
+            .Where(_ => _FVRGesture.held == false)
             .Subscribe(_ => _GestureInputState = GestureInputState.gesturePaper);
 
         this.UpdateAsObservable()
