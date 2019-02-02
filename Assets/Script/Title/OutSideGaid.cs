@@ -18,11 +18,11 @@ public class OutSideGaid : BaseGaid {
 
     public override void GaidAction()
     {
-        if (GameModeManager.Instance._GameState != GameState.tutorial)
+        if (GameModeManager.Instance._GameState == GameState.none)
         {
-            FadeEffect.Instance.FadeScene("PlayerTest");
+            EffectManager.Instance.FadeScene("PlayerTest");
         }
-        else
+        else if(GameModeManager.Instance._GameState == GameState.tutorial)
         {
             string[] str = new string[2];
             str[0] = "こら！まだわしの話は終わっておらんぞ！";

@@ -10,6 +10,8 @@ public abstract class BaseGaid : MonoBehaviour {
 
     bool isCanAnim; //アニメーションさせても良いか
 
+    bool isTemp;
+
     // Use this for initialization
     void Start()
     {
@@ -46,8 +48,16 @@ public abstract class BaseGaid : MonoBehaviour {
 
     void AnimationStart()
     {
-        if (isCanAnim) anim.SetTrigger("IsChoce");
-        else anim.SetTrigger("IsNotChoce");
+        if (anim.enabled == false) return;
+
+        if (isCanAnim)
+        { 
+            anim.SetBool("IsChoce", true);
+        }
+        else if(anim.GetBool("IsChoce") == true)
+        {
+            anim.SetBool("IsChoce", false);
+        }
     }
 
     protected abstract void DoStart();

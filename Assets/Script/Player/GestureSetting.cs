@@ -73,5 +73,7 @@ public class GestureSetting : MonoBehaviour {
 
         targetImg.fillAmount = 0;
         nonTargetImg.fillAmount = 0;
+
+        PlayerInput.Instance._FVRGesture = gesture;
     }
 }

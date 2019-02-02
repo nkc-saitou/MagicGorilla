@@ -8,13 +8,18 @@ using UnityEngine;
 
 public enum GameState
 {
-    tutorial = 0,
-    Game,
-    None
+    none = 0,
+    tutorial,
+    game,
 }
 
 public class GameModeManager : SingletonMonoBehaviour<GameModeManager> {
 
     public GameState _GameState { get; set; }
+
+    public void ChangeGameState(GameState state)
+    {
+        _GameState = state;
+    }
 
 }

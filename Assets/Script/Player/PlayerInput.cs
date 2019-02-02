@@ -76,9 +76,11 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
 
     public Vector3 RayHitPos { get; private set; }
 
-    public GameObject HitGameObject { get; private set; }
+    public GameObject HitGameObject { get; set; }
 
     public GameObject OVRRayHitGameObject { get; private set; }
+
+    public FVRGesture _FVRGesture { get; set; }
 
     public bool IsRockGesture { get; set; }
 
@@ -113,6 +115,8 @@ public class PlayerInput : SingletonMonoBehaviour<PlayerInput>
     private void Update()
     {
         RayHit();
+
+        if(_FVRGesture != null) IsRockGesture = _FVRGesture.held;
     }
 
     void RayHit()
