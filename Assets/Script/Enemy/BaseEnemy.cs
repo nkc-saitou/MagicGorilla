@@ -73,7 +73,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected virtual void Dead()
     {
         dead = true;
-        GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
+        //GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddScore(score);
         anim.enabled = false;
         Instantiate(ragdoll, transform.position, transform.rotation);
         Destroy(gameObject);

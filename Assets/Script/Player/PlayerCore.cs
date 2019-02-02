@@ -6,7 +6,7 @@ using UniRx.Triggers;
 
 public class PlayerCore : MonoBehaviour {
 
-    ObjectCollision objectCollision;
+    public ObjectCollision objectCollision;
 
 	// Use this for initialization
 	void Start () {
@@ -16,15 +16,15 @@ public class PlayerCore : MonoBehaviour {
         //当たった時の処理
         objectCollision.OnCollision
             .TakeUntilDestroy(this)
-            .Where(colObj => colObj.GetComponent<BaseMagic>() == null)
-            .Subscribe(collision => AplayDamage());
-	}
+            .Subscribe(collision => Debug.Log("あたった！"));
+    }
 
     /// <summary>
     /// ダメージ処理
     /// </summary>
     void AplayDamage()
     {
-        Debug.Log("ダメージ");
+        Debug.Log("oh");
+        ScoreManager.Instance.AddScore(1);
     }
 }

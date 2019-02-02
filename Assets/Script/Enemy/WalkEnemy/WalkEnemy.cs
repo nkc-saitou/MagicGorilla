@@ -11,6 +11,8 @@ public class WalkEnemy : BaseEnemy
     WalkEnemyAnimator walkAnim;
     AttackAllocation allocation;
 
+    SpawnManeger manager;
+
     int currentPositionIndex=0;                     //目標値用
     const float speed=2.0f;                         //移動速度
     const float jumpPower = 5f;                     //飛ぶ力
@@ -31,6 +33,10 @@ public class WalkEnemy : BaseEnemy
     /// </summary>
     protected override void OnStart()
     {
+        Invoke("TimeOver", 10.0f);
+
+        manager = GameObject.FindObjectOfType<SpawnManeger>();
+
         walkAnim = GetComponent<WalkEnemyAnimator>();
         allocation = GameObject.Find("AttackAllocation").GetComponent<AttackAllocation>();
 
@@ -166,6 +172,12 @@ public class WalkEnemy : BaseEnemy
                 }
             }
         }
+    }
+
+    void TimeOver()
+    {
+        manager.WallAttack();
+        Destroy(gameObject);
     }
 
 

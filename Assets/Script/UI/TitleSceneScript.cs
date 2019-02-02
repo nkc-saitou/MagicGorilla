@@ -10,11 +10,22 @@ public class TitleSceneScript : MonoBehaviour {
 
     bool isFade = false;
 
+    string[] resultStr = new string[3];
+
     void Start () {
         AudioManager.Instance.PlayBGM("Title");
 
+        Debug.Log(GameModeManager.Instance._GameState);
+
+        if(GetNowAfterScene.Instance.NowScene == "Title" && GetNowAfterScene.Instance.BeforeScene == "PlayerTest")
+        {
+            if (GameModeManager.Instance._GameState == GameState.none)
+                GameModeManager.Instance._GameState = GameState.result;
+        }
+
         if (GameModeManager.Instance._GameState == GameState.tutorial) GameModeManager.Instance._GameState = GameState.none;
-        else if (GameModeManager.Instance._GameState == GameState.game) GameModeManager.Instance._GameState = GameState.result;
+
+        StartCoroutine(timeSerif());
 
         //fade = GameObject.Find("Canvas").GetComponent<FadeController>();
         //fade.IsFadeOut = true;
@@ -36,6 +47,21 @@ public class TitleSceneScript : MonoBehaviour {
             //    });
     }
 	
+    IEnumerator timeSerif()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        if (GameModeManager.Instance._GameState == GameState.result)
+        {
+            resultStr[0] = "おお、お疲れさま";
+            resultStr[1] = "見事な戦いっぷりじゃったぞ";
+            resultStr[2] = "今回のお主のタイムは\n" + ScoreManager.Instance.Timer.ToString("f2") + " 秒じゃ";
+            SerifManager.Instance.SerifStart(resultStr);
+
+            GameModeManager.Instance._GameState = GameState.none;
+        }
+
+    }
     void GameStart()
     {
         if (GameObject.Find("ScoreManager"))

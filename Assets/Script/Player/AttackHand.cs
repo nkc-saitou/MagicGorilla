@@ -63,7 +63,9 @@ public class AttackHand : MonoBehaviour {
         EnemyAttribute state = colObj.GetComponent<EnemyAttribute>();
         AttributeEnemyDamage attributeDamage = colObj.GetComponent<AttributeEnemyDamage>();
 
-        if (state.EnemyAttackType.handType == handType && state.EnemyAttackType.attribute == attribute && type == E_ObjectType.enemy)
+        if (state.EnemyAttackType.handType == handType &&
+            state.EnemyAttackType.attribute == attribute &&
+            type == E_ObjectType.enemy)
         {
             // ベースエネミーが基底のクラスだったら(WalkEnemy,BowEnemy)
             if (baseEnemy != null)

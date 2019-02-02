@@ -133,7 +133,9 @@ public class GameManager : MonoBehaviour {
     {
         //fader.FadeOut();
         //Fader.Instance.gameLogic("result");
-        Observable.Timer(System.TimeSpan.FromSeconds(1)).
-            Subscribe(_ => SceneManager.LoadScene(sceneName));
+        GameModeManager.Instance._GameState = GameState.result;
+        EffectManager.Instance.FadeScene("Title");
+        //Observable.Timer(System.TimeSpan.FromSeconds(1)).
+        //    Subscribe(_ => SceneManager.LoadScene(sceneName));
     }
 }
