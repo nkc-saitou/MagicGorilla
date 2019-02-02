@@ -12,6 +12,10 @@ public class TitleSceneScript : MonoBehaviour {
 
     void Start () {
         AudioManager.Instance.PlayBGM("Title");
+
+        if (GameModeManager.Instance._GameState == GameState.tutorial) GameModeManager.Instance._GameState = GameState.none;
+        else if (GameModeManager.Instance._GameState == GameState.game) GameModeManager.Instance._GameState = GameState.result;
+
         //fade = GameObject.Find("Canvas").GetComponent<FadeController>();
         //fade.IsFadeOut = true;
         //gameObject.UpdateAsObservable().
@@ -21,16 +25,16 @@ public class TitleSceneScript : MonoBehaviour {
         //    Take(1).
         //    Subscribe(_ => GameStart());
 
-        //this.UpdateAsObservable()
-        //    .TakeUntilDestroy(this)
-        //    .Where(_ => PlayerInput.Instance.IsOVRTriggerDown && isFade == false)
-        //    .Subscribe(_ =>
-        //    {
-        //        isFade = true;
-        //        EffectManager.Instance.FadeScene("PlayerTest");
-        //        GameStart();
-        //    });
-	}
+            //this.UpdateAsObservable()
+            //    .TakeUntilDestroy(this)
+            //    .Where(_ => PlayerInput.Instance.IsOVRTriggerDown && isFade == false)
+            //    .Subscribe(_ =>
+            //    {
+            //        isFade = true;
+            //        EffectManager.Instance.FadeScene("PlayerTest");
+            //        GameStart();
+            //    });
+    }
 	
     void GameStart()
     {

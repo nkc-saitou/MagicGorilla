@@ -22,7 +22,7 @@ public class OutSideGaid : BaseGaid {
         {
             EffectManager.Instance.FadeScene("PlayerTest");
         }
-        else if(GameModeManager.Instance._GameState == GameState.tutorial)
+        else if(GameModeManager.Instance._GameState == GameState.tutorial || GameModeManager.Instance._GameState == GameState.tutorial_2)
         {
             string[] str = new string[2];
             str[0] = "こら！まだわしの話は終わっておらんぞ！";
