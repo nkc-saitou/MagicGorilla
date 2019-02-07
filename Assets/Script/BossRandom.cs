@@ -8,7 +8,7 @@ public class BossRandom : MonoBehaviour {
 
     int interbarCount;
 
-    float interbarTime = 10.0f;
+    float interbarTime = 15.0f;
 
     bool isChangeAttribute = false;
 

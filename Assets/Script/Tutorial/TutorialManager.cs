@@ -41,8 +41,10 @@ public class TutorialManager : MonoBehaviour {
     void Start ()
     {
         PlayerInput.Instance.OnAccel
+            .Where(_ => GameModeManager.Instance._GameState != GameState.game)
             .Subscribe(_ =>
             {
+                Debug.Log(GameModeManager.Instance._GameState);
                 StartCoroutine(Serif_t_3());
             });
 	}

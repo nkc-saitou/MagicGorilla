@@ -54,7 +54,6 @@ public class AttackHandShot : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-
         //毎フレームInputStateを監視
         this.UpdateAsObservable()
             .Subscribe(_ => fvrState = PlayerInput.Instance._FVRInputState);
@@ -145,8 +144,13 @@ public class AttackHandShot : MonoBehaviour {
                 break;
         }
 
-        if (tempHandObj != null)
+        Debug.Log("CreatePos  " + CreatePos);
+
+        if (CreatePos == null) return;
+
+        if (tempHandObj != null && CreatePos != null)
         {
+            Debug.Log("BeforeCreatePos  " + CreatePos);
             Instantiate(tempHandObj, CreatePos.position, tempHandObj.transform.rotation);
             fvrState = FVRInputState.armFront;
         }

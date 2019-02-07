@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour {
         AudioManager.Instance.PlayBGM("GameScene");
 
         sManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+
+        GameModeManager.Instance._GameState = GameState.game;
         //fader = FindObjectOfType<Fader>();
         //fade = GameObject.Find("Canvas").GetComponent<FadeController>();
         //fade.IsFadeOut = true;

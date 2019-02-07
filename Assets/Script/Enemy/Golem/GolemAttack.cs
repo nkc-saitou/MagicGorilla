@@ -39,7 +39,7 @@ public class GolemAttack : BaseEnemy {
 
     protected override void OnStart()
     {
-        enemyHp = 15;
+        enemyHp = 5;
         golemAnim = GetComponent<GolemAnimator>();
         var a = transform.position;
         var b = PlayerPos.position;
